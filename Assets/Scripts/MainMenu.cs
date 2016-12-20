@@ -7,8 +7,7 @@ public class MainMenu : MonoBehaviour {
 
 	// Use this for initialization
     private void Start () {
-	    PartLoader partLoader = new PartLoader();
-        partLoader.Kana();
+	    
 	}
 	
 	// Update is called once per frame

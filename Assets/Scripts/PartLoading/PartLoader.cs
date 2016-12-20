@@ -23,6 +23,8 @@ namespace Assets.Scripts.PartLoading
         private static readonly string VANILLA_MODULE_PATH = Path.Combine(Application.dataPath, "VanillaModule");
         private static readonly string VANILLA_MODULE_LANG_PATH = Path.Combine(VANILLA_MODULE_PATH, LANG_DIR);
 
+        public static readonly PartLoader MainInstance = new PartLoader();
+
         private Localizer localizer = new Localizer();
 
         private List<Model> submodels = new List<Model>();
@@ -31,23 +33,21 @@ namespace Assets.Scripts.PartLoading
         public PartLoader()
         {
             localizer.AddLang(Path.Combine(VANILLA_MODULE_LANG_PATH, "default.lang"));
+            submodels.Add(loadModel("vanilla", "bullet.json"));
+            partTemplates.Add(loadPartTemplate("vanilla", "cannon.json"));
         }
 
-        public void Kana()
+        public PartTemplate GetPartTemplate(string module, string name)
         {
-            submodels.Add(LoadModel("vanilla", "bullet.json"));
-            partTemplates.Add(LoadPartTemplate("vanilla", "cannon.json"));
-
-            Cannon cannon = new Cannon();
-            cannon.LoadFrom(GetPartTemplate("vanilla", "cannon"));
+            return partTemplates.Find(partTemplate => partTemplate.ModuleName == module && partTemplate.UnlocalizedName == name);
         }
 
-        public Model LoadModel(string module, string jsonName)
+        private Model loadModel(string module, string jsonName)
         {
             string jsonPath = Path.Combine(Path.Combine(getModulePath(module), MODELS_DIR), jsonName);
             try
             {
-                return LoadModel(module, JObject.Parse(File.ReadAllText(jsonPath)));
+                return loadModel(module, JObject.Parse(File.ReadAllText(jsonPath)));
             }
             catch (IOException exception)
             {
@@ -60,7 +60,7 @@ namespace Assets.Scripts.PartLoading
             return null;
         }
 
-        public Model LoadModel(string module, JObject jObject)
+        private Model loadModel(string module, JObject jObject)
         {
             string name = "JSON parsing error";
             try
@@ -151,7 +151,7 @@ namespace Assets.Scripts.PartLoading
             return null;
         }
 
-        public PartTemplate LoadPartTemplate(string module, string jsonName)
+        private PartTemplate loadPartTemplate(string module, string jsonName)
         {
             string jsonPath = Path.Combine(Path.Combine(getModulePath(module), PARTS_DIR), jsonName);
             try
@@ -195,7 +195,7 @@ namespace Assets.Scripts.PartLoading
                 foreach (JToken jModelToken in jModels)
                 {
                     JObject jModel = (JObject)jModelToken;
-                    Model resultModel = LoadModel(module, jModel);
+                    Model resultModel = loadModel(module, jModel);
                     if (resultModel is RenderedModel)
                         models.Add((RenderedModel)resultModel);
                     else
@@ -231,11 +231,6 @@ namespace Assets.Scripts.PartLoading
                 Log.Error(TAG, string.Format("Error while processing JSON {0}:{1}\n{2}", module, jsonName, exception));
             }
             return null;
-        }
-
-        public PartTemplate GetPartTemplate(string module, string name)
-        {
-            return partTemplates.Find(partTemplate => partTemplate.ModuleName == module && partTemplate.UnlocalizedName == name);
         }
 
         private Type findScriptClass(string className)
