@@ -1,0 +1,51 @@
+﻿{
+	"module": "vanilla",
+	"name": "Macboom Air",
+	"script": "Cannon",
+	"game_properties": // required
+	{
+		"cost": 300,
+		"required_level": 2
+	},
+	"script_properties": {
+		"mass": 69,
+		"shooting_speed": 420,
+		"bullet_speed": 500,
+		"health": 500,
+		"damage_on_touch": 45
+	}´,
+	"parts": [
+		{
+			"part_type": "barrel",
+			"relative": [ 2, 5 ],
+			"parts": [
+				{
+					"relative": [ 2, 5 ],
+					"collide": 1,
+					"texture": "kana",
+					"vertices": [
+						[ 1, 1 ],
+						[ 1, 2 ],
+						[ 2, 1 ]
+					],
+					"joints": [ 1, 2, 1 ]
+				},
+				{
+					"relative": [ 2, 5 ],
+					"collide": 0,
+					"texture": "kana",
+					"vertices": [
+						[ 1, 1 ],
+						[ 1, 2 ],
+						[ 2, 1 ]
+					],
+					"joints": [ 1, 2, 1 ]
+				}
+
+			]
+		},
+		{
+			"part_type": "bullet"
+		}
+	]
+}

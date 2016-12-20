@@ -1,0 +1,27 @@
+{
+	"name": "bullet", 
+	"texture": "kana",
+	"render_on_default": false,
+	"parts": [
+		{
+			"relative": [ 2, 5 ],
+			"collide": true,
+			"vertices": [
+				[ 1, 1 ],
+				[ 1, 2 ],
+				[ 2, 1 ]
+			],
+			"joints": [ 1, 2, 1 ]
+		},
+		{
+			"relative": [ 2, 5 ],
+			"collide": false,
+			"vertices": [
+				[ 1, 1 ],
+				[ 1, 2 ],
+				[ 2, 1 ]
+			],
+			"joints": [ 1, 2, 1 ]
+		}
+	]
+}
