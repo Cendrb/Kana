@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.PartLoading;
+using UnityEngine;
 
 namespace Assets.Scripts.PartScripts
 {
@@ -6,15 +7,19 @@ namespace Assets.Scripts.PartScripts
 
         public string UnlocalizedName { get; private set; }
         public string LocalizedName { get; private set; }
-        public int Cost { get; private set; }
-        public int RequiredLevel { get; private set; }
+        public PartTemplate.ShopProperties ShopProperties { get; private set; }
+        public PartTemplate.ScriptProperties ScriptProperties { get; private set; }
 
-        public Part(string unlocalizedName, string localizedName, int cost, int requiredLevel)
+        public Part()
         {
-            UnlocalizedName = unlocalizedName;
-            LocalizedName = localizedName;
-            Cost = cost;
-            RequiredLevel = requiredLevel;
+        }
+
+        public void LoadFrom(PartTemplate template)
+        {
+            UnlocalizedName = template.UnlocalizedName;
+            LocalizedName = template.LocalizedName;
+            ShopProperties = template.ShopProp; // TODO create new instance instead of linking?
+            ScriptProperties = template.ScriptProp; // TODO create new instance instead of linking?
         }
 
         // Use this for initialization

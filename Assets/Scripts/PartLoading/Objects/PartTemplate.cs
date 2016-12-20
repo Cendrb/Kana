@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Assets.Scripts.PartLoading.Objects;
+using Assets.Scripts.PartScripts;
 
 namespace Assets.Scripts.PartLoading
 {
-    class PartTemplate
+    public class PartTemplate
     {
         public string ModuleName { get; private set; }
         public Type ScriptType { get; private set; }
@@ -15,10 +16,11 @@ namespace Assets.Scripts.PartLoading
 
         public ShopProperties ShopProp { get; private set; }
         public ScriptProperties ScriptProp { get; private set; }
+        public CustomScriptProperties CustomScriptProp { get; private set; }
 
         public List<RenderedModel> Models { get; private set; }
 
-        public PartTemplate(string moduleName, Type scriptType, string unlocalizedName, string localizedName, ShopProperties shopProperties, ScriptProperties scriptProperties, List<RenderedModel> models)
+        public PartTemplate(string moduleName, Type scriptType, string unlocalizedName, string localizedName, ShopProperties shopProperties, ScriptProperties scriptProperties, CustomScriptProperties customScriptProperties, List<RenderedModel> models)
         {
             ModuleName = moduleName;
             ScriptType = scriptType;
@@ -26,6 +28,7 @@ namespace Assets.Scripts.PartLoading
             LocalizedName = localizedName;
             ShopProp = shopProperties;
             ScriptProp = scriptProperties;
+            CustomScriptProp = customScriptProperties;
             Models = models;
         }
 
@@ -42,6 +45,20 @@ namespace Assets.Scripts.PartLoading
         }
 
         public class ScriptProperties
+        {
+            public float Mass { get; private set; }
+            public int Health { get; private set; }
+            public int DamageOnTouch { get; private set; }
+
+            public ScriptProperties(float mass, int health, int damageOnTouch)
+            {
+                Mass = mass;
+                Health = health;
+                DamageOnTouch = damageOnTouch;
+            }
+        }
+
+        public class CustomScriptProperties
         {
             private Dictionary<string, object> properties = new Dictionary<string, object>();
 

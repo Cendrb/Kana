@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.PartLoading.Objects
 {
-    class ModelPart
+    public class ModelPart
     {
         public Vector2 Relative { get; private set; }
         public bool Collide { get; private set; }

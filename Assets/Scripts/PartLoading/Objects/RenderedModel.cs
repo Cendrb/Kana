@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.PartLoading.Objects
 {
-    class RenderedModel : Model
+    public class RenderedModel : Model
     {
         public Vector2 Relative { get; set; }
 

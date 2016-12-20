@@ -16,9 +16,13 @@ namespace Assets.Scripts.PartLoading
             if (jObject.TryGetValue(propertyName, out outToken))
             {
                 object parsed = ParseJTokenToCSharpType(outToken);
-                if (parsed is T)
+                if (typeof(T) == typeof(float) && parsed is int)
                 {
-                    return (T) parsed;
+                    return (T)(object)Convert.ToSingle(parsed);
+                }
+                else if (parsed is T)
+                {
+                    return (T)parsed;
                 }
                 else
                 {

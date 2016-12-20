@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using Assets.Scripts.PartLoading.Exceptions;
 using Assets.Scripts.PartLoading.Objects;
 using Assets.Scripts.PartScripts;
@@ -163,37 +164,43 @@ namespace Assets.Scripts.PartLoading
 
                 JObject jShopProperties = JSONUtil.ReadObject(jObject, "shop_properties");
                 PartTemplate.ShopProperties shopProperties =
-                    new PartTemplate.ShopProperties(JSONUtil.ReadProperty<int>(jShopProperties, "cost"),
+                    new PartTemplate.ShopProperties(
+                        JSONUtil.ReadProperty<int>(jShopProperties, "cost"),
                         JSONUtil.ReadProperty<int>(jShopProperties, "required_level"));
 
                 JObject jScriptProperties = JSONUtil.ReadObject(jObject, "script_properties");
-                PartTemplate.ScriptProperties scriptProperties = new PartTemplate.ScriptProperties();
-                foreach (JProperty jProperty in jScriptProperties.Properties())
+                PartTemplate.ScriptProperties scriptProperties = new PartTemplate.ScriptProperties(
+                    JSONUtil.ReadProperty<float>(jScriptProperties, "Mass"),
+                    JSONUtil.ReadProperty<int>(jScriptProperties, "Health"),
+                    JSONUtil.ReadProperty<int>(jScriptProperties, "DamageOnTouch"));
+
+                JObject jScriptCustomProperties = JSONUtil.ReadObject(jObject, "custom_script_properties");
+                PartTemplate.CustomScriptProperties customScriptProperties = new PartTemplate.CustomScriptProperties();
+                foreach (JProperty jProperty in jScriptCustomProperties.Properties())
                 {
                     JToken jToken = jProperty.Value;
                     object value = JSONUtil.ParseJTokenToCSharpType(jToken);
                     string propertyName = jProperty.Name;
                     if (string.IsNullOrEmpty(propertyName))
-                        throw new InvalidPropertyNameException(propertyName, jScriptProperties);
-                    scriptProperties.AddProperty(propertyName, value);
+                        throw new InvalidPropertyNameException(propertyName, jScriptCustomProperties);
+                    customScriptProperties.AddProperty(propertyName, value);
                 }
 
                 JArray jModels = JSONUtil.ReadArray(jObject, "models");
                 List<RenderedModel> models = new List<RenderedModel>();
                 foreach (JToken jModelToken in jModels)
                 {
-                    JObject jModel = (JObject) jModelToken;
+                    JObject jModel = (JObject)jModelToken;
                     Model resultModel = LoadModel(module, jModel);
                     if (resultModel is RenderedModel)
-                        models.Add((RenderedModel) resultModel);
+                        models.Add((RenderedModel)resultModel);
                     else
                     {
                         throw new PropertyReadException("relative", jModel, null, typeof(Vector2));
                     }
                 }
 
-                return new PartTemplate(module, scriptType, name, localizedName, shopProperties,
-                    scriptProperties, models);
+                return new PartTemplate(module, scriptType, name, localizedName, shopProperties, scriptProperties, customScriptProperties, models);
             }
             catch (IOException exception)
             {
@@ -225,9 +232,9 @@ namespace Assets.Scripts.PartLoading
         private Type findScriptClass(string className)
         {
             return (from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                        from type in assembly.GetTypes()
-                        where type.Name == className && type.IsSubclassOf(typeof(Part))
-                        select type).FirstOrDefault();
+                    from type in assembly.GetTypes()
+                    where type.Name == className && type.IsSubclassOf(typeof(Part))
+                    select type).FirstOrDefault();
         }
 
         private string getModulePath(string module)

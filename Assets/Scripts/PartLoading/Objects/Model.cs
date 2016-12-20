@@ -6,7 +6,7 @@ using Assets.Scripts.PartLoading.Objects;
 
 namespace Assets.Scripts.PartLoading
 {
-    class Model
+    public class Model
     {
         public string Module { get; private set; }
         public string Name { get; private set; } // required in submodel (name of the file)

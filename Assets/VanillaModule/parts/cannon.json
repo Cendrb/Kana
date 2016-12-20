@@ -7,10 +7,12 @@
 	},
 	"script_properties": {
 		"Mass": 69,
-		"ShootingSpeed": 420,
-		"BulletSpeed": 500,
 		"Health": 500,
 		"DamageOnTouch": 45
+	},
+	"custom_script_properties": {
+		"ShootingSpeed": 420,
+		"BulletSpeed": 500
 	},
 	"models": [
 		{
