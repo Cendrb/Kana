@@ -26,6 +26,7 @@ namespace Assets.Scripts.PartLoading
         private Localizer localizer = new Localizer();
 
         private List<Model> submodels = new List<Model>();
+        private List<PartTemplate> partTemplates = new List<PartTemplate>();
 
         public PartLoader()
         {
@@ -35,7 +36,10 @@ namespace Assets.Scripts.PartLoading
         public void Kana()
         {
             submodels.Add(LoadModel("vanilla", "bullet.json"));
-            PartTemplate template = LoadPartTemplate("vanilla", "cannon.json");
+            partTemplates.Add(LoadPartTemplate("vanilla", "cannon.json"));
+
+            Cannon cannon = new Cannon();
+            cannon.LoadFrom(GetPartTemplate("vanilla", "cannon"));
         }
 
         public Model LoadModel(string module, string jsonName)
@@ -227,6 +231,11 @@ namespace Assets.Scripts.PartLoading
                 Log.Error(TAG, string.Format("Error while processing JSON {0}:{1}\n{2}", module, jsonName, exception));
             }
             return null;
+        }
+
+        public PartTemplate GetPartTemplate(string module, string name)
+        {
+            return partTemplates.Find(partTemplate => partTemplate.ModuleName == module && partTemplate.UnlocalizedName == name);
         }
 
         private Type findScriptClass(string className)
