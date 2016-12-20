@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using Assets.Scripts.PartLoading.Exceptions;
 using Assets.Scripts.PartLoading.Objects;
+using Assets.Scripts.PartScripts;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
@@ -149,12 +152,19 @@ namespace Assets.Scripts.PartLoading
             try
             {
                 JObject jObject = JObject.Parse(File.ReadAllText(jsonPath));
+
                 string script = JSONUtil.ReadProperty<string>(jObject, "script");
+                Type scriptType = findScriptClass(script);
+                if (scriptType == null)
+                    throw new ScriptNotFoundException(module, script);
+
                 string name = JSONUtil.ReadProperty<string>(jObject, "name");
                 string localizedName = localizer.GetLocalizedName(module, name);
 
                 JObject jShopProperties = JSONUtil.ReadObject(jObject, "shop_properties");
-                PartTemplate.ShopProperties shopProperties = new PartTemplate.ShopProperties(JSONUtil.ReadProperty<int>(jShopProperties, "cost"), JSONUtil.ReadProperty<int>(jShopProperties, "required_level"));
+                PartTemplate.ShopProperties shopProperties =
+                    new PartTemplate.ShopProperties(JSONUtil.ReadProperty<int>(jShopProperties, "cost"),
+                        JSONUtil.ReadProperty<int>(jShopProperties, "required_level"));
 
                 JObject jScriptProperties = JSONUtil.ReadObject(jObject, "script_properties");
                 PartTemplate.ScriptProperties scriptProperties = new PartTemplate.ScriptProperties();
@@ -172,17 +182,17 @@ namespace Assets.Scripts.PartLoading
                 List<RenderedModel> models = new List<RenderedModel>();
                 foreach (JToken jModelToken in jModels)
                 {
-                    JObject jModel = (JObject)jModelToken;
+                    JObject jModel = (JObject) jModelToken;
                     Model resultModel = LoadModel(module, jModel);
                     if (resultModel is RenderedModel)
-                        models.Add((RenderedModel)resultModel);
+                        models.Add((RenderedModel) resultModel);
                     else
                     {
                         throw new PropertyReadException("relative", jModel, null, typeof(Vector2));
                     }
                 }
 
-                return new PartTemplate(module, script, name, localizedName, shopProperties,
+                return new PartTemplate(module, scriptType, name, localizedName, shopProperties,
                     scriptProperties, models);
             }
             catch (IOException exception)
@@ -205,7 +215,19 @@ namespace Assets.Scripts.PartLoading
             {
                 Log.Error(TAG, string.Format("Error while processing JSON {0}:{1}\n{2}", module, jsonName, exception));
             }
+            catch (ScriptNotFoundException exception)
+            {
+                Log.Error(TAG, string.Format("Error while processing JSON {0}:{1}\n{2}", module, jsonName, exception));
+            }
             return null;
+        }
+
+        private Type findScriptClass(string className)
+        {
+            return (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                        from type in assembly.GetTypes()
+                        where type.Name == className && type.IsSubclassOf(typeof(Part))
+                        select type).FirstOrDefault();
         }
 
         private string getModulePath(string module)

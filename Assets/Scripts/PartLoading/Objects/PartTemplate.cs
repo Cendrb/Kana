@@ -9,7 +9,7 @@ namespace Assets.Scripts.PartLoading
     class PartTemplate
     {
         public string ModuleName { get; private set; }
-        public string ScriptName { get; private set; }
+        public Type ScriptType { get; private set; }
         public string UnlocalizedName { get; private set; }
         public string LocalizedName { get; private set; }
 
@@ -18,10 +18,10 @@ namespace Assets.Scripts.PartLoading
 
         public List<RenderedModel> Models { get; private set; }
 
-        public PartTemplate(string moduleName, string scriptName, string unlocalizedName, string localizedName, ShopProperties shopProperties, ScriptProperties scriptProperties, List<RenderedModel> models)
+        public PartTemplate(string moduleName, Type scriptType, string unlocalizedName, string localizedName, ShopProperties shopProperties, ScriptProperties scriptProperties, List<RenderedModel> models)
         {
             ModuleName = moduleName;
-            ScriptName = scriptName;
+            ScriptType = scriptType;
             UnlocalizedName = unlocalizedName;
             LocalizedName = localizedName;
             ShopProp = shopProperties;
