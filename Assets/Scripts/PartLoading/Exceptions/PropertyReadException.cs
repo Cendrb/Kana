@@ -2,7 +2,7 @@
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 
-namespace Assets.Scripts.PartLoading
+namespace Assets.Scripts.PartLoading.Exceptions
 {
     class PropertyReadException : Exception
     {
