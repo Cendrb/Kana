@@ -163,19 +163,19 @@ namespace Assets.Scripts.PartLoading
                 string localizedName = localizer.GetLocalizedName(module, name);
 
                 JObject jShopProperties = JSONUtil.ReadObject(jObject, "shop_properties");
-                PartTemplate.ShopProperties shopProperties =
-                    new PartTemplate.ShopProperties(
+                ShopProperties shopProperties =
+                    new ShopProperties(
                         JSONUtil.ReadProperty<int>(jShopProperties, "cost"),
                         JSONUtil.ReadProperty<int>(jShopProperties, "required_level"));
 
                 JObject jScriptProperties = JSONUtil.ReadObject(jObject, "script_properties");
-                PartTemplate.ScriptProperties scriptProperties = new PartTemplate.ScriptProperties(
+                ScriptProperties scriptProperties = new ScriptProperties(
                     JSONUtil.ReadProperty<float>(jScriptProperties, "Mass"),
                     JSONUtil.ReadProperty<int>(jScriptProperties, "Health"),
                     JSONUtil.ReadProperty<int>(jScriptProperties, "DamageOnTouch"));
 
                 JObject jScriptCustomProperties = JSONUtil.ReadObject(jObject, "custom_script_properties");
-                PartTemplate.CustomScriptProperties customScriptProperties = new PartTemplate.CustomScriptProperties();
+                CustomScriptProperties customScriptProperties = new CustomScriptProperties();
                 foreach (JProperty jProperty in jScriptCustomProperties.Properties())
                 {
                     JToken jToken = jProperty.Value;

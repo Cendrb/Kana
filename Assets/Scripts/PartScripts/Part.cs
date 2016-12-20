@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.PartLoading;
+using Assets.Scripts.PartLoading.Objects;
 using UnityEngine;
 
 namespace Assets.Scripts.PartScripts
@@ -7,8 +8,8 @@ namespace Assets.Scripts.PartScripts
 
         public string UnlocalizedName { get; private set; }
         public string LocalizedName { get; private set; }
-        public PartTemplate.ShopProperties ShopProperties { get; private set; }
-        public PartTemplate.ScriptProperties ScriptProperties { get; private set; }
+        public ShopProperties ShopProperties { get; private set; }
+        public ScriptProperties ScriptProperties { get; private set; }
 
         public Part()
         {

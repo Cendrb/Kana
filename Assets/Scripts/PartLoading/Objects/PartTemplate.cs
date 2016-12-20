@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Assets.Scripts.PartLoading.Objects;
-using Assets.Scripts.PartScripts;
 
-namespace Assets.Scripts.PartLoading
+namespace Assets.Scripts.PartLoading.Objects
 {
     public class PartTemplate
     {
@@ -30,42 +26,6 @@ namespace Assets.Scripts.PartLoading
             ScriptProp = scriptProperties;
             CustomScriptProp = customScriptProperties;
             Models = models;
-        }
-
-        public class ShopProperties
-        {
-            public int Cost { get; private set; }
-            public int RequiredLevel { get; private set; }
-
-            public ShopProperties(int cost, int requiredLevel)
-            {
-                Cost = cost;
-                RequiredLevel = requiredLevel;
-            }
-        }
-
-        public class ScriptProperties
-        {
-            public float Mass { get; private set; }
-            public int Health { get; private set; }
-            public int DamageOnTouch { get; private set; }
-
-            public ScriptProperties(float mass, int health, int damageOnTouch)
-            {
-                Mass = mass;
-                Health = health;
-                DamageOnTouch = damageOnTouch;
-            }
-        }
-
-        public class CustomScriptProperties
-        {
-            private Dictionary<string, object> properties = new Dictionary<string, object>();
-
-            public void AddProperty(string name, object value)
-            {
-                properties.Add(name, value);
-            }
         }
     }
 }
