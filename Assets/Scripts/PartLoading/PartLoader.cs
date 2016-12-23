@@ -128,7 +128,10 @@ namespace Assets.Scripts.PartLoading
                         parts.Add(new ModelPart(relativePart, collide, vertices, joints));
                     }
                     if (isSubmodel)
+                    {
+                        Log.Info(TAG, "Successfully loaded model " + module + "." + name);
                         return new Model(module, name, texture, renderOnDefault, parts);
+                    }
                     else
                         return new RenderedModel(module, name, texture, renderOnDefault, parts,
                             JSONUtil.ArrayToVector2(relativeArray));
@@ -227,6 +230,7 @@ namespace Assets.Scripts.PartLoading
                     }
                 }
 
+                Log.Info(TAG, "Successfully loaded part template " + module + "." + name);
                 return new PartTemplate(module, scriptType, name, localizedName, shopProperties, scriptProperties, customScriptProperties, models);
             }
             catch (IOException exception)
