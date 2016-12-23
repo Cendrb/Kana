@@ -17,9 +17,9 @@ namespace Assets.Scripts
         public static void Info(string tag, string text, Object context)
         {
             if (context != null)
-                Debug.Log(tagify(text, tag), context);
+                Debug.logger.Log(tag, text, context);
             else
-                Debug.Log(tagify(text, tag));
+                Debug.logger.Log(tag, text);
         }
 
         public static void Error(string tag, string text)
@@ -30,9 +30,9 @@ namespace Assets.Scripts
         public static void Error(string tag, string text, Object context)
         {
             if (context != null)
-                Debug.LogError(tagify(text, tag), context);
+                Debug.logger.LogError(tag, text, context);
             else
-                Debug.LogError(tagify(text, tag));
+                Debug.logger.LogError(tag, text);
         }
 
         public static void Warning(string tag, string text)
@@ -43,23 +43,15 @@ namespace Assets.Scripts
         public static void Warning(string tag, string text, Object context)
         {
             if (context != null)
-                Debug.LogWarning(tagify(text, tag), context);
+                Debug.logger.LogWarning(tag, text, context);
             else
-                Debug.LogWarning(tagify(text, tag));
+                Debug.logger.LogWarning(tag, text);
         }
 
         public static void Exception(string tag, string reason, Exception e)
         {
             Error(tag, reason + "\nException logged bellow");
             Debug.LogException(e);
-        }
-
-        private static string tagify(string text, string tag)
-        {
-            if (!String.IsNullOrEmpty(tag))
-                return "[" + tag + "] " + text;
-            else
-                return text;
         }
     }
 }
