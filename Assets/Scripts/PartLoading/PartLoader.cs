@@ -21,7 +21,6 @@ namespace Assets.Scripts.PartLoading
         private static readonly string LANG_DIR = "lang";
 
         private static readonly string VANILLA_MODULE_PATH = Path.Combine(Application.dataPath, "VanillaModule");
-        private static readonly string VANILLA_MODULE_LANG_PATH = Path.Combine(VANILLA_MODULE_PATH, LANG_DIR);
 
         public static readonly PartLoader MainInstance = new PartLoader();
 
@@ -29,12 +28,36 @@ namespace Assets.Scripts.PartLoading
 
         private List<Model> submodels = new List<Model>();
         private List<PartTemplate> partTemplates = new List<PartTemplate>();
+        private List<string> modules = new List<string>();
 
         public PartLoader()
         {
-            localizer.AddLang(Path.Combine(VANILLA_MODULE_LANG_PATH, "default.lang"));
-            submodels.Add(loadModel("vanilla", "bullet.json"));
-            partTemplates.Add(loadPartTemplate("vanilla", "cannon.json"));
+            modules.Add("vanilla");
+            foreach (string module in modules)
+            {
+                string modulePath = getModulePath(module);
+
+                string langsPath = Path.Combine(modulePath, LANG_DIR);
+                foreach (string langPath in Directory.GetFiles(langsPath))
+                {
+                    if (Path.GetExtension(langPath) == ".lang")
+                        localizer.AddLang(langPath);
+                }
+
+                string modelsPath = Path.Combine(modulePath, MODELS_DIR);
+                foreach (string modelPath in Directory.GetFiles(modelsPath))
+                {
+                    if (Path.GetExtension(modelPath) == ".json")
+                        submodels.Add(loadModel(module, Path.GetFileName(modelPath)));
+                }
+
+                string partTemplatesPath = Path.Combine(modulePath, PARTS_DIR);
+                foreach (string partTemplatePath in Directory.GetFiles(partTemplatesPath))
+                {
+                    if (Path.GetExtension(partTemplatePath) == ".json")
+                        partTemplates.Add(loadPartTemplate(module, Path.GetFileName(partTemplatePath)));
+                }
+            }
         }
 
         public PartTemplate GetPartTemplate(string module, string name)
