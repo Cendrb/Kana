@@ -47,7 +47,7 @@ namespace Assets.Scripts.PartLoading
             string jsonPath = Path.Combine(Path.Combine(getModulePath(module), MODELS_DIR), jsonName);
             try
             {
-                return loadModel(module, JObject.Parse(File.ReadAllText(jsonPath)));
+                return loadModel(module, JObject.Parse(File.ReadAllText(jsonPath)), null);
             }
             catch (IOException exception)
             {
@@ -60,7 +60,7 @@ namespace Assets.Scripts.PartLoading
             return null;
         }
 
-        private Model loadModel(string module, JObject jObject)
+        private Model loadModel(string module, JObject jObject, string partTemplateName)
         {
             string name = "JSON parsing error";
             try
@@ -142,11 +142,11 @@ namespace Assets.Scripts.PartLoading
             }
             catch (PropertyReadException exception)
             {
-                Log.Error(TAG, string.Format("Error while processing JSON model {0}:{1}\n{2}", module, name, exception));
+                Log.Error(TAG, string.Format("Error while processing JSON model {0}:{1}\n{2}", module, partTemplateName ?? name, exception));
             }
             catch (ExternalModelException exception)
             {
-                Log.Error(TAG, string.Format("Error while processing JSON model {0}:{1}\n{2}", module, name, exception));
+                Log.Error(TAG, string.Format("Error while processing JSON model {0}:{1}\n{2}", module, partTemplateName ?? name, exception));
             }
             return null;
         }
@@ -195,7 +195,7 @@ namespace Assets.Scripts.PartLoading
                 foreach (JToken jModelToken in jModels)
                 {
                     JObject jModel = (JObject)jModelToken;
-                    Model resultModel = loadModel(module, jModel);
+                    Model resultModel = loadModel(module, jModel, name);
                     if (resultModel is RenderedModel)
                         models.Add((RenderedModel)resultModel);
                     else
