@@ -78,14 +78,18 @@ namespace Assets.Scripts.PartScripts
             mesh.subMeshCount = parts.Count;
             Dictionary<int, int[]> submeshesTris = new Dictionary<int, int[]>();
             List<Vector3> vertices = new List<Vector3>();
+            List<Vector2> uvs = new List<Vector2>();
+            List<Material> materials = new List<Material>();
             int partIndex = 0;
             foreach (ModelPart part in parts)
             {
                 submeshesTris.Add(partIndex, part.GetTrisForMesh().Select(triInt => triInt + vertices.Count).ToArray());
                 vertices.AddRange(part.GetVerticesForMesh());
+                uvs.AddRange(part.GetUVsForMesh());
                 partIndex++;
             }
             mesh.vertices = vertices.ToArray();
+            mesh.uv = uvs.ToArray();
 
             foreach (KeyValuePair<int, int[]> submeshTri in submeshesTris)
             {

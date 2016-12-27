@@ -1,5 +1,5 @@
 {
-	"name": "bullet", 
+	"name": "bullet",
 	"texture": "kana",
 	"render_on_default": false,
 	"parts": [
@@ -12,6 +12,13 @@
 				[ 0.5, 1.2 ],
 				[ 1, 1 ],
 				[ 1, 0 ]
+			],
+			"uvs": [
+				[ 0, 0 ],
+				[ 0, 0 ],
+				[ 0, 0 ],
+				[ 0, 0 ],
+				[ 0, 0 ]
 			],
 			"joints": [ 1, 2, 1 ]
 		}

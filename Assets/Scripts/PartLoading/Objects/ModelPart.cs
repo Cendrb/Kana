@@ -11,14 +11,16 @@ namespace Assets.Scripts.PartLoading.Objects
         public Vector2 Relative { get; private set; }
         public bool Collide { get; private set; }
         private readonly Vector2[] vertices;
+        private readonly Vector2[] uvs;
         private readonly int[] joints;
         private readonly int[] triangles;
 
-        public ModelPart(Vector2 relative, bool collide, Vector2[] vertices, int[] joints)
+        public ModelPart(Vector2 relative, bool collide, Vector2[] vertices, Vector2[] uvs, int[] joints)
         {
             Relative = relative;
             Collide = collide;
             this.vertices = vertices;
+            this.uvs = uvs;
             this.joints = joints;
 
             Triangulator triangulator = new Triangulator(this.vertices);
@@ -35,6 +37,11 @@ namespace Assets.Scripts.PartLoading.Objects
                 index++;
             }
             return v3Vertices;
+        }
+
+        public Vector2[] GetUVsForMesh()
+        {
+            return uvs;
         }
 
         public int[] GetTrisForMesh()

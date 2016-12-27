@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
 using Assets.Scripts.PartLoading.Exceptions;
 using Assets.Scripts.PartLoading.Objects;
 using Assets.Scripts.PartScripts;
@@ -24,11 +23,11 @@ namespace Assets.Scripts.PartLoading
 
         public static readonly PartLoader MainInstance = new PartLoader();
 
-        private Localizer localizer = new Localizer();
+        private readonly Localizer localizer = new Localizer();
 
-        private List<Model> submodels = new List<Model>();
-        private List<PartTemplate> partTemplates = new List<PartTemplate>();
-        private List<string> modules = new List<string>();
+        private readonly List<Model> submodels = new List<Model>();
+        private readonly List<PartTemplate> partTemplates = new List<PartTemplate>();
+        private readonly List<string> modules = new List<string>();
 
         public PartLoader()
         {
@@ -117,6 +116,16 @@ namespace Assets.Scripts.PartLoading
                             vertexIndex++;
                         }
 
+                        JArray juvs = JSONUtil.ReadArray(partObject, "uvs");
+                        Vector2[] uvs = new Vector2[juvs.Count];
+                        int uvIndex = 0;
+                        foreach (JToken juv in juvs)
+                        {
+                            JArray coords = (JArray)juv;
+                            uvs[uvIndex] = new Vector2(Extensions.Value<float>(coords[0]), Extensions.Value<float>(coords[1]));
+                            uvIndex++;
+                        }
+
                         JArray jJoints = JSONUtil.ReadArray(partObject, "joints");
                         int[] joints = new int[jJoints.Count];
                         int jointIndex = 0;
@@ -125,7 +134,7 @@ namespace Assets.Scripts.PartLoading
                             joints[jointIndex] = Extensions.Value<int>(jJoint);
                             jointIndex++;
                         }
-                        parts.Add(new ModelPart(relativePart, collide, vertices, joints));
+                        parts.Add(new ModelPart(relativePart, collide, vertices, uvs, joints));
                     }
                     if (isSubmodel)
                     {
