@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Assets.Scripts.PartLoading.Objects;
+﻿using System.Collections.Generic;
 
-namespace Assets.Scripts.PartLoading
+namespace Assets.Scripts.PartLoading.Objects
 {
     public class Model
     {
