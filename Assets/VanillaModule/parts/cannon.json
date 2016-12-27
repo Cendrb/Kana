@@ -47,7 +47,7 @@
 			"name": "bullet",
 			"relative": [ 2, 5 ],
 			"texture": "kana",
-			"render_on_default": false, 
+			"render_on_default": true, 
 			"external_model": "vanilla.bullet" 
 		}
 	]

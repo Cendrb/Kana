@@ -45,24 +45,22 @@ namespace Assets.Scripts.PartScripts
         void Start()
         {
             GameObject meshGameObject = new GameObject("Meshes");
-            meshGameObject.transform.parent = gameObject.transform;
+            meshGameObject.transform.SetParent(gameObject.transform, false);
             GameObject colliderGameObject = new GameObject("Collider");
-            colliderGameObject.transform.parent = meshGameObject.transform;
+            colliderGameObject.transform.SetParent(meshGameObject.transform, false);
             GameObject noncolliderGameObject = new GameObject("Noncollider");
-            noncolliderGameObject.transform.parent = meshGameObject.transform;
+            noncolliderGameObject.transform.SetParent(meshGameObject.transform, false);
 
             Material material = Resources.Load<Material>("Materials/default");
 
             List<RenderedModel> renderedModels = Models.Where(model => model.RenderOnDefault).ToList();
 
-            List<ModelPart> allTheParts = new List<ModelPart>();
             List<ModelPart> colliderParts = new List<ModelPart>();
             List<ModelPart> noncolliderParts = new List<ModelPart>();
             foreach (RenderedModel model in renderedModels)
             {
                 foreach (ModelPart modelPart in model.Parts)
                 {
-                    allTheParts.Add(modelPart);
                     if (modelPart.Collide)
                         colliderParts.Add(modelPart);
                     else
@@ -70,16 +68,11 @@ namespace Assets.Scripts.PartScripts
                 }
             }
 
-            //initGOForParts(colliderParts, colliderGameObject);
-            //MeshCollider colliderForCollider = colliderGameObject.AddComponent<MeshCollider>();
-            //colliderForCollider.sharedMesh = colliderGameObject.GetComponent<MeshFilter>().mesh;
-
-            //initGOForParts(noncolliderParts, noncolliderGameObject);
-
-            initGOForParts(allTheParts, meshGameObject);
+            initGOForParts(colliderParts, colliderGameObject, true);
+            initGOForParts(noncolliderParts, noncolliderGameObject, false);
         }
 
-        private void initGOForParts(List<ModelPart> parts, GameObject colliderGameObject)
+        private void initGOForParts(List<ModelPart> parts, GameObject colliderGameObject, bool collide)
         {
             Mesh mesh = new Mesh();
             mesh.subMeshCount = parts.Count;
@@ -107,26 +100,30 @@ namespace Assets.Scripts.PartScripts
 
             MeshRenderer meshRenderer = colliderGameObject.AddComponent<MeshRenderer>();
             // TODO load real texture
-            meshRenderer.materials = Enumerable.Repeat<Material>(Resources.Load<Material>("Materials/default"), parts.Count).ToArray();
+            meshRenderer.materials =
+                Enumerable.Repeat<Material>(Resources.Load<Material>("Materials/default"), parts.Count).ToArray();
 
-            PolygonCollider2D polygonCollider = colliderGameObject.AddComponent<PolygonCollider2D>();
-
-            // EDGES
-            List<ModelPartEdge> edges = new List<ModelPartEdge>();
-            int[] triangles = mesh.triangles;
-            for (int i = 0; i < triangles.Length; i += 3)
+            if (collide)
             {
-                Extensions.AddIfNotExists(edges, new ModelPartEdge(triangles[i], triangles[i + 1]));
-                Extensions.AddIfNotExists(edges, new ModelPartEdge(triangles[i + 1], triangles[i + 2]));
-                Extensions.AddIfNotExists(edges, new ModelPartEdge(triangles[i + 2], triangles[i]));
-            }
+                PolygonCollider2D polygonCollider = colliderGameObject.AddComponent<PolygonCollider2D>();
 
-            Polygonizer polygonizer = new Polygonizer(edges, vertices.Select(v3 => (Vector2)v3).ToArray());
-            Dictionary<int, Vector2[]> paths = polygonizer.GetPaths();
-            polygonCollider.pathCount = paths.Count;
-            foreach (KeyValuePair<int, Vector2[]> pair in paths)
-            {
-                polygonCollider.SetPath(pair.Key, pair.Value);
+                // EDGES
+                List<ModelPartEdge> edges = new List<ModelPartEdge>();
+                int[] triangles = mesh.triangles;
+                for (int i = 0; i < triangles.Length; i += 3)
+                {
+                    Extensions.AddIfNotExists(edges, new ModelPartEdge(triangles[i], triangles[i + 1]));
+                    Extensions.AddIfNotExists(edges, new ModelPartEdge(triangles[i + 1], triangles[i + 2]));
+                    Extensions.AddIfNotExists(edges, new ModelPartEdge(triangles[i + 2], triangles[i]));
+                }
+
+                Polygonizer polygonizer = new Polygonizer(edges, vertices.Select(v3 => (Vector2)v3).ToArray());
+                Dictionary<int, Vector2[]> paths = polygonizer.GetPaths();
+                polygonCollider.pathCount = paths.Count;
+                foreach (KeyValuePair<int, Vector2[]> pair in paths)
+                {
+                    polygonCollider.SetPath(pair.Key, pair.Value);
+                }
             }
         }
     }
