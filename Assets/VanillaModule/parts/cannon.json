@@ -17,27 +17,44 @@
 	"models": [
 		{
 			"name": "barrel",
-			"relative": [ 2, 5 ],
-			"texture": "kana", 
-			"render_on_default": true, 
+			"relative": [ 20, 0 ],
+			"texture": "kana",
+			"render_on_default": true,
 			"parts": [
+				{
+					"relative": [ 0, 0 ],
+					"collide": true,
+					"vertices": [
+						[ 1, 0 ],
+						[ 2, 0 ],
+						[ 3, 1 ],
+						[ 3, 2 ],
+						[ 2, 3 ],
+						[ 1, 3 ],
+						[ 0, 2 ],
+						[ 0, 1 ]
+					],
+					"joints": [ 1, 2, 1 ]
+				},
 				{
 					"relative": [ 1, 2 ],
 					"collide": true,
 					"vertices": [
 						[ 0, 0 ],
-						[ 1, 2 ],
-						[ 3, 1 ]
+						[ 0, 3 ],
+						[ 0.3, 3 ],
+						[ 0.3, 0 ]
 					],
 					"joints": [ 1, 2, 1 ]
 				},
 				{
-					"relative": [ 0, 0 ],
-					"collide": false,
+					"relative": [ 1.7, 2 ],
+					"collide": true,
 					"vertices": [
-						[ 1, 3 ],
-						[ 0, 2 ],
-						[ 5, 1 ]
+						[ 0, 0 ],
+						[ 0, 3 ],
+						[ 0.3, 3 ],
+						[ 0.3, 0 ]
 					],
 					"joints": [ 1, 2, 1 ]
 				}
@@ -45,10 +62,10 @@
 		},
 		{
 			"name": "bullet",
-			"relative": [ 2, 5 ],
+			"relative": [ 0, 0 ],
 			"texture": "kana",
-			"render_on_default": true, 
-			"external_model": "vanilla.bullet" 
+			"render_on_default": false,
+			"external_model": "vanilla.bullet"
 		}
 	]
 }
