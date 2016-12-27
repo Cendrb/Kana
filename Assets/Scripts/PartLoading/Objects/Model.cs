@@ -5,7 +5,7 @@ namespace Assets.Scripts.PartLoading.Objects
     public class Model
     {
         public string Module { get; private set; }
-        public string Name { get; private set; } // required in submodel (name of the file)
+        public string Name { get; private set; } // required in submodel (property in root)
         public string Texture { get; set; } // required in submodel (property in root)
         public bool RenderOnDefault { get; set; } // required in submodel (property in root)
         public List<ModelPart> Parts { get; private set; }
