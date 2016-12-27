@@ -11,9 +11,9 @@ using UnityEngine;
 
 namespace Assets.Scripts.PartLoading
 {
-    class PartLoader
+    class ModuleLoader
     {
-        private static readonly string TAG = "PartLoader";
+        private static readonly string TAG = "ModuleLoader";
 
         private static readonly string PARTS_DIR = "parts";
         private static readonly string MODELS_DIR = "models";
@@ -21,7 +21,7 @@ namespace Assets.Scripts.PartLoading
 
         private static readonly string VANILLA_MODULE_PATH = Path.Combine(Application.dataPath, "VanillaModule");
 
-        public static readonly PartLoader MainInstance = new PartLoader();
+        public static readonly ModuleLoader MainInstance = new ModuleLoader();
 
         private readonly Localizer localizer = new Localizer();
 
@@ -29,12 +29,12 @@ namespace Assets.Scripts.PartLoading
         private readonly List<PartTemplate> partTemplates = new List<PartTemplate>();
         private readonly List<string> modules = new List<string>();
 
-        public PartLoader()
+        public ModuleLoader()
         {
             modules.Add("vanilla");
             foreach (string module in modules)
             {
-                string modulePath = getModulePath(module);
+                string modulePath = GetModulePath(module);
 
                 string langsPath = Path.Combine(modulePath, LANG_DIR);
                 foreach (string langPath in Directory.GetFiles(langsPath))
@@ -66,7 +66,7 @@ namespace Assets.Scripts.PartLoading
 
         private Model loadModel(string module, string jsonName)
         {
-            string jsonPath = Path.Combine(Path.Combine(getModulePath(module), MODELS_DIR), jsonName);
+            string jsonPath = Path.Combine(Path.Combine(GetModulePath(module), MODELS_DIR), jsonName);
             try
             {
                 return loadModel(module, JObject.Parse(File.ReadAllText(jsonPath)), null);
@@ -188,7 +188,7 @@ namespace Assets.Scripts.PartLoading
 
         private PartTemplate loadPartTemplate(string module, string jsonName)
         {
-            string jsonPath = Path.Combine(Path.Combine(getModulePath(module), PARTS_DIR), jsonName);
+            string jsonPath = Path.Combine(Path.Combine(GetModulePath(module), PARTS_DIR), jsonName);
             try
             {
                 JObject jObject = JObject.Parse(File.ReadAllText(jsonPath));
@@ -277,17 +277,17 @@ namespace Assets.Scripts.PartLoading
                     select type).FirstOrDefault();
         }
 
-        private string getModulePath(string module)
+        private Model getSubmodel(string module, string modelName)
+        {
+            return submodels.Find(model => model.Module == module && model.Name == modelName);
+        }
+
+        public static string GetModulePath(string module)
         {
             if (module == "vanilla")
                 return VANILLA_MODULE_PATH;
             else
                 throw new NotSupportedException("Custom modules are not supported yet");
-        }
-
-        private Model getSubmodel(string module, string modelName)
-        {
-            return submodels.Find(model => model.Module == module && model.Name == modelName);
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Assets.Scripts.PartScripts
         {
             if (!string.IsNullOrEmpty(ModuleName) && !string.IsNullOrEmpty(PartName))
             {
-                PartTemplate template = PartLoader.MainInstance.GetPartTemplate(ModuleName, PartName);
+                PartTemplate template = ModuleLoader.MainInstance.GetPartTemplate(ModuleName, PartName);
                 ((Part)gameObject.AddComponent(template.ScriptType)).LoadFrom(template);
             }
             
