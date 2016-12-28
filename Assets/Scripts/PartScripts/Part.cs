@@ -107,7 +107,6 @@ namespace Assets.Scripts.PartScripts
                 Enumerable.Repeat<Material>(material, parts.Count).ToArray();
 
 
-
             // POLYGON COLLIDER
             PolygonCollider2D polygonCollider = modelGameObject.AddComponent<PolygonCollider2D>();
             List<ModelPartEdge> edges = new List<ModelPartEdge>();
