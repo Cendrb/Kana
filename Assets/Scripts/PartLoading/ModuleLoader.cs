@@ -49,7 +49,7 @@ namespace Assets.Scripts.PartLoading
 
         public static Model LoadModel(ResourceLocation parentModelLocation, JObject jModel)
         {
-            return ModelLoader.LoadModel(parentModelLocation, jModel);
+            return ModelLoader.LoadModel(null, parentModelLocation, jModel);
         }
 
         public static PartTemplate GetPartTemplate(ResourceLocation partTemplateLocation)

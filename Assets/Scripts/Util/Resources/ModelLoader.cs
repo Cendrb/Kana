@@ -21,7 +21,7 @@ namespace Assets.Scripts.Util.Resources
             string jsonPath = resourceLocation.GetPath();
             try
             {
-                return LoadModel(resourceLocation, JObject.Parse(File.ReadAllText(jsonPath)));
+                return LoadModel(resourceLocation, null, JObject.Parse(File.ReadAllText(jsonPath)));
             }
             catch (IOException exception)
             {
@@ -34,12 +34,11 @@ namespace Assets.Scripts.Util.Resources
             return null;
         }
 
-        public Model LoadModel(ResourceLocation parentResourceLocation, JObject jObject)
+        public Model LoadModel(ResourceLocation modelResourceLocation, ResourceLocation parentResourceLocation, JObject jObject)
         {
-            string name = "Unable to read the name property";
             try
             {
-                name = JSONUtil.ReadProperty<string>(jObject, "name");
+                string name = JSONUtil.ReadProperty<string>(jObject, "name");
 
                 float[] relativeArray = JSONUtil.ReadArrayWithDefaultValue<float>(jObject, "relative", null);
                 bool isStandaloneModel = relativeArray == null;
@@ -122,19 +121,35 @@ namespace Assets.Scripts.Util.Resources
             }
             catch (PropertyReadException exception)
             {
-                Log.Error(TAG, string.Format("Error while processing JSON model {0}:{1}\n{2}", parentResourceLocation.Module, parentResourceLocation.Name ?? name, exception));
+                Log.Error(TAG, string.Format("Error while processing JSON {0}\n{1}", 
+                    parentResourceLocation != null ? 
+                        "part template " + parentResourceLocation.ToResourceLocationString() :
+                        "model " + modelResourceLocation.ToResourceLocationString()
+                        , exception));
             }
             catch (ResourceLocationParseException exception)
             {
-                Log.Error(TAG, string.Format("Error while processing JSON model {0}:{1}\n{2}", parentResourceLocation.Module, parentResourceLocation.Name ?? name, exception));
+                Log.Error(TAG, string.Format("Error while processing JSON {0}\n{1}",
+                    parentResourceLocation != null ?
+                        "part template " + parentResourceLocation.ToResourceLocationString() :
+                        "model " + modelResourceLocation.ToResourceLocationString()
+                        , exception));
             }
             catch (ResourceNotFoundException exception)
             {
-                Log.Error(TAG, string.Format("Error while processing JSON model {0}:{1}\n{2}", parentResourceLocation.Module, parentResourceLocation.Name ?? name, exception));
+                Log.Error(TAG, string.Format("Error while processing JSON {0}\n{1}",
+                    parentResourceLocation != null ?
+                        "part template " + parentResourceLocation.ToResourceLocationString() :
+                        "model " + modelResourceLocation.ToResourceLocationString()
+                        , exception));
             }
             catch (InvalidResourceNameException exception)
             {
-                Log.Error(TAG, string.Format("Error while processing JSON model {0}:{1}\n{2}", parentResourceLocation.Module, parentResourceLocation.Name ?? name, exception));
+                Log.Error(TAG, string.Format("Error while processing JSON {0}\n{1}",
+                    parentResourceLocation != null ?
+                        "part template " + parentResourceLocation.ToResourceLocationString() :
+                        "model " + modelResourceLocation.ToResourceLocationString()
+                        , exception));
             }
             return null;
         }
