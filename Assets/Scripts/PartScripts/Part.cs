@@ -101,7 +101,7 @@ namespace Assets.Scripts.PartScripts
 
             modelGameObject.AddComponent<MeshFilter>().mesh = mesh;
 
-            Material material = ModuleLoader.GetMaterial(ResourceLocation.Parse(model.Texture, ResourceType.Texture));
+            Material material = ModuleLoader.GetMaterial(model.Texture);
             MeshRenderer meshRenderer = modelGameObject.AddComponent<MeshRenderer>();
             meshRenderer.materials =
                 Enumerable.Repeat<Material>(material, parts.Count).ToArray();

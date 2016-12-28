@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Assets.Scripts.Util.Resources;
 using UnityEngine;
 
 namespace Assets.Scripts.PartLoading.Objects
@@ -10,7 +11,7 @@ namespace Assets.Scripts.PartLoading.Objects
     {
         public Vector2 Relative { get; set; }
 
-        public RenderedModel(string module, string name, string texture, bool renderOnDefault, List<ModelPart> parts, Vector2 relative) : base(module, name, texture, renderOnDefault, parts)
+        public RenderedModel(string module, string name, ResourceLocation texture, bool renderOnDefault, List<ModelPart> parts, Vector2 relative) : base(module, name, texture, renderOnDefault, parts)
         {
             Relative = relative;
         }

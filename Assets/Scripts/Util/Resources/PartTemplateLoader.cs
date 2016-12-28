@@ -61,16 +61,19 @@ namespace Assets.Scripts.Util.Resources
 
                 JArray jModels = JSONUtil.ReadArray(jObject, "models");
                 List<RenderedModel> models = new List<RenderedModel>();
+                int modelIndex = 0;
                 foreach (JToken jModelToken in jModels)
                 {
                     JObject jModel = (JObject)jModelToken;
                     Model resultModel = ModuleLoader.LoadModel(resourceLocation, jModel);
-                    if (resultModel is RenderedModel)
+                    if (resultModel == null)
+                        throw new ModelsParsingException(resourceLocation, modelIndex);
+                    else if (resultModel is RenderedModel)
                         models.Add((RenderedModel)resultModel);
                     else
-                    {
                         throw new PropertyReadException("relative", jModel, null, typeof(Vector2));
-                    }
+
+                    modelIndex++;
                 }
 
                 Log.Info(TAG, "Successfully loaded part template " + resourceLocation.ToResourceLocationString());
@@ -85,6 +88,10 @@ namespace Assets.Scripts.Util.Resources
                 Log.Exception(TAG, "Unable to parse JSON for part template " + resourceLocation.ToResourceLocationString(), exception);
             }
             catch (PropertyReadException exception)
+            {
+                Log.Error(TAG, string.Format("Error while processing JSON {0}\n{1}", resourceLocation.ToResourceLocationString(), exception));
+            }
+            catch (ModelsParsingException exception)
             {
                 Log.Error(TAG, string.Format("Error while processing JSON {0}\n{1}", resourceLocation.ToResourceLocationString(), exception));
             }

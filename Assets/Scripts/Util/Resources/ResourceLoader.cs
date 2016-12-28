@@ -15,10 +15,8 @@ namespace Assets.Scripts.Util.Resources
             }
             else
             {
-                if (resourceLocation.FileExists())
-                    resource = loadResource(resourceLocation);
-                else
-                    throw new ResourceNotFoundException(resourceLocation);
+                //resourceLocation.Verify(); - all ResourceLocations should already be verified
+                resource = loadResource(resourceLocation);
                 loadedResources.Add(resourceLocation.ToResourceLocationString(), resource);
                 return resource;
             }

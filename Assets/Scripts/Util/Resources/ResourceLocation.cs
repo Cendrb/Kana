@@ -21,6 +21,9 @@ namespace Assets.Scripts.Util.Resources
             Module = module;
             Name = name;
             Type = type;
+
+            if(!fileExists())
+                throw new ResourceNotFoundException(this);
         }
 
         public string GetPath()
@@ -28,7 +31,7 @@ namespace Assets.Scripts.Util.Resources
             return Path.Combine(getModulePath(Module), Path.Combine(getResourceTypeFolder(Type), Name + getResourceTypeExtension(Type)));
         }
 
-        public bool FileExists()
+        private bool fileExists()
         {
             return File.Exists(GetPath());
         }

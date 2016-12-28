@@ -50,7 +50,7 @@ namespace Assets.Scripts.Util.Resources
                 string externalModelResourceString = JSONUtil.ReadWithDefaultValue<string>(jObject, "external_model", null);
                 if (externalModelResourceString == null)
                 {
-                    string texture = JSONUtil.ReadProperty<string>(jObject, "texture");
+                    ResourceLocation texture = ResourceLocation.Parse(JSONUtil.ReadProperty<string>(jObject, "texture"), ResourceType.Texture);
                     bool renderOnDefault = JSONUtil.ReadProperty<bool>(jObject, "render_on_default");
 
                     List<ModelPart> parts = new List<ModelPart>();
@@ -105,7 +105,7 @@ namespace Assets.Scripts.Util.Resources
                 }
                 else
                 {
-                    string texture = JSONUtil.ReadWithDefaultValue<string>(jObject, "texture", null);
+                    ResourceLocation texture = ResourceLocation.Parse(JSONUtil.ReadWithDefaultValue<string>(jObject, "texture", null), ResourceType.Texture);
                     bool? renderOnDefault = JSONUtil.ReadWithDefaultValue<bool?>(jObject, "render_on_default", null);
 
                     ResourceLocation modelLocation = ResourceLocation.Parse(externalModelResourceString, ResourceType.Model);
