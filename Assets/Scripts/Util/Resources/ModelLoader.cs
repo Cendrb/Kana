@@ -43,8 +43,8 @@ namespace Assets.Scripts.Util.Resources
                 float[] relativeArray = JSONUtil.ReadArrayWithDefaultValue<float>(jObject, "relative", null);
                 bool isStandaloneModel = relativeArray == null;
 
-                if (isStandaloneModel && name != parentResourceLocation.Name)
-                    throw new InvalidResourceNameException(parentResourceLocation, name);
+                if (isStandaloneModel && name != modelResourceLocation.Name)
+                    throw new InvalidResourceNameException(modelResourceLocation, name);
 
                 string externalModelResourceString = JSONUtil.ReadWithDefaultValue<string>(jObject, "external_model", null);
                 if (externalModelResourceString == null)
@@ -95,12 +95,17 @@ namespace Assets.Scripts.Util.Resources
                     }
                     if (isStandaloneModel)
                     {
-                        Log.Info(TAG, "Successfully loaded model " + parentResourceLocation.Module + ":" + name);
-                        return new Model(parentResourceLocation.Module, name, texture, renderOnDefault, parts);
+                        Log.Info(TAG,
+                            string.Format("Successfully loaded standalone model {0}", modelResourceLocation.ToResourceLocationString()));
+                        return new Model(modelResourceLocation.Module, name, texture, renderOnDefault, parts);
                     }
                     else
+                    {
+                        Log.Info(TAG, 
+                            string.Format("Successfully loaded inner model {0} from {1} part template", name, parentResourceLocation.ToResourceLocationString()));
                         return new RenderedModel(parentResourceLocation.Module, name, texture, renderOnDefault, parts,
                             JSONUtil.ArrayToVector2(relativeArray));
+                    }
                 }
                 else
                 {
