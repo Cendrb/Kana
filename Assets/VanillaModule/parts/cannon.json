@@ -18,7 +18,7 @@
 		{
 			"name": "barrel",
 			"relative": [ 20, 0 ],
-			"texture": "kana",
+			"texture": "vanilla:default",
 			"render_on_default": true,
 			"parts": [
 				{
@@ -36,13 +36,13 @@
 					],
 					"uvs": [
 						[ 0, 0 ],
-						[ 0, 0 ],
-						[ 0, 0 ],
-						[ 0, 0 ],
-						[ 0, 0 ],
-						[ 0, 0 ],
-						[ 0, 0 ],
-						[ 0, 0 ]
+						[ 0.2, 0 ],
+						[ 0.3, 0 ],
+						[ 0.5, 0 ],
+						[ 0.7, 0 ],
+						[ 0.2, 0 ],
+						[ 0.2, 0 ],
+						[ 0.1, 0 ]
 					],
 					"joints": [ 1, 2, 1 ]
 				},
@@ -85,9 +85,9 @@
 		{
 			"name": "bullet",
 			"relative": [ 0, 0 ],
-			"texture": "kana",
+			"texture": "vanilla:default",
 			"render_on_default": false,
-			"external_model": "vanilla.bullet"
+			"external_model": "vanilla:bullet"
 		}
 	]
 }

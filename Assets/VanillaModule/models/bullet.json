@@ -1,6 +1,6 @@
 {
 	"name": "bullet",
-	"texture": "kana",
+	"texture": "vanilla:default",
 	"render_on_default": false,
 	"parts": [
 		{

@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Assets.Scripts.Util.Resources;
 using UnityEngine;
 
 namespace Assets.Scripts.PartLoading
 {
-    class Localizer
+    public class Localizer
     {
         private static readonly string TAG = "LangTranslator";
 
@@ -18,9 +19,10 @@ namespace Assets.Scripts.PartLoading
 
         }
 
-        public void AddLang(string path)
+        public void AddLang(ResourceLocation langResource)
         {
-            Log.Info(TAG, "Loading " + path + " lang file...");
+            string path = langResource.GetPath();
+            Log.Info(TAG, "Loading " + langResource.ToResourceLocationString() + " lang file...");
             int successfullyLoaded = 0;
             try
             {
