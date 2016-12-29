@@ -77,7 +77,7 @@ namespace Assets.Scripts.Util.Resources
                 case ResourceType.Model:
                     return "models";
                 case ResourceType.PartTemplate:
-                    return "parts";
+                    return "part_templates";
                 case ResourceType.Texture:
                     return "textures";
                 case ResourceType.Lang:
