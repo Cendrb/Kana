@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Assets.Scripts.PartLoading
 {
-    class Localization
+    public class Localization
     {
         public string Module { get; private set; }
         public string Name { get; private set; }

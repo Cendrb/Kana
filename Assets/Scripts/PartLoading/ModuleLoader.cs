@@ -19,6 +19,7 @@ namespace Assets.Scripts.PartLoading
         private static readonly string TAG = "ModuleLoader";
 
         private static readonly Localizer Localizer = new Localizer();
+        private static readonly LocalizationsLoader LocalizationsLoader = new LocalizationsLoader();
         private static readonly ModelLoader ModelLoader = new ModelLoader();
         private static readonly MaterialLoader MaterialLoader = new MaterialLoader();
         private static readonly PartTemplateLoader PartTemplateLoader = new PartTemplateLoader();
@@ -27,13 +28,11 @@ namespace Assets.Scripts.PartLoading
 
         static ModuleLoader()
         {
+            string language = "default";
             modules.Add("vanilla");
             foreach (string module in modules)
             {
-                foreach (ResourceLocation resourceLocation in ResourceLocation.GetResourceLocations(module, ResourceType.Lang))
-                {
-                    Localizer.AddLang(resourceLocation);
-                }
+                    Localizer.AddLang(LocalizationsLoader.LoadResource(new ResourceLocation(module, language, ResourceType.Lang)));
 
                 foreach (ResourceLocation resourceLocation in ResourceLocation.GetResourceLocations(module, ResourceType.PartTemplate))
                 {

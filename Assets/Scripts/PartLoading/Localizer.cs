@@ -10,54 +10,18 @@ namespace Assets.Scripts.PartLoading
 {
     public class Localizer
     {
-        private static readonly string TAG = "LangTranslator";
+        private static readonly string TAG = "Localizer";
 
-        private List<Localization> localizations = new List<Localization>();
+        private readonly List<Localization> localizations = new List<Localization>();
 
         public Localizer()
         {
 
         }
 
-        public void AddLang(ResourceLocation langResource)
+        public void AddLang(IEnumerable<Localization> addLocalizations)
         {
-            string path = langResource.GetPath();
-            Log.Info(TAG, "Loading " + langResource.ToResourceLocationString() + " lang file...");
-            int successfullyLoaded = 0;
-            try
-            {
-                string[] data = File.ReadAllLines(path);
-                int lineNumber = 0;
-                foreach (string langLine in data)
-                {
-                    lineNumber++;
-                    string[] nameValuePair = langLine.Split('=');
-                    if (nameValuePair.Length == 2)
-                    {
-                        string[] moduleNamePair = nameValuePair[0].Split('.');
-                        if (moduleNamePair.Length == 2)
-                        {
-                            localizations.Add(new Localization(moduleNamePair[0], moduleNamePair[1], nameValuePair[1]));
-                            successfullyLoaded++;
-                        }
-                        else
-                        {
-                            logLineError(lineNumber, path, "Exactly one '.' is required (module.name=Localization)");
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        logLineError(lineNumber, path, "Exactly one '=' is required (module.name=Localization)");
-                        break;
-                    }
-                }
-            }
-            catch (IOException e)
-            {
-                Log.Exception(TAG, "Failed to read langfile at " + path, e);
-            }
-            Log.Info(TAG, "Successfully loaded " + successfullyLoaded + " translations");
+            localizations.AddRange(addLocalizations);
         }
 
         public string GetLocalizedName(string module, string name)
@@ -71,11 +35,6 @@ namespace Assets.Scripts.PartLoading
                 Log.Warning(TAG, "No localization found for " + name);
                 return name;
             }
-        }
-
-        private void logLineError(int lineNumber, string filePath, string reason)
-        {
-            Log.Warning(TAG, string.Format("Unable to read line {0} of {1} langfile: {2}", lineNumber, Path.GetFileName(filePath), reason));
         }
     }
 }
