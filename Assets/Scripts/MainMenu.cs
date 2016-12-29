@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Assets.Scripts;
-using Assets.Scripts.PartLoading;
 
 public class MainMenu : MonoBehaviour {
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Assets.Scripts.PartLoading.Objects;
+using Assets.Scripts.ModuleResources.Models;
 using UnityEngine;
 
 namespace Assets.Scripts.Util

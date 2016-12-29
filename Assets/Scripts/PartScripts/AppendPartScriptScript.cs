@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Assets.Scripts.PartLoading;
-using Assets.Scripts.PartLoading.Objects;
-using Assets.Scripts.Util.Resources;
+using Assets.Scripts.ModuleResources;
+using Assets.Scripts.ModuleResources.PartTemplates;
 using UnityEngine;
 
 namespace Assets.Scripts.PartScripts

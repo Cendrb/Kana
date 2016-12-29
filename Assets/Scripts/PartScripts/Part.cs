@@ -3,12 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Assets.Scripts.PartLoading;
-using Assets.Scripts.PartLoading.Objects;
+using Assets.Scripts.ModuleResources;
+using Assets.Scripts.ModuleResources.Models;
+using Assets.Scripts.ModuleResources.PartTemplates;
 using Assets.Scripts.Util;
-using Assets.Scripts.Util.Resources;
 using UnityEngine;
-using ResourceLocation = Assets.Scripts.Util.Resources.ResourceLocation;
+using ResourceLocation = Assets.Scripts.ModuleResources.ResourceLocation;
 
 namespace Assets.Scripts.PartScripts
 {
