@@ -73,5 +73,11 @@ namespace Assets.Scripts.GameResources
                 connections.Add(connection);
             }
         }
+
+        public int AddPartTemplate(PartTemplate partTemplate)
+        {
+            partTemplates.Add(partTemplate);
+            return partTemplates.Count - 1;
+        }
     }
 }
