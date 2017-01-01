@@ -57,7 +57,7 @@ namespace Assets.Scripts.PartScripts
             }
         }
 
-        private void initGOForModel(Model model, GameObject parentGameObject)
+        private void initGOForModel(RenderedModel model, GameObject parentGameObject)
         {
             GameObject modelGameObject = new GameObject(model.Name);
             modelGameObject.transform.SetParent(parentGameObject.transform, false);
@@ -76,7 +76,7 @@ namespace Assets.Scripts.PartScripts
             foreach (ModelPart part in parts)
             {
                 int[] tris = part.GetTrisForMesh().Select(triInt => triInt + vertices.Count).ToArray();
-                Vector3[] verts = part.GetVerticesForMesh();
+                Vector3[] verts = part.GetVerticesForMesh().Select(vec3 => vec3 + (Vector3)model.Relative).ToArray();
                 if (part.Collide)
                 {
                     collisionTris.AddRange(tris);

@@ -17,7 +17,7 @@
 	"models": [
 		{
 			"name": "barrel",
-			"relative": [ 20, 0 ],
+			"relative": [ 0, 0 ],
 			"texture": "vanilla:default",
 			"render_on_default": true,
 			"parts": [
