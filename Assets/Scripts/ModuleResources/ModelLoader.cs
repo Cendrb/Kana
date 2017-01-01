@@ -47,6 +47,8 @@ namespace Assets.Scripts.ModuleResources
                 if (externalModelResourceString == null)
                 {
                     ResourceLocation texture = ResourceLocation.Parse(JSONUtil.ReadProperty<string>(jObject, "texture"), ResourceType.Texture);
+                    if(!texture.FileExists())
+                        throw new ResourceNotFoundException(texture);
                     bool renderOnDefault = JSONUtil.ReadProperty<bool>(jObject, "render_on_default");
 
                     List<ModelPart> parts = new List<ModelPart>();
