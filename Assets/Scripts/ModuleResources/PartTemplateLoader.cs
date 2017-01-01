@@ -35,14 +35,7 @@ namespace Assets.Scripts.ModuleResources
                     throw new InvalidResourceNameException(resourceLocation, name);
                 string localizedName = ModuleLoader.Localize(resourceLocation.Module, name);
 
-                JArray jTags = JSONUtil.ReadArray(jObject, "tags");
-                string[] tags = new string[jTags.Count];
-                int tagIndex = 0;
-                foreach (JToken jTag in jTags)
-                {
-                    tags[tagIndex] = Newtonsoft.Json.Linq.Extensions.Value<string>(jTag);
-                    tagIndex++;
-                }
+                string[] tags = JSONUtil.ReadArray<string>(jObject, "tags");
 
                 JObject jShopProperties = JSONUtil.ReadObject(jObject, "shop_properties");
                 ShopProperties shopProperties =
