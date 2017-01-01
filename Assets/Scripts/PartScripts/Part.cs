@@ -64,6 +64,7 @@ namespace Assets.Scripts.PartScripts
         {
             GameObject modelGameObject = new GameObject(model.ResourceLocation.ToResourceLocationString());
             modelGameObject.transform.SetParent(parentGameObject.transform, false);
+            modelGameObject.transform.localPosition = model.Relative;
 
             List<ModelPart> parts = model.Parts;
             Mesh mesh = new Mesh();
@@ -79,7 +80,7 @@ namespace Assets.Scripts.PartScripts
             foreach (ModelPart part in parts)
             {
                 int[] tris = part.GetTrisForMesh().Select(triInt => triInt + vertices.Count).ToArray();
-                Vector3[] verts = part.GetVerticesForMesh().Select(vec3 => vec3 + (Vector3)model.Relative).ToArray();
+                Vector3[] verts = part.GetVerticesForMesh();
                 if (part.Collide)
                 {
                     collisionTris.AddRange(tris);
