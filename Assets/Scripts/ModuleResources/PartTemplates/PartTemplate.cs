@@ -10,6 +10,7 @@ namespace Assets.Scripts.ModuleResources.PartTemplates
         public Type ScriptType { get; private set; }
         public string UnlocalizedName { get; private set; }
         public string LocalizedName { get; private set; }
+        public string[] Tags { get; private set; }
 
         public ShopProperties ShopProp { get; private set; }
         public ScriptProperties ScriptProp { get; private set; }
@@ -17,12 +18,13 @@ namespace Assets.Scripts.ModuleResources.PartTemplates
 
         public List<RenderedModel> Models { get; private set; }
 
-        public PartTemplate(string moduleName, Type scriptType, string unlocalizedName, string localizedName, ShopProperties shopProperties, ScriptProperties scriptProperties, CustomScriptProperties customScriptProperties, List<RenderedModel> models)
+        public PartTemplate(string moduleName, Type scriptType, string unlocalizedName, string localizedName, string[] tags, ShopProperties shopProperties, ScriptProperties scriptProperties, CustomScriptProperties customScriptProperties, List<RenderedModel> models)
         {
             ModuleName = moduleName;
             ScriptType = scriptType;
             UnlocalizedName = unlocalizedName;
             LocalizedName = localizedName;
+            Tags = tags;
             ShopProp = shopProperties;
             ScriptProp = scriptProperties;
             CustomScriptProp = customScriptProperties;

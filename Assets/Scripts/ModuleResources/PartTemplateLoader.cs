@@ -35,6 +35,15 @@ namespace Assets.Scripts.ModuleResources
                     throw new InvalidResourceNameException(resourceLocation, name);
                 string localizedName = ModuleLoader.Localize(resourceLocation.Module, name);
 
+                JArray jTags = JSONUtil.ReadArray(jObject, "tags");
+                string[] tags = new string[jTags.Count];
+                int tagIndex = 0;
+                foreach (JToken jTag in jTags)
+                {
+                    tags[tagIndex] = Newtonsoft.Json.Linq.Extensions.Value<string>(jTag);
+                    tagIndex++;
+                }
+
                 JObject jShopProperties = JSONUtil.ReadObject(jObject, "shop_properties");
                 ShopProperties shopProperties =
                     new ShopProperties(
@@ -77,7 +86,7 @@ namespace Assets.Scripts.ModuleResources
                 }
 
                 Log.Info(TAG, "Successfully loaded part template " + resourceLocation.ToResourceLocationString());
-                return new PartTemplate(resourceLocation.Name, scriptType, name, localizedName, shopProperties, scriptProperties, customScriptProperties, models);
+                return new PartTemplate(resourceLocation.Name, scriptType, name, localizedName, tags, shopProperties, scriptProperties, customScriptProperties, models);
             }
             catch (IOException exception)
             {

@@ -1,6 +1,7 @@
 ﻿{
 	"script": "Cannon",
 	"name": "cannon",
+	"tags": ["weapon", "worthlessgarbage", "utterbullshit"], 
 	"shop_properties": {
 		"Cost": 300,
 		"RequiredLevel": 2
