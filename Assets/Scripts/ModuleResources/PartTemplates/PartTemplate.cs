@@ -6,9 +6,8 @@ namespace Assets.Scripts.ModuleResources.PartTemplates
 {
     public class PartTemplate
     {
-        public string ModuleName { get; private set; }
+        public ResourceLocation ResourceLocation { get; private set; }
         public Type ScriptType { get; private set; }
-        public string UnlocalizedName { get; private set; }
         public string LocalizedName { get; private set; }
         public string[] Tags { get; private set; }
 
@@ -18,11 +17,10 @@ namespace Assets.Scripts.ModuleResources.PartTemplates
 
         public List<RenderedModel> Models { get; private set; }
 
-        public PartTemplate(string moduleName, Type scriptType, string unlocalizedName, string localizedName, string[] tags, ShopProperties shopProperties, ScriptProperties scriptProperties, CustomScriptProperties customScriptProperties, List<RenderedModel> models)
+        public PartTemplate(ResourceLocation resourceLocation, Type scriptType, string localizedName, string[] tags, ShopProperties shopProperties, ScriptProperties scriptProperties, CustomScriptProperties customScriptProperties, List<RenderedModel> models)
         {
-            ModuleName = moduleName;
+            ResourceLocation = resourceLocation;
             ScriptType = scriptType;
-            UnlocalizedName = unlocalizedName;
             LocalizedName = localizedName;
             Tags = tags;
             ShopProp = shopProperties;

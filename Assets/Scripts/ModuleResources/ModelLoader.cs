@@ -94,13 +94,13 @@ namespace Assets.Scripts.ModuleResources
                     {
                         Log.Info(TAG,
                             string.Format("Successfully loaded standalone model {0}", modelResourceLocation.ToResourceLocationString()));
-                        return new Model(modelResourceLocation.Module, name, texture, renderOnDefault, parts);
+                        return new Model(modelResourceLocation, texture, renderOnDefault, parts);
                     }
                     else
                     {
                         Log.Info(TAG, 
                             string.Format("Successfully loaded inner model {0} from {1} part template", name, parentResourceLocation.ToResourceLocationString()));
-                        return new RenderedModel(parentResourceLocation.Module, name, texture, renderOnDefault, parts,
+                        return new RenderedModel(new ResourceLocation(parentResourceLocation.Module, name, ResourceType.Model), texture, renderOnDefault, parts,
                             JSONUtil.ArrayToVector2(relativeArray));
                     }
                 }

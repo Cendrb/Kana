@@ -79,7 +79,7 @@ namespace Assets.Scripts.ModuleResources
                 }
 
                 Log.Info(TAG, "Successfully loaded part template " + resourceLocation.ToResourceLocationString());
-                return new PartTemplate(resourceLocation.Name, scriptType, name, localizedName, tags, shopProperties, scriptProperties, customScriptProperties, models);
+                return new PartTemplate(resourceLocation, scriptType, localizedName, tags, shopProperties, scriptProperties, customScriptProperties, models);
             }
             catch (IOException exception)
             {

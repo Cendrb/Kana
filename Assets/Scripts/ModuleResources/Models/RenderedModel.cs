@@ -7,14 +7,14 @@ namespace Assets.Scripts.ModuleResources.Models
     {
         public Vector2 Relative { get; set; }
 
-        public RenderedModel(string module, string name, ResourceLocation texture, bool renderOnDefault, List<ModelPart> parts, Vector2 relative) : base(module, name, texture, renderOnDefault, parts)
+        public RenderedModel(ResourceLocation resourceLocation, ResourceLocation texture, bool renderOnDefault, List<ModelPart> parts, Vector2 relative) : base(resourceLocation, texture, renderOnDefault, parts)
         {
             Relative = relative;
         }
 
         public static RenderedModel CreateFromSubModel(Model subModel)
         {
-            return new RenderedModel(subModel.Module, subModel.Name, subModel.Texture, subModel.RenderOnDefault,subModel.Parts, new Vector2(0, 0));
+            return new RenderedModel(subModel.ResourceLocation, subModel.Texture, subModel.RenderOnDefault,subModel.Parts, new Vector2(0, 0));
         }
     }
 }
