@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Assets.Scripts.GameResources;
 using Assets.Scripts.ModuleResources;
 using Assets.Scripts.ModuleResources.Models;
 using Assets.Scripts.ModuleResources.PartTemplates;
@@ -14,19 +15,21 @@ namespace Assets.Scripts.PartScripts
 {
     public class Part : MonoBehaviour
     {
-        public string UnlocalizedName { get; private set; }
         public string LocalizedName { get; private set; }
+        public ResourceLocation ResourceLocation { get; private set; }
         public ShopProperties ShopProperties { get; private set; }
         public ScriptProperties ScriptProperties { get; private set; }
         protected List<RenderedModel> Models { get; private set; }
+        protected Vehicle ParentVehicle;
 
         public Part()
         {
         }
 
-        public void LoadFrom(PartTemplate template)
+        public void LoadFrom(PartTemplate template, Vehicle parentVehicle)
         {
-            UnlocalizedName = template.UnlocalizedName;
+            ParentVehicle = parentVehicle;
+            ResourceLocation = template.ResourceLocation;
             LocalizedName = template.LocalizedName;
             ShopProperties = template.ShopProp; // TODO create new instance instead of linking?
             ScriptProperties = template.ScriptProp; // TODO create new instance instead of linking?
@@ -59,7 +62,7 @@ namespace Assets.Scripts.PartScripts
 
         private void initGOForModel(RenderedModel model, GameObject parentGameObject)
         {
-            GameObject modelGameObject = new GameObject(model.Name);
+            GameObject modelGameObject = new GameObject(model.ResourceLocation.ToResourceLocationString());
             modelGameObject.transform.SetParent(parentGameObject.transform, false);
 
             List<ModelPart> parts = model.Parts;

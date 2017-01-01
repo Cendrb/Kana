@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Assets.Scripts.ModuleResources;
 using Assets.Scripts.ModuleResources.PartTemplates;
+using Assets.Scripts.PartScripts;
 using Assets.Scripts.Util;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
@@ -15,12 +16,23 @@ namespace Assets.Scripts.GameResources
         private List<PartTemplate> partTemplates = new List<PartTemplate>();
         private List<Connection> connections = new List<Connection>();
 
+        public void Instantiate(GameObject parentGameObject)
+        {
+            foreach (PartTemplate partTemplate in partTemplates)
+            {
+                GameObject partGameObject = new GameObject(partTemplate.ResourceLocation.ToResourceLocationString());
+                partGameObject.transform.SetParent(parentGameObject.transform, false);
+                Part partScript = (Part)partGameObject.AddComponent(partTemplate.ScriptType);
+                partScript.LoadFrom(partTemplate, this);
+            }
+        }
+
         public void Serialize(JObject targetJObject)
         {
             JArray partTemplateIdentifiers = new JArray();
             foreach (PartTemplate partTemplate in partTemplates)
             {
-                partTemplateIdentifiers.Add(partTemplate.ModuleName + ":" + partTemplate.UnlocalizedName);
+                partTemplateIdentifiers.Add(partTemplate.ResourceLocation.ToResourceLocationString());
             }
             targetJObject.Add("part_templates", partTemplateIdentifiers);
 
