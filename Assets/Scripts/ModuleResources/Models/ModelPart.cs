@@ -44,5 +44,10 @@ namespace Assets.Scripts.ModuleResources.Models
         {
             return triangles;
         }
+
+        public int[] GetJointsForMesh()
+        {
+            return joints;
+        }
     }
 }

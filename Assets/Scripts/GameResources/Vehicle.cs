@@ -15,15 +15,38 @@ namespace Assets.Scripts.GameResources
     {
         private List<PartTemplate> partTemplates = new List<PartTemplate>();
         private List<Connection> connections = new List<Connection>();
+        private List<GameObject> partTemplateGameObjects = new List<GameObject>();
 
         public void Instantiate(GameObject parentGameObject)
         {
-            foreach (PartTemplate partTemplate in partTemplates)
+            for (int partTemplateIndex = 0; partTemplateIndex < partTemplates.Count; partTemplateIndex++)
             {
+                PartTemplate partTemplate = partTemplates[partTemplateIndex];
                 GameObject partGameObject = new GameObject(partTemplate.ResourceLocation.ToResourceLocationString());
                 partGameObject.transform.SetParent(parentGameObject.transform, false);
                 Part partScript = (Part)partGameObject.AddComponent(partTemplate.ScriptType);
                 partScript.LoadFrom(partTemplate, this);
+                List<Joint> joints = partScript.JointPoints;
+                foreach (Connection connection in connections)
+                {
+                    if (connection.PartTemplate2Index == partTemplateIndex)
+                    {
+                        GameObject baseGameObject = partTemplateGameObjects[connection.PartTemplate1Index];
+                        List<Joint> basePartJoints = baseGameObject.GetComponent<Part>().JointPoints;
+                        Joint baseJoint = basePartJoints[connection.Joint1Index];
+                        Joint thisJoint = joints[connection.Joint2Index];
+                        Vector2 jointVectorDiff =
+                            (Vector2) (Quaternion.Euler(0, 0, baseGameObject.transform.localEulerAngles.z)*baseJoint.Position) -
+                            (Vector2) (thisJoint.Position);
+                        Vector2 thisPosition =
+                            (Vector2)baseGameObject.transform.localPosition +
+                            jointVectorDiff;
+                        partGameObject.transform.localPosition = thisPosition;
+                        partGameObject.transform.RotateAround((Vector2)partGameObject.transform.position + thisJoint.Position, Vector3.forward, 
+                            baseJoint.Rotation - (360 - baseGameObject.transform.localEulerAngles.z) + 180 - thisJoint.Rotation);
+                    }
+                }
+                partTemplateGameObjects.Add(partGameObject);
             }
         }
 
@@ -62,7 +85,7 @@ namespace Assets.Scripts.GameResources
             JArray connectionObjects = JSONUtil.ReadArray(sourceJObject, "connections");
             foreach (JToken connectionObject in connectionObjects)
             {
-                JObject jConnection = (JObject) connectionObject;
+                JObject jConnection = (JObject)connectionObject;
                 Connection connection = new Connection()
                 {
                     PartTemplate1Index = JSONUtil.ReadProperty<int>(jConnection, "PartTemplate1Index"),
@@ -78,6 +101,12 @@ namespace Assets.Scripts.GameResources
         {
             partTemplates.Add(partTemplate);
             return partTemplates.Count - 1;
+        }
+
+        public int AddConnection(Connection connection)
+        {
+            connections.Add(connection);
+            return connections.Count - 1;
         }
     }
 }

@@ -9,6 +9,7 @@ using Assets.Scripts.ModuleResources.Models;
 using Assets.Scripts.ModuleResources.PartTemplates;
 using Assets.Scripts.Util;
 using UnityEngine;
+using Joint = Assets.Scripts.GameResources.Joint;
 using ResourceLocation = Assets.Scripts.ModuleResources.ResourceLocation;
 
 namespace Assets.Scripts.PartScripts
@@ -21,6 +22,7 @@ namespace Assets.Scripts.PartScripts
         public ScriptProperties ScriptProperties { get; private set; }
         protected List<RenderedModel> Models { get; private set; }
         protected Vehicle ParentVehicle;
+        public List<Joint> JointPoints = new List<Joint>();
 
         public Part()
         {
@@ -45,10 +47,8 @@ namespace Assets.Scripts.PartScripts
                 else
                     Log.Error("Part#LoadFrom", string.Format("Property {0} was not found on type {1}", customScriptProperty.Key, thisType.Name));
             }
-        }
 
-        void Start()
-        {
+
             GameObject meshGameObject = new GameObject("Models");
             meshGameObject.transform.SetParent(gameObject.transform, false);
 
@@ -56,7 +56,7 @@ namespace Assets.Scripts.PartScripts
 
             foreach (RenderedModel model in renderedModels)
             {
-               initGOForModel(model, meshGameObject);
+                initGOForModel(model, meshGameObject);
             }
         }
 
@@ -66,6 +66,7 @@ namespace Assets.Scripts.PartScripts
             modelGameObject.transform.SetParent(parentGameObject.transform, false);
             modelGameObject.transform.localPosition = model.Relative;
 
+            // MESH
             List<ModelPart> parts = model.Parts;
             Mesh mesh = new Mesh();
             mesh.subMeshCount = parts.Count;
@@ -79,17 +80,45 @@ namespace Assets.Scripts.PartScripts
             int partIndex = 0;
             foreach (ModelPart part in parts)
             {
-                int[] tris = part.GetTrisForMesh().Select(triInt => triInt + vertices.Count).ToArray();
+                int[] tris = part.GetTrisForMesh();
+                int[] globalizedTris = tris.Select(triInt => triInt + vertices.Count).ToArray();
                 Vector3[] verts = part.GetVerticesForMesh();
                 if (part.Collide)
                 {
-                    collisionTris.AddRange(tris);
+                    collisionTris.AddRange(globalizedTris);
                     collisionVerts.AddRange(verts);
                 }
-                submeshesTris.Add(partIndex, tris);
+                submeshesTris.Add(partIndex, globalizedTris);
                 vertices.AddRange(verts);
                 uvs.AddRange(part.GetUVsForMesh());
                 partIndex++;
+
+
+                // EDGES AND JOINTS
+                List<ModelPartEdge> edges = new List<ModelPartEdge>();
+                for (int i = 0; i < verts.Length; i++)
+                {
+                    if (i + 1 < verts.Length)
+                        edges.Add(new ModelPartEdge(i, i + 1));
+                    else
+                        edges.Add(new ModelPartEdge(i, 0));
+                }
+                int[] joints = part.GetJointsForMesh();
+                for (int edgeIndex = 0; edgeIndex < edges.Count; edgeIndex++)
+                {
+                    ModelPartEdge edge = edges[edgeIndex];
+                    int jointsPerEdge = joints[edgeIndex];
+                    Vector2 coor1 = verts[edge.Vertex1];
+                    Vector2 coor2 = verts[edge.Vertex2];
+                    Vector2 edgeVector = coor2 - coor1;
+                    Vector2 partEdgeVector = edgeVector / (jointsPerEdge + 1);
+                    float jointRotation = VectorUtil.NormalizeAngle(VectorUtil.AngleBetweenVector2(new Vector2(0, 1), edgeVector) - 90);
+                    for (int i = 0; i < jointsPerEdge; i++)
+                    {
+                        Vector2 jointPosition = (coor1 + (i + 1) * partEdgeVector) + part.Relative + model.Relative;
+                        JointPoints.Add(new Joint(jointPosition, jointRotation));
+                    }
+                }
             }
             mesh.vertices = vertices.ToArray();
             mesh.uv = uvs.ToArray();
@@ -102,9 +131,10 @@ namespace Assets.Scripts.PartScripts
             mesh.Optimize();
             mesh.RecalculateNormals();
             mesh.RecalculateBounds();
-
             modelGameObject.AddComponent<MeshFilter>().mesh = mesh;
 
+
+            // TEXTURES
             Material material = ModuleLoader.GetMaterial(model.Texture);
             MeshRenderer meshRenderer = modelGameObject.AddComponent<MeshRenderer>();
             meshRenderer.materials =
@@ -113,15 +143,15 @@ namespace Assets.Scripts.PartScripts
 
             // POLYGON COLLIDER
             PolygonCollider2D polygonCollider = modelGameObject.AddComponent<PolygonCollider2D>();
-            List<ModelPartEdge> edges = new List<ModelPartEdge>();
+            List<ModelPartEdge> colliderEdges = new List<ModelPartEdge>();
             for (int i = 0; i < collisionTris.Count; i += 3)
             {
-                Extensions.AddIfNotExists(edges, new ModelPartEdge(collisionTris[i], collisionTris[i + 1]));
-                Extensions.AddIfNotExists(edges, new ModelPartEdge(collisionTris[i + 1], collisionTris[i + 2]));
-                Extensions.AddIfNotExists(edges, new ModelPartEdge(collisionTris[i + 2], collisionTris[i]));
+                Extensions.AddIfNotExists(colliderEdges, new ModelPartEdge(collisionTris[i], collisionTris[i + 1]));
+                Extensions.AddIfNotExists(colliderEdges, new ModelPartEdge(collisionTris[i + 1], collisionTris[i + 2]));
+                Extensions.AddIfNotExists(colliderEdges, new ModelPartEdge(collisionTris[i + 2], collisionTris[i]));
             }
 
-            Polygonizer polygonizer = new Polygonizer(edges, collisionVerts.Select(v3 => (Vector2)v3).ToArray());
+            Polygonizer polygonizer = new Polygonizer(colliderEdges, collisionVerts.Select(v3 => (Vector2)v3).ToArray());
             Dictionary<int, Vector2[]> paths = polygonizer.GetPaths();
             polygonCollider.pathCount = paths.Count;
             foreach (KeyValuePair<int, Vector2[]> pair in paths)
