@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Assets.Scripts.ModuleResources
 {
@@ -23,5 +24,10 @@ namespace Assets.Scripts.ModuleResources
         }
 
         protected abstract TLoadedResource loadResource(ResourceLocation resourceLocation);
+
+        public List<TLoadedResource> GetAllResources()
+        {
+            return loadedResources.Values.ToList();
+        }
     }
 }

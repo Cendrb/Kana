@@ -48,15 +48,11 @@ namespace Assets.Scripts.PartScripts
                     Log.Error("Part#LoadFrom", string.Format("Property {0} was not found on type {1}", customScriptProperty.Key, thisType.Name));
             }
 
-
-            GameObject meshGameObject = new GameObject("Models");
-            meshGameObject.transform.SetParent(gameObject.transform, false);
-
             List<RenderedModel> renderedModels = Models.Where(model => model.RenderOnDefault).ToList();
 
             foreach (RenderedModel model in renderedModels)
             {
-                initGOForModel(model, meshGameObject);
+                initGOForModel(model, gameObject);
             }
         }
 

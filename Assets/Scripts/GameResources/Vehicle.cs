@@ -13,40 +13,154 @@ namespace Assets.Scripts.GameResources
 {
     public class Vehicle : IJsonSerializable
     {
+        public float Scale;
+        
         private List<PartTemplate> partTemplates = new List<PartTemplate>();
         private List<Connection> connections = new List<Connection>();
-        private List<GameObject> partTemplateGameObjects = new List<GameObject>();
+        private List<GameObject> partGameObjects = new List<GameObject>();
+        private Dictionary<VehicleJointIdentifier, Vector2> worldJointPositions = new Dictionary<VehicleJointIdentifier, Vector2>();
+        private GameObject parentGameObject = null;
 
         public void Instantiate(GameObject parentGameObject)
         {
+            this.parentGameObject = parentGameObject;
+            parentGameObject.transform.localScale = new Vector3(Scale, Scale, Scale);
             for (int partTemplateIndex = 0; partTemplateIndex < partTemplates.Count; partTemplateIndex++)
             {
                 PartTemplate partTemplate = partTemplates[partTemplateIndex];
-                GameObject partGameObject = new GameObject(partTemplate.ResourceLocation.ToResourceLocationString());
-                partGameObject.transform.SetParent(parentGameObject.transform, false);
-                Part partScript = (Part)partGameObject.AddComponent(partTemplate.ScriptType);
-                partScript.LoadFrom(partTemplate, this);
-                List<Joint> joints = partScript.JointPoints;
-                foreach (Connection connection in connections)
+                addNewPartGO(partTemplate);
+            }
+        }
+
+        private int addNewPartGO(PartTemplate partTemplate)
+        {
+            partTemplates.Add(partTemplate);
+            GameObject partGO = new GameObject(partTemplate.ResourceLocation.ToResourceLocationString());
+            partGO.transform.SetParent(parentGameObject.transform, false);
+            Part partScript = (Part)partGO.AddComponent(partTemplate.ScriptType);
+            partScript.LoadFrom(partTemplate, this);
+
+            partGameObjects.Add(partGO);
+            if (partTemplates.Count != partGameObjects.Count)
+                throw new Exception("Part templates not equal to GOs!");
+            return partTemplates.Count - 1;
+        }
+
+        private void recalculatePositionsAndRotations()
+        {
+            for (int partGOIndex = 0; partGOIndex < partGameObjects.Count; partGOIndex++)
+            {
+                GameObject partGO = partGameObjects[partGOIndex];
+                if (partGO != null)
                 {
-                    if (connection.PartTemplate2Index == partTemplateIndex)
+                    List<Joint> joints = partGO.GetComponent<Part>().JointPoints;
+
+                    foreach (Connection connection in connections)
                     {
-                        GameObject baseGameObject = partTemplateGameObjects[connection.PartTemplate1Index];
-                        List<Joint> basePartJoints = baseGameObject.GetComponent<Part>().JointPoints;
-                        Joint baseJoint = basePartJoints[connection.Joint1Index];
-                        Joint thisJoint = joints[connection.Joint2Index];
-                        Vector2 jointVectorDiff =
-                            (Vector2) (Quaternion.Euler(0, 0, baseGameObject.transform.localEulerAngles.z)*baseJoint.Position) -
-                            (Vector2) (thisJoint.Position);
-                        Vector2 thisPosition =
-                            (Vector2)baseGameObject.transform.localPosition +
-                            jointVectorDiff;
-                        partGameObject.transform.localPosition = thisPosition;
-                        partGameObject.transform.RotateAround((Vector2)partGameObject.transform.position + thisJoint.Position, Vector3.forward, 
-                            baseJoint.Rotation - (360 - baseGameObject.transform.localEulerAngles.z) + 180 - thisJoint.Rotation);
+                        if (connection.Joint2Identifier.PartId == partGOIndex)
+                        {
+                            GameObject baseGameObject = partGameObjects[connection.Joint1Identifier.PartId];
+                            List<Joint> basePartJoints = baseGameObject.GetComponent<Part>().JointPoints;
+                            Joint baseJoint = basePartJoints[connection.Joint1Identifier.JointId];
+                            Joint thisJoint = joints[connection.Joint2Identifier.JointId];
+                            Vector2 jointVectorDiff =
+                                (Vector2)(Quaternion.Euler(0, 0, baseGameObject.transform.eulerAngles.z) * baseJoint.Position) -
+                                (Vector2)(thisJoint.Position);
+                            Vector2 thisPosition =
+                                (Vector2)baseGameObject.transform.position +
+                                jointVectorDiff * Scale;
+                            partGO.transform.position = thisPosition;
+                            float rotation = baseJoint.Rotation - (360 - baseGameObject.transform.eulerAngles.z) + 180 - thisJoint.Rotation;
+                            partGO.transform.rotation = new Quaternion(); // reset current rotation - prevent spinning
+                            partGO.transform.RotateAround((Vector2)partGO.transform.position + (thisJoint.Position * Scale), Vector3.forward,
+                                rotation);
+                        }
                     }
                 }
-                partTemplateGameObjects.Add(partGameObject);
+            }
+        }
+
+        private void recalculateWorldRelativeJointPositions()
+        {
+            worldJointPositions.Clear();
+            for (int partGOIndex = 0; partGOIndex < partGameObjects.Count; partGOIndex++)
+            {
+                GameObject partGO = partGameObjects[partGOIndex];
+                if (partGO != null)
+                {
+                    List<Joint> joints = partGO.GetComponent<Part>().JointPoints;
+
+                    for (int jointIndex = 0; jointIndex < joints.Count; jointIndex++)
+                    {
+                        Joint joint = joints[jointIndex];
+                        Vector2 worldRelativeJointPosition =
+                            (Vector2)partGO.transform.position +
+                            (Vector2)(Quaternion.Euler(0, 0, partGO.transform.eulerAngles.z) * joint.Position) * Scale;
+                        worldJointPositions.Add(new VehicleJointIdentifier(partGOIndex, jointIndex), worldRelativeJointPosition);
+                    }
+                }
+            }
+        }
+
+        public VehicleJointIdentifier GetClosestToPoint(Vector2 worldPoint, int partIdToIgnore, out float closestDistance)
+        {
+            VehicleJointIdentifier closestJoint = null;
+            closestDistance = float.MaxValue;
+            foreach (KeyValuePair<VehicleJointIdentifier, Vector2> pair in worldJointPositions)
+            {
+                if (pair.Key.PartId != partIdToIgnore)
+                {
+                    float distance = Vector2.Distance(pair.Value, worldPoint);
+                    if (distance < closestDistance)
+                    {
+                        closestJoint = pair.Key;
+                        closestDistance = distance;
+                    }
+                }
+            }
+            return closestJoint;
+        }
+
+        public int AddPartTemplate(PartTemplate partTemplate, int newPartJointId, VehicleJointIdentifier targetPartIdentifier)
+        {
+            int id = addNewPartGO(partTemplate);
+            if (targetPartIdentifier != null)
+                connections.Add(new Connection(targetPartIdentifier, new VehicleJointIdentifier(id, newPartJointId)));
+
+            Debug.Log("Printing connections:");
+            foreach (Connection connection in connections)
+            {
+                if(connection != null)
+                {
+                    Debug.Log(string.Format("Connection from {0} to {1}", connection.Joint1Identifier, connection.Joint2Identifier));
+                }
+            }
+            recalculatePositionsAndRotations();
+            recalculateWorldRelativeJointPositions();
+            return id;
+        }
+
+        public bool RemovePartTemplate(int index)
+        {
+            try
+            {
+                partTemplates[index] = null; // just set to null to prevent id shift
+                GameObject.Destroy(partGameObjects[index]); // destroy the GO
+                partGameObjects[index] = null; // just set to null to prevent id shift
+
+                foreach (Connection connection in connections.ToArray())
+                {
+                    if (connection.Joint1Identifier.PartId == index || connection.Joint2Identifier.PartId == index)
+                        connections.Remove(connection);
+                }
+                recalculateWorldRelativeJointPositions();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                Debug.LogError("Hey! This one doesn't exist anymore!");
+                return false;
             }
         }
 
@@ -63,10 +177,10 @@ namespace Assets.Scripts.GameResources
             foreach (Connection connection in connections)
             {
                 JObject jConnection = new JObject();
-                jConnection.Add("PartTemplate1Index", connection.PartTemplate1Index);
-                jConnection.Add("Joint1Index", connection.Joint1Index);
-                jConnection.Add("PartTemplate2Index", connection.PartTemplate2Index);
-                jConnection.Add("Joint2Index", connection.Joint2Index);
+                jConnection.Add("PartTemplate1Index", connection.Joint1Identifier.PartId);
+                jConnection.Add("Joint1Index", connection.Joint1Identifier.JointId);
+                jConnection.Add("PartTemplate2Index", connection.Joint2Identifier.PartId);
+                jConnection.Add("Joint2Index", connection.Joint2Identifier.JointId);
                 connectionObjects.Add(jConnection);
             }
             targetJObject.Add("connections", connectionObjects);
@@ -86,27 +200,14 @@ namespace Assets.Scripts.GameResources
             foreach (JToken connectionObject in connectionObjects)
             {
                 JObject jConnection = (JObject)connectionObject;
-                Connection connection = new Connection()
-                {
-                    PartTemplate1Index = JSONUtil.ReadProperty<int>(jConnection, "PartTemplate1Index"),
-                    Joint1Index = JSONUtil.ReadProperty<int>(jConnection, "Joint1Index"),
-                    PartTemplate2Index = JSONUtil.ReadProperty<int>(jConnection, "PartTemplate2Index"),
-                    Joint2Index = JSONUtil.ReadProperty<int>(jConnection, "Joint2Index")
-                };
-                connections.Add(connection);
+                Connection connection = new Connection(
+                    new VehicleJointIdentifier(
+                        JSONUtil.ReadProperty<int>(jConnection, "PartTemplate1Index"),
+                        JSONUtil.ReadProperty<int>(jConnection, "Joint1Index")),
+                    new VehicleJointIdentifier(
+                        JSONUtil.ReadProperty<int>(jConnection, "PartTemplate2Index"),
+                        JSONUtil.ReadProperty<int>(jConnection, "Joint2Index")));
             }
-        }
-
-        public int AddPartTemplate(PartTemplate partTemplate)
-        {
-            partTemplates.Add(partTemplate);
-            return partTemplates.Count - 1;
-        }
-
-        public int AddConnection(Connection connection)
-        {
-            connections.Add(connection);
-            return connections.Count - 1;
         }
     }
 }

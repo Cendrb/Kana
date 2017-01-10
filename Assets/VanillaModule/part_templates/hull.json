@@ -4,7 +4,8 @@
 	"tags": [ "hull", "worthlessgarbage" ],
 	"shop_properties": {
 		"Cost": 100,
-		"RequiredLevel": 1
+		"RequiredLevel": 1,
+		"Category": "hulls"
 	},
 	"script_properties": {
 		"Mass": 69,

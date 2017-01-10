@@ -4,7 +4,8 @@
 	"tags": ["weapon", "worthlessgarbage", "utterbullshit"], 
 	"shop_properties": {
 		"Cost": 300,
-		"RequiredLevel": 2
+		"RequiredLevel": 2,
+		"Category": "weapons"
 	},
 	"script_properties": {
 		"Mass": 69,

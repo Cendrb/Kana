@@ -27,7 +27,7 @@ namespace Assets.Scripts.ModuleResources
             modules.Add("vanilla");
             foreach (string module in modules)
             {
-                    Localizer.AddLang(LocalizationsLoader.LoadResource(new ResourceLocation(module, language, ResourceType.Lang)));
+                Localizer.AddLang(LocalizationsLoader.LoadResource(new ResourceLocation(module, language, ResourceType.Lang)));
 
                 foreach (ResourceLocation resourceLocation in ResourceLocation.GetResourceLocations(module, ResourceType.PartTemplate))
                 {
@@ -49,6 +49,11 @@ namespace Assets.Scripts.ModuleResources
         public static PartTemplate GetPartTemplate(ResourceLocation partTemplateLocation)
         {
             return PartTemplateLoader.LoadResource(partTemplateLocation);
+        }
+
+        public static List<PartTemplate> GetLoadedPartTemplates()
+        {
+            return PartTemplateLoader.GetAllResources();
         }
 
         public static string Localize(string module, string name)

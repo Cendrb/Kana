@@ -41,7 +41,8 @@ namespace Assets.Scripts.ModuleResources
                 ShopProperties shopProperties =
                     new ShopProperties(
                         JSONUtil.ReadProperty<int>(jShopProperties, "Cost"),
-                        JSONUtil.ReadProperty<int>(jShopProperties, "RequiredLevel"));
+                        JSONUtil.ReadProperty<int>(jShopProperties, "RequiredLevel"),
+                        JSONUtil.ReadProperty<string>(jShopProperties, "Category"));
 
                 JObject jScriptProperties = JSONUtil.ReadObject(jObject, "script_properties");
                 ScriptProperties scriptProperties = new ScriptProperties(
