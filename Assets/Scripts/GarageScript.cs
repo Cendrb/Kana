@@ -34,8 +34,7 @@ public class GarageScript : MonoBehaviour
         //mainTransform.localScale = new Vector2(1f, 1f);
 
         vehicle = new Vehicle();
-        vehicle.Scale = 0.3f;
-        vehicle.Instantiate(vehicleGO);
+        vehicle.Instantiate(vehicleGO, 0.3f);
         vehicle.AddPartTemplate(ModuleLoader.GetPartTemplate(new ResourceLocation("vanilla", "hull", ResourceType.PartTemplate)), 0, null);
 
         partTemplates = ModuleLoader.GetLoadedPartTemplates();
@@ -77,6 +76,7 @@ public class GarageScript : MonoBehaviour
                 Part partScript = hit.collider.gameObject.transform.parent.gameObject.GetComponent<Part>(); // go to the parent and get the PartScript
                 if (partScript != null)
                 {
+                    if(partScript)
                     Debug.Log("Selected " + partScript.ResourceLocation.ToResourceLocationString());
                     draggedGO = new GameObject();
                     draggedGO.AddComponent<Part>().LoadFrom(ModuleLoader.GetPartTemplate(partScript.ResourceLocation), null);

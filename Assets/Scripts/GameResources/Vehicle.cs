@@ -13,18 +13,18 @@ namespace Assets.Scripts.GameResources
 {
     public class Vehicle : IJsonSerializable
     {
-        public float Scale;
-        
+        private float scale;
         private List<PartTemplate> partTemplates = new List<PartTemplate>();
         private List<Connection> connections = new List<Connection>();
         private List<GameObject> partGameObjects = new List<GameObject>();
         private Dictionary<VehicleJointIdentifier, Vector2> worldJointPositions = new Dictionary<VehicleJointIdentifier, Vector2>();
         private GameObject parentGameObject = null;
 
-        public void Instantiate(GameObject parentGameObject)
+        public void Instantiate(GameObject parentGameObject, float scale)
         {
+            this.scale = scale;
             this.parentGameObject = parentGameObject;
-            parentGameObject.transform.localScale = new Vector3(Scale, Scale, Scale);
+            parentGameObject.transform.localScale = new Vector3(scale, scale, scale);
             for (int partTemplateIndex = 0; partTemplateIndex < partTemplates.Count; partTemplateIndex++)
             {
                 PartTemplate partTemplate = partTemplates[partTemplateIndex];
@@ -68,11 +68,11 @@ namespace Assets.Scripts.GameResources
                                 (Vector2)(thisJoint.Position);
                             Vector2 thisPosition =
                                 (Vector2)baseGameObject.transform.position +
-                                jointVectorDiff * Scale;
+                                jointVectorDiff * scale;
                             partGO.transform.position = thisPosition;
                             float rotation = baseJoint.Rotation - (360 - baseGameObject.transform.eulerAngles.z) + 180 - thisJoint.Rotation;
                             partGO.transform.rotation = new Quaternion(); // reset current rotation - prevent spinning
-                            partGO.transform.RotateAround((Vector2)partGO.transform.position + (thisJoint.Position * Scale), Vector3.forward,
+                            partGO.transform.RotateAround((Vector2)partGO.transform.position + (thisJoint.Position * scale), Vector3.forward,
                                 rotation);
                         }
                     }
@@ -95,7 +95,7 @@ namespace Assets.Scripts.GameResources
                         Joint joint = joints[jointIndex];
                         Vector2 worldRelativeJointPosition =
                             (Vector2)partGO.transform.position +
-                            (Vector2)(Quaternion.Euler(0, 0, partGO.transform.eulerAngles.z) * joint.Position) * Scale;
+                            (Vector2)(Quaternion.Euler(0, 0, partGO.transform.eulerAngles.z) * joint.Position) * scale;
                         worldJointPositions.Add(new VehicleJointIdentifier(partGOIndex, jointIndex), worldRelativeJointPosition);
                     }
                 }

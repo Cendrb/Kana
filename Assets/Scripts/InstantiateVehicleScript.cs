@@ -11,7 +11,7 @@ namespace Assets.Scripts
         {
             Vehicle vehicle = new Vehicle();
 
-            vehicle.Instantiate(gameObject);
+            vehicle.Instantiate(gameObject, 1);
         }
     }
 }
