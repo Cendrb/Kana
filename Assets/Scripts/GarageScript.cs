@@ -43,7 +43,7 @@ public class GarageScript : MonoBehaviour
         foreach (PartTemplate template in partTemplates)
         {
             GameObject itemInShopGO = new GameObject(template.ResourceLocation.ToResourceLocationString());
-            Part.AppendNewScriptOn(template, itemInShopGO).LoadFrom(template, vehicle);
+            Part.AppendNewScriptOn(template, itemInShopGO).LoadFrom(template, null);
             Transform transform = itemInShopGO.transform;
             //transform.anchorMin = new Vector2(0, 1);
             //transform.anchorMax = new Vector2(0, 1);
