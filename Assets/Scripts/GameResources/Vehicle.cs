@@ -127,14 +127,6 @@ namespace Assets.Scripts.GameResources
             if (targetPartIdentifier != null)
                 connections.Add(new Connection(targetPartIdentifier, new VehicleJointIdentifier(id, newPartJointId)));
 
-            Debug.Log("Printing connections:");
-            foreach (Connection connection in connections)
-            {
-                if(connection != null)
-                {
-                    Debug.Log(string.Format("Connection from {0} to {1}", connection.Joint1Identifier, connection.Joint2Identifier));
-                }
-            }
             recalculatePositionsAndRotations();
             recalculateWorldRelativeJointPositions();
             return id;
