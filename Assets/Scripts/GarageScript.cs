@@ -35,7 +35,7 @@ public class GarageScript : MonoBehaviour
 
         vehicle = new Vehicle();
         vehicle.Instantiate(vehicleGO, 0.3f);
-        vehicle.AddPartTemplate(ModuleLoader.GetPartTemplate(new ResourceLocation("vanilla", "hull", ResourceType.PartTemplate)), 0, null);
+        vehicle.AppendNewPartTemplate(ModuleLoader.GetPartTemplate(new ResourceLocation("vanilla", "hull", ResourceType.PartTemplate)), 0, null);
 
         partTemplates = ModuleLoader.GetLoadedPartTemplates();
         int partIndex = 0;
@@ -124,7 +124,7 @@ public class GarageScript : MonoBehaviour
                         {
                             draggedGO.SetActive(false);
                         }
-                        temporarilyAddedPartTemplateIndex = vehicle.AddPartTemplate(ModuleLoader.GetPartTemplate(draggedGO.GetComponent<Part>().ResourceLocation), ourJointId, closestForeignJointInRange);
+                        temporarilyAddedPartTemplateIndex = vehicle.AppendNewPartTemplate(ModuleLoader.GetPartTemplate(draggedGO.GetComponent<Part>().ResourceLocation), ourJointId, closestForeignJointInRange);
                     }
                     lastForeignJointDistance = closestDistance;
                 }

@@ -121,7 +121,7 @@ namespace Assets.Scripts.GameResources
             return closestJoint;
         }
 
-        public int AddPartTemplate(PartTemplate partTemplate, int newPartJointId, VehicleJointIdentifier targetPartIdentifier)
+        public int AppendNewPartTemplate(PartTemplate partTemplate, int newPartJointId, VehicleJointIdentifier targetPartIdentifier)
         {
             int id = addNewPartGO(partTemplate);
             if (targetPartIdentifier != null)
