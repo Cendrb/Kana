@@ -56,6 +56,11 @@ namespace Assets.Scripts.PartScripts
             }
         }
 
+        public bool IsPartOfVehicle()
+        {
+            return ParentVehicle != null;
+        }
+
         private void initGOForModel(RenderedModel model, GameObject parentGameObject)
         {
             GameObject modelGameObject = new GameObject(model.ResourceLocation.ToResourceLocationString());
@@ -154,6 +159,11 @@ namespace Assets.Scripts.PartScripts
             {
                 polygonCollider.SetPath(pair.Key, pair.Value);
             }
+        }
+
+        public static Part AppendNewScriptOn(PartTemplate partTemplate, GameObject gameObject)
+        {
+            return ((Part)gameObject.AddComponent(partTemplate.ScriptType));
         }
     }
 }

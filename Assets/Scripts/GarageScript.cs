@@ -43,9 +43,7 @@ public class GarageScript : MonoBehaviour
         foreach (PartTemplate template in partTemplates)
         {
             GameObject itemInShopGO = new GameObject(template.ResourceLocation.ToResourceLocationString());
-            AppendPartScriptScript script = itemInShopGO.AddComponent<AppendPartScriptScript>();
-            script.ModuleName = template.ResourceLocation.Module;
-            script.PartName = template.ResourceLocation.Name;
+            Part.AppendNewScriptOn(template, itemInShopGO).LoadFrom(template, vehicle);
             Transform transform = itemInShopGO.transform;
             //transform.anchorMin = new Vector2(0, 1);
             //transform.anchorMax = new Vector2(0, 1);
@@ -73,17 +71,35 @@ public class GarageScript : MonoBehaviour
             RaycastHit2D hit = Physics2D.Raycast(vector2, Vector2.zero);
             if (hit.collider != null)
             {
-                Part partScript = hit.collider.gameObject.transform.parent.gameObject.GetComponent<Part>(); // go to the parent and get the PartScript
+                GameObject partGameObject = hit.collider.gameObject.transform.parent.gameObject; // go to the parent
+                Part partScript = partGameObject.GetComponent<Part>();
                 if (partScript != null)
                 {
-                    if(partScript)
-                    Debug.Log("Selected " + partScript.ResourceLocation.ToResourceLocationString());
-                    draggedGO = new GameObject();
-                    draggedGO.AddComponent<Part>().LoadFrom(ModuleLoader.GetPartTemplate(partScript.ResourceLocation), null);
-                    draggedGO.transform.SetParent(partsMenuGO.transform, true);
-                    draggedGO.transform.position = hit.collider.gameObject.transform.parent.position;
-                    draggedGO.transform.localScale = hit.collider.gameObject.transform.parent.localScale;
-                    draggedGOOffset = hit.point - (Vector2)draggedGO.transform.position;
+                    PartTemplate partTemplate = ModuleLoader.GetPartTemplate(partScript.ResourceLocation);
+                    if (partScript.IsPartOfVehicle())
+                    {
+                        int partIndex = vehicle.GetIndex(partGameObject);
+                        if(vehicle.GetConnections(partIndex).Count <= 1)
+                        {
+                            draggedGO = new GameObject();
+                            Part.AppendNewScriptOn(partTemplate, draggedGO).LoadFrom(partTemplate, null);
+                            draggedGO.transform.SetParent(partsMenuGO.transform, true);
+                            draggedGO.transform.position = partGameObject.transform.position;
+                            draggedGO.transform.localScale = new Vector2(MENU_ITEMS_SCALE, MENU_ITEMS_SCALE);
+                            draggedGOOffset = hit.point - (Vector2)draggedGO.transform.position;
+                            vehicle.RemovePartTemplate(partIndex);
+                        }
+                    }
+                    else
+                    {
+                        Debug.Log("Selected " + partScript.ResourceLocation.ToResourceLocationString());
+                        draggedGO = new GameObject();
+                        Part.AppendNewScriptOn(partTemplate, draggedGO).LoadFrom(partTemplate, null);
+                        draggedGO.transform.SetParent(partsMenuGO.transform, true);
+                        draggedGO.transform.position = partGameObject.transform.position;
+                        draggedGO.transform.localScale = new Vector2(MENU_ITEMS_SCALE, MENU_ITEMS_SCALE);
+                        draggedGOOffset = hit.point - (Vector2)draggedGO.transform.position;
+                    }
                 }
             }
         }

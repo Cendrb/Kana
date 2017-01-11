@@ -37,7 +37,7 @@ namespace Assets.Scripts.GameResources
             partTemplates.Add(partTemplate);
             GameObject partGO = new GameObject(partTemplate.ResourceLocation.ToResourceLocationString());
             partGO.transform.SetParent(parentGameObject.transform, false);
-            Part partScript = (Part)partGO.AddComponent(partTemplate.ScriptType);
+            Part partScript = Part.AppendNewScriptOn(partTemplate, partGO);
             partScript.LoadFrom(partTemplate, this);
 
             partGameObjects.Add(partGO);
@@ -100,6 +100,21 @@ namespace Assets.Scripts.GameResources
                     }
                 }
             }
+        }
+
+        public int GetIndex(GameObject partGO)
+        {
+            return partGameObjects.IndexOf(partGO);
+        }
+
+        public int GetIndex(PartTemplate partTemplate)
+        {
+            return partTemplates.IndexOf(partTemplate);
+        }
+
+        public List<Connection> GetConnections(int partIndex)
+        {
+            return connections.Where(connection => connection.Joint1Identifier.PartId == partIndex || connection.Joint2Identifier.PartId == partIndex).ToList();
         }
 
         public VehicleJointIdentifier GetClosestToPoint(Vector2 worldPoint, int partIdToIgnore, out float closestDistance)
