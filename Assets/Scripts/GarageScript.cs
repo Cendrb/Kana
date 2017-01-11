@@ -6,6 +6,9 @@ using Assets.Scripts.ModuleResources;
 using Assets.Scripts.PartScripts;
 using Assets.Scripts.GameResources;
 using Joint = Assets.Scripts.GameResources.Joint;
+using Newtonsoft.Json;
+using System.IO;
+using Newtonsoft.Json.Linq;
 
 public class GarageScript : MonoBehaviour
 {
@@ -65,6 +68,22 @@ public class GarageScript : MonoBehaviour
             }
         }
 
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            using (StreamWriter writer = File.CreateText(@"c:\temp\kana.json"))
+            using (JsonTextWriter jsonWriter = new JsonTextWriter(writer))
+            {
+                JObject jObject = new JObject();
+                vehicle.Serialize(jObject);
+                jObject.WriteTo(jsonWriter);
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            vehicle.Deserialize(JObject.Parse(File.ReadAllText(@"c:\temp\kana.json")));
+        }
+
         if (Input.GetMouseButtonDown(0))
         {
             Vector2 vector2 = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -79,7 +98,7 @@ public class GarageScript : MonoBehaviour
                     if (partScript.IsPartOfVehicle())
                     {
                         int partIndex = vehicle.GetIndex(partGameObject);
-                        if(vehicle.GetConnections(partIndex).Count <= 1)
+                        if (vehicle.GetConnections(partIndex).Count <= 1)
                         {
                             draggedGO = new GameObject();
                             Part.AppendNewScriptOn(partTemplate, draggedGO).LoadFrom(partTemplate, null);
