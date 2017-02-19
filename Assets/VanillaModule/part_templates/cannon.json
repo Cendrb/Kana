@@ -1,5 +1,5 @@
 ﻿{
-	"script": "Cannon",
+	"script": "vanilla:Cannon",
 	"name": "cannon",
 	"tags": ["weapon", "worthlessgarbage", "utterbullshit"], 
 	"shop_properties": {

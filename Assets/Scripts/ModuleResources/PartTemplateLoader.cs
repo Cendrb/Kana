@@ -119,6 +119,7 @@ namespace Assets.Scripts.ModuleResources
 
         private Type findScriptClass(string className)
         {
+            className = className.Substring(className.IndexOf(':') + 1); // cutoff the prefix
             return (from assembly in AppDomain.CurrentDomain.GetAssemblies()
                     from type in assembly.GetTypes()
                     where type.Name == className && type.IsSubclassOf(typeof(Part))

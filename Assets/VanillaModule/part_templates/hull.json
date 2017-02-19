@@ -1,5 +1,5 @@
 ﻿{
-	"script": "Hull",
+	"script": "vanilla:Hull",
 	"name": "hull",
 	"tags": [ "hull", "worthlessgarbage" ],
 	"shop_properties": {
