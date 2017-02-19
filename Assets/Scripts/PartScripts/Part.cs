@@ -48,7 +48,7 @@ namespace Assets.Scripts.PartScripts
                     Log.Error("Part#LoadFrom", string.Format("Property {0} was not found on type {1}", customScriptProperty.Key, thisType.Name));
             }
 
-            List<RenderedModel> renderedModels = Models.Where(model => model.RenderOnDefault).ToList();
+            List<RenderedModel> renderedModels = Models.OrderBy(model => model.RenderLayer).Where(model => model.RenderLayer != -1).ToList();
 
             foreach (RenderedModel model in renderedModels)
             {

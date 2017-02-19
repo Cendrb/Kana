@@ -20,7 +20,7 @@
 			"name": "body",
 			"relative": [ 0, 0 ],
 			"texture": "vanilla:default",
-			"render_on_default": true,
+			"render_layer": 1,
 			"parts": [
 				{
 					"relative": [ 0, 0 ],

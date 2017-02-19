@@ -49,7 +49,7 @@ namespace Assets.Scripts.ModuleResources
                     ResourceLocation texture = ResourceLocation.Parse(JSONUtil.ReadProperty<string>(jObject, "texture"), ResourceType.Texture);
                     if(!texture.FileExists())
                         throw new ResourceNotFoundException(texture);
-                    bool renderOnDefault = JSONUtil.ReadProperty<bool>(jObject, "render_on_default");
+                    int renderLayer = JSONUtil.ReadProperty<int>(jObject, "render_layer");
 
                     List<ModelPart> parts = new List<ModelPart>();
                     JArray jParts = JSONUtil.ReadArray(jObject, "parts");
@@ -96,20 +96,20 @@ namespace Assets.Scripts.ModuleResources
                     {
                         Log.Info(TAG,
                             string.Format("Successfully loaded standalone model {0}", modelResourceLocation.ToResourceLocationString()));
-                        return new Model(modelResourceLocation, texture, renderOnDefault, parts);
+                        return new Model(modelResourceLocation, texture, renderLayer, parts);
                     }
                     else
                     {
                         Log.Info(TAG, 
                             string.Format("Successfully loaded inner model {0} from {1} part template", name, parentResourceLocation.ToResourceLocationString()));
-                        return new RenderedModel(new ResourceLocation(parentResourceLocation.Module, name, ResourceType.Model), texture, renderOnDefault, parts,
+                        return new RenderedModel(new ResourceLocation(parentResourceLocation.Module, name, ResourceType.Model), texture, renderLayer, parts,
                             JSONUtil.ArrayToVector2(relativeArray));
                     }
                 }
                 else
                 {
                     ResourceLocation texture = ResourceLocation.Parse(JSONUtil.ReadWithDefaultValue<string>(jObject, "texture", null), ResourceType.Texture);
-                    bool? renderOnDefault = JSONUtil.ReadWithDefaultValue<bool?>(jObject, "render_on_default", null);
+                    int? renderLayer = JSONUtil.ReadWithDefaultValue<int?>(jObject, "render_layer", null);
 
                     ResourceLocation modelLocation = ResourceLocation.Parse(externalModelResourceString, ResourceType.Model);
 
@@ -118,8 +118,8 @@ namespace Assets.Scripts.ModuleResources
                     renderedModel.Relative = JSONUtil.ArrayToVector2(relativeArray);
                     if (texture != null)
                         renderedModel.Texture = texture;
-                    if (renderOnDefault != null)
-                        renderedModel.RenderOnDefault = renderOnDefault.Value;
+                    if (renderLayer.HasValue)
+                        renderedModel.RenderLayer = renderLayer.Value;
                     return renderedModel;
                 }
             }

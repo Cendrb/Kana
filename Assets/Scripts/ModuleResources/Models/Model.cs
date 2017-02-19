@@ -6,14 +6,14 @@ namespace Assets.Scripts.ModuleResources.Models
     {
         public ResourceLocation ResourceLocation { get; set; }
         public ResourceLocation Texture { get; set; }
-        public bool RenderOnDefault { get; set; }
+        public int RenderLayer { get; set; }
         public List<ModelPart> Parts { get; private set; }
 
-        public Model(ResourceLocation resourceLocation, ResourceLocation texture, bool renderOnDefault, List<ModelPart> parts)
+        public Model(ResourceLocation resourceLocation, ResourceLocation texture, int renderLayer, List<ModelPart> parts)
         {
             ResourceLocation = resourceLocation;
             Texture = texture;
-            RenderOnDefault = renderOnDefault;
+            RenderLayer = renderLayer;
             Parts = parts;
         }
     }

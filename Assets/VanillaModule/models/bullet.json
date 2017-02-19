@@ -1,7 +1,7 @@
 {
 	"name": "bullet",
 	"texture": "vanilla:default",
-	"render_on_default": false,
+	"render_layer": -1,
 	"parts": [
 		{
 			"relative": [ 0, 0 ],

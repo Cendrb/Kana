@@ -21,7 +21,7 @@
 			"name": "barrel",
 			"relative": [ 0, 0 ],
 			"texture": "vanilla:default",
-			"render_on_default": true,
+			"render_layer": 1,
 			"parts": [
 				{
 					"relative": [ 0, 0 ],
@@ -88,7 +88,7 @@
 			"name": "bullet",
 			"relative": [ 0, 0 ],
 			"texture": "vanilla:default",
-			"render_on_default": false,
+			"render_layer": -1,
 			"external_model": "vanilla:bullet"
 		}
 	]
