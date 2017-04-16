@@ -40,7 +40,9 @@ namespace UnityStandardAssets._2D
             for (int i = 0; i < colliders.Length; i++)
             {
                 if (colliders[i].gameObject != this.gameObject)
+                {
                     this.m_Grounded = true;
+                }
             }
             this.m_Anim.SetBool("Ground", this.m_Grounded);
 

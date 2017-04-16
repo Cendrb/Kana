@@ -26,13 +26,18 @@ namespace Assets.Scripts.ModuleResources
                 JObject jObject = JObject.Parse(File.ReadAllText(jsonPath));
 
                 string script = JSONUtil.ReadProperty<string>(jObject, "script");
-                Type scriptType = findScriptClass(script);
+                Type scriptType = FindScriptClass(script);
                 if (scriptType == null)
+                {
                     throw new ScriptNotFoundException(resourceLocation.Module, script);
+                }
 
                 string name = JSONUtil.ReadProperty<string>(jObject, "name");
                 if (name != resourceLocation.Name)
+                {
                     throw new InvalidResourceNameException(resourceLocation, name);
+                }
+
                 string localizedName = ModuleLoader.Localize(resourceLocation.Module, name);
 
                 string[] tags = JSONUtil.ReadArray<string>(jObject, "tags");
@@ -58,7 +63,10 @@ namespace Assets.Scripts.ModuleResources
                     object value = JSONUtil.ParseJTokenToCSharpType(jToken);
                     string propertyName = jProperty.Name;
                     if (string.IsNullOrEmpty(propertyName))
+                    {
                         throw new InvalidPropertyNameException(propertyName, jScriptCustomProperties);
+                    }
+
                     customScriptProperties.AddProperty(propertyName, value);
                 }
 
@@ -70,11 +78,17 @@ namespace Assets.Scripts.ModuleResources
                     JObject jModel = (JObject)jModelToken;
                     Model resultModel = ModuleLoader.LoadModel(resourceLocation, jModel);
                     if (resultModel == null)
+                    {
                         throw new ModelsParsingException(resourceLocation, modelIndex);
+                    }
                     else if (resultModel is RenderedModel)
+                    {
                         models.Add((RenderedModel)resultModel);
+                    }
                     else
+                    {
                         throw new PropertyReadException("relative", jModel, null, typeof(Vector2));
+                    }
 
                     modelIndex++;
                 }
@@ -117,7 +131,7 @@ namespace Assets.Scripts.ModuleResources
             return null;
         }
 
-        private Type findScriptClass(string className)
+        private Type FindScriptClass(string className)
         {
             className = className.Substring(className.IndexOf(':') + 1); // cutoff the prefix
             return (from assembly in AppDomain.CurrentDomain.GetAssemblies()

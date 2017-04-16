@@ -2,6 +2,7 @@
 
 namespace Assets.Scripts.ModuleResources.PartTemplates.Exceptions
 {
+    [Serializable]
     public class ModelsParsingException : Exception
     {
         public ResourceLocation ParentResourceLocation { get; private set; }

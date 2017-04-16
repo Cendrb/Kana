@@ -147,10 +147,14 @@ namespace UnityStandardAssets.CrossPlatformInput
 		void OnDisable()
 		{
 			if (CrossPlatformInputManager.AxisExists(this.horizontalAxisName))
-				CrossPlatformInputManager.UnRegisterVirtualAxis(this.horizontalAxisName);
+            {
+                CrossPlatformInputManager.UnRegisterVirtualAxis(this.horizontalAxisName);
+            }
 
-			if (CrossPlatformInputManager.AxisExists(this.verticalAxisName))
-				CrossPlatformInputManager.UnRegisterVirtualAxis(this.verticalAxisName);
-		}
+            if (CrossPlatformInputManager.AxisExists(this.verticalAxisName))
+            {
+                CrossPlatformInputManager.UnRegisterVirtualAxis(this.verticalAxisName);
+            }
+        }
 	}
 }

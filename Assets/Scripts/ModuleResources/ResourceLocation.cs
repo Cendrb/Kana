@@ -52,7 +52,9 @@ namespace Assets.Scripts.ModuleResources
             foreach (string langPath in Directory.GetFiles(langsPath))
             {
                 if (Path.GetExtension(langPath) == requiredExtension)
+                {
                     resourceLocations.Add(new ResourceLocation(module, Path.GetFileNameWithoutExtension(langPath), type));
+                }
             }
             return resourceLocations;
         }
@@ -65,7 +67,9 @@ namespace Assets.Scripts.ModuleResources
                 return new ResourceLocation(moduleNamePair[0], moduleNamePair[1], type);
             }
             else
+            {
                 throw new ResourceLocationParseException(resourceLocationString);
+            }
         }
 
         private static string getResourceTypeFolder(ResourceType type)
@@ -105,9 +109,13 @@ namespace Assets.Scripts.ModuleResources
         private static string getModulePath(string module)
         {
             if (module == "vanilla")
+            {
                 return VANILLA_MODULE_PATH;
+            }
             else
+            {
                 throw new NotSupportedException("Custom modules are not supported yet");
+            }
         }
     }
 }

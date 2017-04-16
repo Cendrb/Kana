@@ -179,7 +179,10 @@ public class GarageScript : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             if (this.temporarilyAddedPartTemplateIndex != -1)
+            {
                 this.temporarilyAddedPartTemplateIndex = -1;
+            }
+
             GameObject.Destroy(this.draggedGO);
             this.draggedGO = null;
         }

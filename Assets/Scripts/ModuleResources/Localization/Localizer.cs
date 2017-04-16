@@ -24,7 +24,9 @@ namespace Assets.Scripts.ModuleResources.Localization
             Localization localization =
                 this.localizations.Find(l => l.Module == module && l.Name == name);
             if (localization != null)
+            {
                 return localization.LocalizedName;
+            }
             else
             {
                 Log.Warning(TAG, "No localization found for " + name);

@@ -26,7 +26,9 @@ public class SceneLauncher : MonoBehaviour
     private void Start()
     {
         if (this.loadingOverlayTexture == null)
+        {
             throw new ArgumentException("loadingOverlayTexture cannot be null");
+        }
 
         this.guiStyle = new GUIStyle {fontSize = 69, alignment = TextAnchor.LowerRight};
     }

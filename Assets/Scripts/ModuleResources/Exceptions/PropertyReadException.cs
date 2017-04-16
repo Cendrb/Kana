@@ -34,23 +34,41 @@ namespace Assets.Scripts.ModuleResources.Exceptions
         private string TypeToReadeable(Type type)
         {
             if (type == typeof(JObject))
+            {
                 return "JSON Object";
+            }
             else if (type == typeof(JArray))
+            {
                 return "JSON Array";
+            }
             else if (type == typeof(int))
+            {
                 return "integer";
+            }
             else if (type == typeof(double))
+            {
                 return "double";
+            }
             else if (type == typeof(string))
+            {
                 return "string";
+            }
             else if (type == typeof(int[]))
+            {
                 return "Array of ints";
+            }
             else if (type == typeof(float[]))
+            {
                 return "Array of floats";
+            }
             else if (type == typeof(Vector2))
+            {
                 return "Array of two floats";
+            }
             else
+            {
                 return type.Name;
+            }
         }       
     }
 }

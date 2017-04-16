@@ -45,7 +45,9 @@ namespace Assets.Scripts.PartScripts
                     propertyInfo.SetValue(this, customScriptProperty.Value, null);
                 }
                 else
+                {
                     Log.Error("Part#LoadFrom", string.Format("Property {0} was not found on type {1}", customScriptProperty.Key, thisType.Name));
+                }
             }
 
             List<RenderedModel> renderedModels = this.Models.OrderBy(model => model.RenderLayer).Where(model => model.RenderLayer != -1).ToList();
@@ -100,9 +102,13 @@ namespace Assets.Scripts.PartScripts
                 for (int i = 0; i < verts.Length; i++)
                 {
                     if (i + 1 < verts.Length)
+                    {
                         edges.Add(new ModelPartEdge(i, i + 1));
+                    }
                     else
+                    {
                         edges.Add(new ModelPartEdge(i, 0));
+                    }
                 }
                 int[] joints = part.GetJointsForMesh();
                 for (int edgeIndex = 0; edgeIndex < edges.Count; edgeIndex++)

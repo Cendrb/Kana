@@ -10,9 +10,14 @@ namespace Assets.Scripts.GameResources
         public Connection(VehicleJointIdentifier joint1, VehicleJointIdentifier joint2)
         {
             if (joint1 == null)
+            {
                 throw new ArgumentNullException("joint1");
+            }
+
             if (joint2 == null)
+            {
                 throw new ArgumentNullException("joint2");
+            }
 
             this.Joint1Identifier = joint1;
             this.Joint2Identifier = joint2;

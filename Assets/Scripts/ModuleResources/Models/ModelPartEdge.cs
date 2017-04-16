@@ -16,7 +16,10 @@ namespace Assets.Scripts.ModuleResources.Models
         public bool Equals(ModelPartEdge other)
         {
             if (other == null)
+            {
                 return false;
+            }
+
             return this.Vertex1 == other.Vertex1 && this.Vertex2 == other.Vertex2;
         }
     }

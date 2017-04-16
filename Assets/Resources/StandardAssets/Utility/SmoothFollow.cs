@@ -28,14 +28,16 @@ namespace UnityStandardAssets.Utility
 		{
 			// Early out if we don't have a target
 			if (!this.target)
-				return;
+            {
+                return;
+            }
 
-			// Calculate the current rotation angles
-			var wantedRotationAngle = this.target.eulerAngles.y;
-			var wantedHeight = this.target.position.y + this.height;
+            // Calculate the current rotation angles
+            float wantedRotationAngle = this.target.eulerAngles.y;
+            float wantedHeight = this.target.position.y + this.height;
 
-			var currentRotationAngle = this.transform.eulerAngles.y;
-			var currentHeight = this.transform.position.y;
+            float currentRotationAngle = this.transform.eulerAngles.y;
+            float currentHeight = this.transform.position.y;
 
 			// Damp the rotation around the y-axis
 			currentRotationAngle = Mathf.LerpAngle(currentRotationAngle, wantedRotationAngle, this.rotationDamping * Time.deltaTime);
@@ -43,8 +45,8 @@ namespace UnityStandardAssets.Utility
 			// Damp the height
 			currentHeight = Mathf.Lerp(currentHeight, wantedHeight, this.heightDamping * Time.deltaTime);
 
-			// Convert the angle into a rotation
-			var currentRotation = Quaternion.Euler(0, currentRotationAngle, 0);
+            // Convert the angle into a rotation
+            Quaternion currentRotation = Quaternion.Euler(0, currentRotationAngle, 0);
 
             // Set the position of the camera on the x-z plane to:
             // distance meters behind the target

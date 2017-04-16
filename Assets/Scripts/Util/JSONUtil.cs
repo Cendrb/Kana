@@ -83,7 +83,10 @@ namespace Assets.Scripts.Util
             {
                 T casted = Newtonsoft.Json.Linq.Extensions.Value<T>(jToken);
                 if (casted == null)
+                {
                     throw new PropertyReadException(propertyName, jObject, null, typeof(T[]));
+                }
+
                 array[index] = casted;
                 index++;
             }
@@ -108,7 +111,10 @@ namespace Assets.Scripts.Util
             {
                 T casted = Newtonsoft.Json.Linq.Extensions.Value<T>(jToken);
                 if (casted == null)
+                {
                     throw new PropertyReadException(propertyName, jObject, null, typeof(T[]));
+                }
+
                 array[index] = casted;
                 index++;
             }
@@ -139,25 +145,37 @@ namespace Assets.Scripts.Util
         public static Vector2 ArrayToVector2(float[] array)
         {
             if (array.Length == 2)
+            {
                 return new Vector2(array[0], array[1]);
+            }
             else
+            {
                 throw new ArgumentException("Array needs to have exactly two members in order to be parsed into a Vector2");
+            }
         }
 
         public static Vector2 ArrayToVector2(int[] array)
         {
             if (array.Length == 2)
+            {
                 return new Vector2(array[0], array[1]);
+            }
             else
+            {
                 throw new ArgumentException("Array needs to have exactly two members in order to be parsed into a Vector2");
+            }
         }
 
         public static Vector2 ArrayToVector2(JArray array)
         {
             if (array.Count == 2)
+            {
                 return new Vector2(Newtonsoft.Json.Linq.Extensions.Value<float>(array[0]), Newtonsoft.Json.Linq.Extensions.Value<float>(array[1]));
+            }
             else
+            {
                 throw new ArgumentException("Array needs to have exactly two members in order to be parsed into a Vector2");
+            }
         }
 
         public static object ParseJTokenToCSharpType(JToken jToken)

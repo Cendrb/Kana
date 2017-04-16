@@ -18,9 +18,13 @@ namespace Assets.Scripts.Util
         public static float NormalizeAngle(float angle)
         {
             if (angle < 0)
+            {
                 return 180 + Mathf.Abs(angle);
+            }
             else
+            {
                 return angle;
+            }
         }
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Assets.Scripts.ModuleResources.PartTemplates.Exceptions
 {
+    [Serializable]
     class ScriptNotFoundException : Exception
     {
         public string Module { get; private set; }
