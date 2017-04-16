@@ -15,6 +15,8 @@ namespace Assets.Scripts.GameResources
     public class Vehicle : IJsonSerializable
     {
         protected event Action<Vehicle> PartsChanged = delegate { };
+        
+        public Rigidbody2D Rigidbody { get; private set; }
 
         private float scale;
         private List<PartTemplate> partTemplates = new List<PartTemplate>();
@@ -23,11 +25,18 @@ namespace Assets.Scripts.GameResources
         private Dictionary<string, List<Part>> taggedPartScriptReferences = new Dictionary<string, List<Part>>();
         private Dictionary<VehicleJointIdentifier, Vector2> worldJointPositions = new Dictionary<VehicleJointIdentifier, Vector2>();
         private GameObject parentGameObject = null;
+         
 
         public void Instantiate(GameObject parentGameObject, float scale)
         {
             this.scale = scale;
             this.parentGameObject = parentGameObject;
+            this.Rigidbody = this.parentGameObject.AddComponent<Rigidbody2D>();
+            this.Rigidbody.gravityScale = 0;
+            this.Rigidbody.centerOfMass = new Vector2(1, 3);
+            this.Rigidbody.drag = 0.25f;
+            this.Rigidbody.angularDrag = 0.25f;
+            
             parentGameObject.transform.localScale = new Vector3(scale, scale, scale);
             for (int partTemplateIndex = 0; partTemplateIndex < this.partTemplates.Count; partTemplateIndex++)
             {
