@@ -8,9 +8,9 @@
 
         public Localization(string module, string name, string localizedName)
         {
-            Module = module;
-            Name = name;
-            LocalizedName = localizedName;
+            this.Module = module;
+            this.Name = name;
+            this.LocalizedName = localizedName;
         }
     }
 }

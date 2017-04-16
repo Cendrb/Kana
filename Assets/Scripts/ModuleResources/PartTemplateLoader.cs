@@ -18,7 +18,7 @@ namespace Assets.Scripts.ModuleResources
     {
         private static readonly string TAG = "PartTemplateLoader";
 
-        protected override PartTemplate loadResource(ResourceLocation resourceLocation)
+        protected override PartTemplate LoadResource(ResourceLocation resourceLocation)
         {
             string jsonPath = resourceLocation.GetPath();
             try

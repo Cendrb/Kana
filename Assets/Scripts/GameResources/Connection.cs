@@ -14,8 +14,8 @@ namespace Assets.Scripts.GameResources
             if (joint2 == null)
                 throw new ArgumentNullException("joint2");
 
-            Joint1Identifier = joint1;
-            Joint2Identifier = joint2;
+            this.Joint1Identifier = joint1;
+            this.Joint2Identifier = joint2;
         }
 
         public VehicleJointIdentifier Joint1Identifier { get; set; }

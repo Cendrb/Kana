@@ -19,9 +19,9 @@ namespace UnityStandardAssets._2D
         // Use this for initialization
         private void Start()
         {
-            m_LastTargetPosition = target.position;
-            m_OffsetZ = (transform.position - target.position).z;
-            transform.parent = null;
+            this.m_LastTargetPosition = this.target.position;
+            this.m_OffsetZ = (this.transform.position - this.target.position).z;
+            this.transform.parent = null;
         }
 
 
@@ -29,25 +29,25 @@ namespace UnityStandardAssets._2D
         private void Update()
         {
             // only update lookahead pos if accelerating or changed direction
-            float xMoveDelta = (target.position - m_LastTargetPosition).x;
+            float xMoveDelta = (this.target.position - this.m_LastTargetPosition).x;
 
-            bool updateLookAheadTarget = Mathf.Abs(xMoveDelta) > lookAheadMoveThreshold;
+            bool updateLookAheadTarget = Mathf.Abs(xMoveDelta) > this.lookAheadMoveThreshold;
 
             if (updateLookAheadTarget)
             {
-                m_LookAheadPos = lookAheadFactor*Vector3.right*Mathf.Sign(xMoveDelta);
+                this.m_LookAheadPos = this.lookAheadFactor *Vector3.right*Mathf.Sign(xMoveDelta);
             }
             else
             {
-                m_LookAheadPos = Vector3.MoveTowards(m_LookAheadPos, Vector3.zero, Time.deltaTime*lookAheadReturnSpeed);
+                this.m_LookAheadPos = Vector3.MoveTowards(this.m_LookAheadPos, Vector3.zero, Time.deltaTime* this.lookAheadReturnSpeed);
             }
 
-            Vector3 aheadTargetPos = target.position + m_LookAheadPos + Vector3.forward*m_OffsetZ;
-            Vector3 newPos = Vector3.SmoothDamp(transform.position, aheadTargetPos, ref m_CurrentVelocity, damping);
+            Vector3 aheadTargetPos = this.target.position + this.m_LookAheadPos + Vector3.forward* this.m_OffsetZ;
+            Vector3 newPos = Vector3.SmoothDamp(this.transform.position, aheadTargetPos, ref this.m_CurrentVelocity, this.damping);
 
-            transform.position = newPos;
+            this.transform.position = newPos;
 
-            m_LastTargetPosition = target.position;
+            this.m_LastTargetPosition = this.target.position;
         }
     }
 }

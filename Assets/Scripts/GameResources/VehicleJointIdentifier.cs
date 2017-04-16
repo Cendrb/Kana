@@ -17,13 +17,13 @@ namespace Assets.Scripts.GameResources
 
         public VehicleJointIdentifier(int partId, int jointId)
         {
-            PartId = partId;
-            JointId = jointId;
+            this.PartId = partId;
+            this.JointId = jointId;
         }
 
         public override string ToString()
         {
-            return string.Format("P{0}J{1}", PartId, JointId);
+            return string.Format("P{0}J{1}", this.PartId, this.JointId);
         }
     }
 }

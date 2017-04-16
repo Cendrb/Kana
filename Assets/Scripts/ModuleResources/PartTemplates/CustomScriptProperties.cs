@@ -9,12 +9,12 @@ namespace Assets.Scripts.ModuleResources.PartTemplates
 
         public void AddProperty(string name, object value)
         {
-            properties.Add(name, value);
+            this.properties.Add(name, value);
         }
 
         public IEnumerator<KeyValuePair<string, object>> GetEnumerator()
         {
-            return properties.GetEnumerator();
+            return this.properties.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()

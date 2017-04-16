@@ -9,8 +9,8 @@ namespace Assets.Scripts.ModuleResources.Models
 
         public ModelPartEdge(int vertex1, int vertex2)
         {
-            Vertex1 = vertex1;
-            Vertex2 = vertex2;
+            this.Vertex1 = vertex1;
+            this.Vertex2 = vertex2;
         }
 
         public bool Equals(ModelPartEdge other)

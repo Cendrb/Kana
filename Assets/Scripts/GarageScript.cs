@@ -29,21 +29,21 @@ public class GarageScript : MonoBehaviour
 
     private void Start()
     {
-        Canvas canvas = gameObject.GetComponent<Canvas>();
+        Canvas canvas = this.gameObject.GetComponent<Canvas>();
         GameObject vehicleGO = new GameObject("Vehicle");
         Transform mainTransform = vehicleGO.transform;
         //mainTransform.SetParent(gameObject.transform, false);
         mainTransform.localPosition = new Vector2(canvas.pixelRect.width / canvas.referencePixelsPerUnit / 2, canvas.pixelRect.height / canvas.referencePixelsPerUnit / 2);
         //mainTransform.localScale = new Vector2(1f, 1f);
 
-        vehicle = new Vehicle();
-        vehicle.Instantiate(vehicleGO, 0.3f);
-        vehicle.AppendNewPartTemplate(ModuleLoader.GetPartTemplate(new ResourceLocation("vanilla", "hull", ResourceType.PartTemplate)), 0, null);
+        this.vehicle = new Vehicle();
+        this.vehicle.Instantiate(vehicleGO, 0.3f);
+        this.vehicle.AppendNewPartTemplate(ModuleLoader.GetPartTemplate(new ResourceLocation("vanilla", "hull", ResourceType.PartTemplate)), 0, null);
 
-        partTemplates = ModuleLoader.GetLoadedPartTemplates();
+        this.partTemplates = ModuleLoader.GetLoadedPartTemplates();
         int partIndex = 0;
-        RectTransform parentTransform = partsMenuGO.GetComponent<RectTransform>();
-        foreach (PartTemplate template in partTemplates)
+        RectTransform parentTransform = this.partsMenuGO.GetComponent<RectTransform>();
+        foreach (PartTemplate template in this.partTemplates)
         {
             GameObject itemInShopGO = new GameObject(template.ResourceLocation.ToResourceLocationString());
             Part.AppendNewScriptOn(template, itemInShopGO).LoadFrom(template, null);
@@ -62,9 +62,9 @@ public class GarageScript : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
-            if (draggedGO != null)
+            if (this.draggedGO != null)
             {
-                draggedGO.transform.RotateAround((Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector3.forward, 90);
+                this.draggedGO.transform.RotateAround((Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector3.forward, 90);
             }
         }
 
@@ -74,14 +74,14 @@ public class GarageScript : MonoBehaviour
             using (JsonTextWriter jsonWriter = new JsonTextWriter(writer))
             {
                 JObject jObject = new JObject();
-                vehicle.Serialize(jObject);
+                this.vehicle.Serialize(jObject);
                 jObject.WriteTo(jsonWriter);
             }
         }
 
         if (Input.GetKeyDown(KeyCode.L))
         {
-            vehicle.Deserialize(JObject.Parse(File.ReadAllText(@"c:\temp\kana.json")));
+            this.vehicle.Deserialize(JObject.Parse(File.ReadAllText(@"c:\temp\kana.json")));
         }
 
         if (Input.GetMouseButtonDown(0))
@@ -97,27 +97,27 @@ public class GarageScript : MonoBehaviour
                     PartTemplate partTemplate = ModuleLoader.GetPartTemplate(partScript.ResourceLocation);
                     if (partScript.IsPartOfVehicle())
                     {
-                        int partIndex = vehicle.GetIndex(partGameObject);
-                        if (vehicle.GetConnections(partIndex).Count <= 1)
+                        int partIndex = this.vehicle.GetIndex(partGameObject);
+                        if (this.vehicle.GetConnections(partIndex).Count <= 1)
                         {
-                            draggedGO = new GameObject();
-                            Part.AppendNewScriptOn(partTemplate, draggedGO).LoadFrom(partTemplate, null);
-                            draggedGO.transform.SetParent(partsMenuGO.transform, true);
-                            draggedGO.transform.position = partGameObject.transform.position;
-                            draggedGO.transform.localScale = new Vector2(MENU_ITEMS_SCALE, MENU_ITEMS_SCALE);
-                            draggedGOOffset = hit.point - (Vector2)draggedGO.transform.position;
-                            vehicle.RemovePartTemplate(partIndex);
+                            this.draggedGO = new GameObject();
+                            Part.AppendNewScriptOn(partTemplate, this.draggedGO).LoadFrom(partTemplate, null);
+                            this.draggedGO.transform.SetParent(this.partsMenuGO.transform, true);
+                            this.draggedGO.transform.position = partGameObject.transform.position;
+                            this.draggedGO.transform.localScale = new Vector2(MENU_ITEMS_SCALE, MENU_ITEMS_SCALE);
+                            this.draggedGOOffset = hit.point - (Vector2)this.draggedGO.transform.position;
+                            this.vehicle.RemovePartTemplate(partIndex);
                         }
                     }
                     else
                     {
                         Debug.Log("Selected " + partScript.ResourceLocation.ToResourceLocationString());
-                        draggedGO = new GameObject();
-                        Part.AppendNewScriptOn(partTemplate, draggedGO).LoadFrom(partTemplate, null);
-                        draggedGO.transform.SetParent(partsMenuGO.transform, true);
-                        draggedGO.transform.position = partGameObject.transform.position;
-                        draggedGO.transform.localScale = new Vector2(MENU_ITEMS_SCALE, MENU_ITEMS_SCALE);
-                        draggedGOOffset = hit.point - (Vector2)draggedGO.transform.position;
+                        this.draggedGO = new GameObject();
+                        Part.AppendNewScriptOn(partTemplate, this.draggedGO).LoadFrom(partTemplate, null);
+                        this.draggedGO.transform.SetParent(this.partsMenuGO.transform, true);
+                        this.draggedGO.transform.position = partGameObject.transform.position;
+                        this.draggedGO.transform.localScale = new Vector2(MENU_ITEMS_SCALE, MENU_ITEMS_SCALE);
+                        this.draggedGOOffset = hit.point - (Vector2)this.draggedGO.transform.position;
                     }
                 }
             }
@@ -125,21 +125,21 @@ public class GarageScript : MonoBehaviour
 
         if (Input.GetMouseButton(0))
         {
-            if (draggedGO != null)
+            if (this.draggedGO != null)
             {
-                Vector2 lastDraggedGOPosition = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition) - draggedGOOffset;
+                Vector2 lastDraggedGOPosition = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition) - this.draggedGOOffset;
                 VehicleJointIdentifier closestForeignJointInRange = null;
                 float closestDistance = STICKY_JOINTY_DISTANCE;
                 int ourJointId = -1;
-                List<Joint> thisJoints = draggedGO.GetComponent<Part>().JointPoints;
+                List<Joint> thisJoints = this.draggedGO.GetComponent<Part>().JointPoints;
                 for (int jointIndex = 0; jointIndex < thisJoints.Count; jointIndex++)
                 {
                     Joint joint = thisJoints[jointIndex];
                     Vector2 worldRelativeJointPosition =
                         (Vector2)lastDraggedGOPosition +
-                        (Vector2)(Quaternion.Euler(0, 0, draggedGO.transform.eulerAngles.z) * joint.Position) * draggedGO.transform.lossyScale.x;
+                        (Vector2)(Quaternion.Euler(0, 0, this.draggedGO.transform.eulerAngles.z) * joint.Position) * this.draggedGO.transform.lossyScale.x;
                     float distance;
-                    VehicleJointIdentifier jointResult = vehicle.GetClosestToPoint(worldRelativeJointPosition, temporarilyAddedPartTemplateIndex, out distance);
+                    VehicleJointIdentifier jointResult = this.vehicle.GetClosestToPoint(worldRelativeJointPosition, this.temporarilyAddedPartTemplateIndex, out distance);
                     if (jointResult != null && distance < closestDistance)
                     {
                         closestForeignJointInRange = jointResult;
@@ -149,39 +149,39 @@ public class GarageScript : MonoBehaviour
                 }
                 if (closestForeignJointInRange != null)
                 {
-                    if (temporarilyAddedPartTemplateIndex == -1 || (closestDistance < lastForeignJointDistance && temporarilyAddedPartTemplateIndex != -1))
+                    if (this.temporarilyAddedPartTemplateIndex == -1 || (closestDistance < this.lastForeignJointDistance && this.temporarilyAddedPartTemplateIndex != -1))
                     {
-                        if (temporarilyAddedPartTemplateIndex != -1)
+                        if (this.temporarilyAddedPartTemplateIndex != -1)
                         {
-                            vehicle.RemovePartTemplate(temporarilyAddedPartTemplateIndex);
+                            this.vehicle.RemovePartTemplate(this.temporarilyAddedPartTemplateIndex);
                         }
                         else
                         {
-                            draggedGO.SetActive(false);
+                            this.draggedGO.SetActive(false);
                         }
-                        temporarilyAddedPartTemplateIndex = vehicle.AppendNewPartTemplate(ModuleLoader.GetPartTemplate(draggedGO.GetComponent<Part>().ResourceLocation), ourJointId, closestForeignJointInRange);
+                        this.temporarilyAddedPartTemplateIndex = this.vehicle.AppendNewPartTemplate(ModuleLoader.GetPartTemplate(this.draggedGO.GetComponent<Part>().ResourceLocation), ourJointId, closestForeignJointInRange);
                     }
-                    lastForeignJointDistance = closestDistance;
+                    this.lastForeignJointDistance = closestDistance;
                 }
                 else
                 {
-                    if (temporarilyAddedPartTemplateIndex != -1)
+                    if (this.temporarilyAddedPartTemplateIndex != -1)
                     {
-                        draggedGO.SetActive(true);
-                        vehicle.RemovePartTemplate(temporarilyAddedPartTemplateIndex);
-                        temporarilyAddedPartTemplateIndex = -1;
+                        this.draggedGO.SetActive(true);
+                        this.vehicle.RemovePartTemplate(this.temporarilyAddedPartTemplateIndex);
+                        this.temporarilyAddedPartTemplateIndex = -1;
                     }
                 }
-                draggedGO.transform.position = lastDraggedGOPosition;
+                this.draggedGO.transform.position = lastDraggedGOPosition;
             }
         }
 
         if (Input.GetMouseButtonUp(0))
         {
-            if (temporarilyAddedPartTemplateIndex != -1)
-                temporarilyAddedPartTemplateIndex = -1;
-            GameObject.Destroy(draggedGO);
-            draggedGO = null;
+            if (this.temporarilyAddedPartTemplateIndex != -1)
+                this.temporarilyAddedPartTemplateIndex = -1;
+            GameObject.Destroy(this.draggedGO);
+            this.draggedGO = null;
         }
     }
 }

@@ -8,9 +8,9 @@
 
         public ShopProperties(int cost, int requiredLevel, string category)
         {
-            Cost = cost;
-            RequiredLevel = requiredLevel;
-            Category = category;
+            this.Cost = cost;
+            this.RequiredLevel = requiredLevel;
+            this.Category = category;
         }
     }
 }

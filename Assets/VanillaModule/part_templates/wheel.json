@@ -1,0 +1,45 @@
+{
+	"script": "vanilla:Wheel",
+	"name": "wheel",
+	"tags": [ "wheel", "worthlessgarbage" ],
+	"shop_properties": {
+		"Cost": 100,
+		"RequiredLevel": 1,
+		"Category": "movement"
+	},
+	"script_properties": {
+		"Mass": 69,
+		"Health": 500,
+		"DamageOnTouch": 20
+	},
+	"custom_script_properties": {
+
+	},
+	"models": [
+		{
+			"name": "body",
+			"relative": [ 0, 0 ],
+			"texture": "vanilla:default",
+			"render_layer": 1,
+			"parts": [
+				{
+					"relative": [ 0, 0 ],
+					"collide": true,
+					"vertices": [
+						[ 0, 0 ],
+						[ 2, 0 ],
+						[ 2, 2 ],
+						[ 0, 2 ]
+					],
+					"uvs": [
+						[ 0.2, 0.4 ],
+						[ 0.51, 0.6 ],
+						[ 0.8, 0.1 ],
+						[ 0.7, 0.9 ]
+					],
+					"joints": [ 1, 1, 1, 1 ]
+				}
+			]
+		}
+	]
+}

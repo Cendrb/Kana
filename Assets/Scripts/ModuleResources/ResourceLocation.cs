@@ -19,14 +19,14 @@ namespace Assets.Scripts.ModuleResources
 
         public ResourceLocation(string module, string name, ResourceType type)
         {
-            Module = module;
-            Name = name;
-            Type = type;
+            this.Module = module;
+            this.Name = name;
+            this.Type = type;
         }
 
         public string GetPath()
         {
-            return Path.Combine(getModulePath(Module), Path.Combine(getResourceTypeFolder(Type), Name + getResourceTypeExtension(Type)));
+            return Path.Combine(getModulePath(this.Module), Path.Combine(getResourceTypeFolder(this.Type), this.Name + getResourceTypeExtension(this.Type)));
         }
 
         public bool FileExists()
@@ -36,7 +36,7 @@ namespace Assets.Scripts.ModuleResources
 
         public string ToResourceLocationString()
         {
-            return Module + MODULE_NAME_SEPARATOR + Name;
+            return this.Module + MODULE_NAME_SEPARATOR + this.Name;
         }
 
         public override string ToString()

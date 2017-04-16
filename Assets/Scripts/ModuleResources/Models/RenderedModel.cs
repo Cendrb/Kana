@@ -9,7 +9,7 @@ namespace Assets.Scripts.ModuleResources.Models
 
         public RenderedModel(ResourceLocation resourceLocation, ResourceLocation texture, int renderLayer, List<ModelPart> parts, Vector2 relative) : base(resourceLocation, texture, renderLayer, parts)
         {
-            Relative = relative;
+            this.Relative = relative;
         }
 
         public static RenderedModel CreateFromSubModel(Model subModel)

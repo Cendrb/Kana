@@ -12,7 +12,7 @@ namespace UnityStandardAssets.Utility
 
         private void LateUpdate()
         {
-            transform.position = target.position + offset;
+            this.transform.position = this.target.position + this.offset;
         }
     }
 }

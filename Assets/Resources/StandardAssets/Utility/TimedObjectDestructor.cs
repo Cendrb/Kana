@@ -11,17 +11,17 @@ namespace UnityStandardAssets.Utility
 
         private void Awake()
         {
-            Invoke("DestroyNow", m_TimeOut);
+            Invoke("DestroyNow", this.m_TimeOut);
         }
 
 
         private void DestroyNow()
         {
-            if (m_DetachChildren)
+            if (this.m_DetachChildren)
             {
-                transform.DetachChildren();
+                this.transform.DetachChildren();
             }
-            DestroyObject(gameObject);
+            DestroyObject(this.gameObject);
         }
     }
 }

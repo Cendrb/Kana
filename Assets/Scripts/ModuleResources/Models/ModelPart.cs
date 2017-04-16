@@ -13,23 +13,23 @@ namespace Assets.Scripts.ModuleResources.Models
 
         public ModelPart(Vector2 relative, bool collide, Vector2[] vertices, Vector2[] uvs, int[] joints)
         {
-            Relative = relative;
-            Collide = collide;
+            this.Relative = relative;
+            this.Collide = collide;
             this.vertices = vertices;
             this.uvs = uvs;
             this.joints = joints;
 
             Triangulator triangulator = new Triangulator(this.vertices);
-            triangles = triangulator.Triangulate();
+            this.triangles = triangulator.Triangulate();
         }
 
         public Vector3[] GetVerticesForMesh()
         {
-            Vector3[] v3Vertices = new Vector3[vertices.Length];
+            Vector3[] v3Vertices = new Vector3[this.vertices.Length];
             int index = 0;
-            foreach (Vector2 vector2 in vertices)
+            foreach (Vector2 vector2 in this.vertices)
             {
-                v3Vertices[index] = vector2 + Relative;
+                v3Vertices[index] = vector2 + this.Relative;
                 index++;
             }
             return v3Vertices;
@@ -37,17 +37,17 @@ namespace Assets.Scripts.ModuleResources.Models
 
         public Vector2[] GetUVsForMesh()
         {
-            return uvs;
+            return this.uvs;
         }
 
         public int[] GetTrisForMesh()
         {
-            return triangles;
+            return this.triangles;
         }
 
         public int[] GetJointsForMesh()
         {
-            return joints;
+            return this.joints;
         }
     }
 }

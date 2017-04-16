@@ -13,21 +13,21 @@ namespace Assets.Scripts.ModuleResources.Exceptions
 
         public PropertyReadException(string propertyName, JObject parentObject, string foundValue, Type requiredType)
         {
-            PropertyName = propertyName;
-            ParentObject = parentObject;
-            FoundValue = foundValue;
-            RequiredType = requiredType;
+            this.PropertyName = propertyName;
+            this.ParentObject = parentObject;
+            this.FoundValue = foundValue;
+            this.RequiredType = requiredType;
         }
 
         public override string ToString()
         {
-            if (FoundValue == null)
+            if (this.FoundValue == null)
             {
-                return string.Format("Property missing. {0} is a required property of type {1}. Searched in: root.{2}", PropertyName, TypeToReadeable(RequiredType), ParentObject.Path);
+                return string.Format("Property missing. {0} is a required property of type {1}. Searched in: root.{2}", this.PropertyName, TypeToReadeable(this.RequiredType), this.ParentObject.Path);
             }
             else
             {
-                return string.Format("Property of an invalid type. {0} needs to be {1} ({3} found). Searched in: {2}", PropertyName, TypeToReadeable(RequiredType), ParentObject.Path, FoundValue);
+                return string.Format("Property of an invalid type. {0} needs to be {1} ({3} found). Searched in: {2}", this.PropertyName, TypeToReadeable(this.RequiredType), this.ParentObject.Path, this.FoundValue);
             }
         }
 

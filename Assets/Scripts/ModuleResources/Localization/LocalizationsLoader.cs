@@ -8,7 +8,7 @@ namespace Assets.Scripts.ModuleResources.Localization
     {
         private static readonly string TAG = "LocalizationsLoader";
 
-        protected override List<Localization> loadResource(ResourceLocation resourceLocation)
+        protected override List<Localization> LoadResource(ResourceLocation resourceLocation)
         {
             List<Localization> localizations = new List<Localization>();
             string path = resourceLocation.GetPath();

@@ -10,13 +10,13 @@ namespace Assets.Scripts.ModuleResources.Exceptions
 
         public InvalidPropertyNameException(string propertyName, JObject parentJObject)
         {
-            PropertyName = propertyName;
-            ParentJObject = parentJObject;
+            this.PropertyName = propertyName;
+            this.ParentJObject = parentJObject;
         }
 
         public override string ToString()
         {
-            return string.Format("JSON porperty name cannot be {0}. Parent JObject: {1}", PropertyName, ParentJObject.Path);
+            return string.Format("JSON porperty name cannot be {0}. Parent JObject: {1}", this.PropertyName, this.ParentJObject.Path);
         }
     }
 }

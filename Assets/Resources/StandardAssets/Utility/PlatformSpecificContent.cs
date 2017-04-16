@@ -34,15 +34,15 @@ namespace UnityStandardAssets.Utility
 
         private void OnEnable()
         {
-            EditorUserBuildSettings.activeBuildTargetChanged += Update;
-            EditorApplication.update += Update;
+            EditorUserBuildSettings.activeBuildTargetChanged += this.Update;
+            EditorApplication.update += this.Update;
         }
 
 
         private void OnDisable()
         {
-            EditorUserBuildSettings.activeBuildTargetChanged -= Update;
-            EditorApplication.update -= Update;
+            EditorUserBuildSettings.activeBuildTargetChanged -= this.Update;
+            EditorApplication.update -= this.Update;
         }
 
 
@@ -65,7 +65,7 @@ namespace UnityStandardAssets.Utility
 #endif
 
 #if !(UNITY_IPHONE || UNITY_ANDROID || UNITY_WP8 || UNITY_TIZEN || UNITY_STV )
-            if (m_BuildTargetGroup == BuildTargetGroup.Mobile)
+            if (this.m_BuildTargetGroup == BuildTargetGroup.Mobile)
             {
                 EnableContent(false);
             }
@@ -79,9 +79,9 @@ namespace UnityStandardAssets.Utility
 
         private void EnableContent(bool enabled)
         {
-            if (m_Content.Length > 0)
+            if (this.m_Content.Length > 0)
             {
-                foreach (var g in m_Content)
+                foreach (var g in this.m_Content)
                 {
                     if (g != null)
                     {
@@ -89,16 +89,16 @@ namespace UnityStandardAssets.Utility
                     }
                 }
             }
-            if (m_ChildrenOfThisObject)
+            if (this.m_ChildrenOfThisObject)
             {
-                foreach (Transform t in transform)
+                foreach (Transform t in this.transform)
                 {
                     t.gameObject.SetActive(enabled);
                 }
             }
-            if (m_MonoBehaviours.Length > 0)
+            if (this.m_MonoBehaviours.Length > 0)
             {
-                foreach (var monoBehaviour in m_MonoBehaviours)
+                foreach (var monoBehaviour in this.m_MonoBehaviours)
                 {
                     monoBehaviour.enabled = enabled;
                 }

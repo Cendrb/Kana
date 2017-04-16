@@ -17,22 +17,22 @@ namespace UnityStandardAssets.Utility
         private void OnEnable()
         {
             // active object starts from first in array
-            m_CurrentActiveObject = 0;
-            camSwitchButton.text = objects[m_CurrentActiveObject].name;
+            this.m_CurrentActiveObject = 0;
+            this.camSwitchButton.text = this.objects[this.m_CurrentActiveObject].name;
         }
 
 
         public void NextCamera()
         {
-            int nextactiveobject = m_CurrentActiveObject + 1 >= objects.Length ? 0 : m_CurrentActiveObject + 1;
+            int nextactiveobject = this.m_CurrentActiveObject + 1 >= this.objects.Length ? 0 : this.m_CurrentActiveObject + 1;
 
-            for (int i = 0; i < objects.Length; i++)
+            for (int i = 0; i < this.objects.Length; i++)
             {
-                objects[i].SetActive(i == nextactiveobject);
+                this.objects[i].SetActive(i == nextactiveobject);
             }
 
-            m_CurrentActiveObject = nextactiveobject;
-            camSwitchButton.text = objects[m_CurrentActiveObject].name;
+            this.m_CurrentActiveObject = nextactiveobject;
+            this.camSwitchButton.text = this.objects[this.m_CurrentActiveObject].name;
         }
     }
 }

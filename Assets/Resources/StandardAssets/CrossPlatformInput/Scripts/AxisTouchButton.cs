@@ -18,15 +18,15 @@ namespace UnityStandardAssets.CrossPlatformInput
 
 		void OnEnable()
 		{
-			if (!CrossPlatformInputManager.AxisExists(axisName))
+			if (!CrossPlatformInputManager.AxisExists(this.axisName))
 			{
-				// if the axis doesnt exist create a new one in cross platform input
-				m_Axis = new CrossPlatformInputManager.VirtualAxis(axisName);
-				CrossPlatformInputManager.RegisterVirtualAxis(m_Axis);
+                // if the axis doesnt exist create a new one in cross platform input
+                this.m_Axis = new CrossPlatformInputManager.VirtualAxis(this.axisName);
+				CrossPlatformInputManager.RegisterVirtualAxis(this.m_Axis);
 			}
 			else
 			{
-				m_Axis = CrossPlatformInputManager.VirtualAxisReference(axisName);
+                this.m_Axis = CrossPlatformInputManager.VirtualAxisReference(this.axisName);
 			}
 			FindPairedButton();
 		}
@@ -41,9 +41,9 @@ namespace UnityStandardAssets.CrossPlatformInput
 			{
 				for (int i = 0; i < otherAxisButtons.Length; i++)
 				{
-					if (otherAxisButtons[i].axisName == axisName && otherAxisButtons[i] != this)
+					if (otherAxisButtons[i].axisName == this.axisName && otherAxisButtons[i] != this)
 					{
-						m_PairedWith = otherAxisButtons[i];
+                        this.m_PairedWith = otherAxisButtons[i];
 					}
 				}
 			}
@@ -51,25 +51,25 @@ namespace UnityStandardAssets.CrossPlatformInput
 
 		void OnDisable()
 		{
-			// The object is disabled so remove it from the cross platform input system
-			m_Axis.Remove();
+            // The object is disabled so remove it from the cross platform input system
+            this.m_Axis.Remove();
 		}
 
 
 		public void OnPointerDown(PointerEventData data)
 		{
-			if (m_PairedWith == null)
+			if (this.m_PairedWith == null)
 			{
 				FindPairedButton();
 			}
-			// update the axis and record that the button has been pressed this frame
-			m_Axis.Update(Mathf.MoveTowards(m_Axis.GetValue, axisValue, responseSpeed * Time.deltaTime));
+            // update the axis and record that the button has been pressed this frame
+            this.m_Axis.Update(Mathf.MoveTowards(this.m_Axis.GetValue, this.axisValue, this.responseSpeed * Time.deltaTime));
 		}
 
 
 		public void OnPointerUp(PointerEventData data)
 		{
-			m_Axis.Update(Mathf.MoveTowards(m_Axis.GetValue, 0, responseSpeed * Time.deltaTime));
+            this.m_Axis.Update(Mathf.MoveTowards(this.m_Axis.GetValue, 0, this.responseSpeed * Time.deltaTime));
 		}
 	}
 }

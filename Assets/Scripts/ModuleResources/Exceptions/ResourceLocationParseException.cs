@@ -8,12 +8,12 @@ namespace Assets.Scripts.ModuleResources.Exceptions
 
         public ResourceLocationParseException(string resourceLocationString)
         {
-            ResourceLocationString = resourceLocationString;
+            this.ResourceLocationString = resourceLocationString;
         }
 
         public override string ToString()
         {
-            return string.Format("Resource location {0} is not valid. (module:name syntax is required)", ResourceLocationString);
+            return string.Format("Resource location {0} is not valid. (module:name syntax is required)", this.ResourceLocationString);
         }
     }
 }

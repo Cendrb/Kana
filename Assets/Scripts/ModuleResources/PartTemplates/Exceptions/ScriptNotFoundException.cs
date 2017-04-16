@@ -9,13 +9,13 @@ namespace Assets.Scripts.ModuleResources.PartTemplates.Exceptions
 
         public ScriptNotFoundException(string module, string scriptName)
         {
-            Module = module;
-            ScriptName = scriptName;
+            this.Module = module;
+            this.ScriptName = scriptName;
         }
 
         public override string ToString()
         {
-            return string.Format("Script class {0} was not found in module {1} (needs to extend Part)", ScriptName, Module);
+            return string.Format("Script class {0} was not found in module {1} (needs to extend Part)", this.ScriptName, this.Module);
         }
     }
 }

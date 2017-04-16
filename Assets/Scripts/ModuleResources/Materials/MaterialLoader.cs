@@ -7,7 +7,7 @@ namespace Assets.Scripts.ModuleResources.Materials
     {
         private static readonly Material DEFAULT_MATERIAL = UnityEngine.Resources.Load<Material>("Materials/default");
 
-        protected override Material loadResource(ResourceLocation resourceLocation)
+        protected override Material LoadResource(ResourceLocation resourceLocation)
         {
             string resourcePath = resourceLocation.GetPath();
             byte[] bytes = File.ReadAllBytes(resourcePath);

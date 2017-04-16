@@ -12,10 +12,10 @@ public class SceneLauncher : MonoBehaviour
 
     public void Launch(string sceneName)
     {
-        if (currentOperation == null || currentOperation.isDone)
+        if (this.currentOperation == null || this.currentOperation.isDone)
         {
-            currentOperation = SceneManager.LoadSceneAsync(sceneName);
-            currentOperation.allowSceneActivation = true;
+            this.currentOperation = SceneManager.LoadSceneAsync(sceneName);
+            this.currentOperation.allowSceneActivation = true;
         }
         else
         {
@@ -25,18 +25,18 @@ public class SceneLauncher : MonoBehaviour
 
     private void Start()
     {
-        if (loadingOverlayTexture == null)
+        if (this.loadingOverlayTexture == null)
             throw new ArgumentException("loadingOverlayTexture cannot be null");
 
-        guiStyle = new GUIStyle {fontSize = 69, alignment = TextAnchor.LowerRight};
+        this.guiStyle = new GUIStyle {fontSize = 69, alignment = TextAnchor.LowerRight};
     }
 
     private void OnGUI()
     {
-        if (currentOperation != null && !currentOperation.isDone)
+        if (this.currentOperation != null && !this.currentOperation.isDone)
         {
-            GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), loadingOverlayTexture);
-            GUI.Label(new Rect(Screen.width - 400, Screen.height - 100, 400, 100), "Loading...", guiStyle);
+            GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), this.loadingOverlayTexture);
+            GUI.Label(new Rect(Screen.width - 400, Screen.height - 100, 400, 100), "Loading...", this.guiStyle);
         }
     }
 }

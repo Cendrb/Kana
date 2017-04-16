@@ -17,21 +17,21 @@ namespace UnityStandardAssets.Utility
 
         private void Start()
         {
-            m_FpsNextPeriod = Time.realtimeSinceStartup + fpsMeasurePeriod;
-            m_Text = GetComponent<Text>();
+            this.m_FpsNextPeriod = Time.realtimeSinceStartup + fpsMeasurePeriod;
+            this.m_Text = GetComponent<Text>();
         }
 
 
         private void Update()
         {
             // measure average frames per second
-            m_FpsAccumulator++;
-            if (Time.realtimeSinceStartup > m_FpsNextPeriod)
+            this.m_FpsAccumulator++;
+            if (Time.realtimeSinceStartup > this.m_FpsNextPeriod)
             {
-                m_CurrentFps = (int) (m_FpsAccumulator/fpsMeasurePeriod);
-                m_FpsAccumulator = 0;
-                m_FpsNextPeriod += fpsMeasurePeriod;
-                m_Text.text = string.Format(display, m_CurrentFps);
+                this.m_CurrentFps = (int) (this.m_FpsAccumulator /fpsMeasurePeriod);
+                this.m_FpsAccumulator = 0;
+                this.m_FpsNextPeriod += fpsMeasurePeriod;
+                this.m_Text.text = string.Format(display, this.m_CurrentFps);
             }
         }
     }

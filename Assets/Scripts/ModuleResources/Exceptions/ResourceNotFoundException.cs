@@ -8,14 +8,14 @@ namespace Assets.Scripts.ModuleResources.Exceptions
 
         public ResourceNotFoundException(ResourceLocation resource)
         {
-            Resource = resource;
+            this.Resource = resource;
         }
 
         public override string ToString()
         {
-            return string.Format("Resource {0} of type {1} was not found", 
-                Resource.ToResourceLocationString(),
-                Resource.Type);
+            return string.Format("Resource {0} of type {1} was not found",
+                this.Resource.ToResourceLocationString(),
+                this.Resource.Type);
         }
     }
 }

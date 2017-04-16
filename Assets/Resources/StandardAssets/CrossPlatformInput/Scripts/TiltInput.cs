@@ -45,10 +45,10 @@ namespace UnityStandardAssets.CrossPlatformInput
 
         private void OnEnable()
         {
-            if (mapping.type == AxisMapping.MappingType.NamedAxis)
+            if (this.mapping.type == AxisMapping.MappingType.NamedAxis)
             {
-                m_SteerAxis = new CrossPlatformInputManager.VirtualAxis(mapping.axisName);
-                CrossPlatformInputManager.RegisterVirtualAxis(m_SteerAxis);
+                this.m_SteerAxis = new CrossPlatformInputManager.VirtualAxis(this.mapping.axisName);
+                CrossPlatformInputManager.RegisterVirtualAxis(this.m_SteerAxis);
             }
         }
 
@@ -58,24 +58,24 @@ namespace UnityStandardAssets.CrossPlatformInput
             float angle = 0;
             if (Input.acceleration != Vector3.zero)
             {
-                switch (tiltAroundAxis)
+                switch (this.tiltAroundAxis)
                 {
                     case AxisOptions.ForwardAxis:
                         angle = Mathf.Atan2(Input.acceleration.x, -Input.acceleration.y)*Mathf.Rad2Deg +
-                                centreAngleOffset;
+                                this.centreAngleOffset;
                         break;
                     case AxisOptions.SidewaysAxis:
                         angle = Mathf.Atan2(Input.acceleration.z, -Input.acceleration.y)*Mathf.Rad2Deg +
-                                centreAngleOffset;
+                                this.centreAngleOffset;
                         break;
                 }
             }
 
-            float axisValue = Mathf.InverseLerp(-fullTiltAngle, fullTiltAngle, angle)*2 - 1;
-            switch (mapping.type)
+            float axisValue = Mathf.InverseLerp(-this.fullTiltAngle, this.fullTiltAngle, angle)*2 - 1;
+            switch (this.mapping.type)
             {
                 case AxisMapping.MappingType.NamedAxis:
-                    m_SteerAxis.Update(axisValue);
+                    this.m_SteerAxis.Update(axisValue);
                     break;
                 case AxisMapping.MappingType.MousePositionX:
                     CrossPlatformInputManager.SetVirtualMousePositionX(axisValue*Screen.width);
@@ -92,7 +92,7 @@ namespace UnityStandardAssets.CrossPlatformInput
 
         private void OnDisable()
         {
-            m_SteerAxis.Remove();
+            this.m_SteerAxis.Remove();
         }
     }
 }

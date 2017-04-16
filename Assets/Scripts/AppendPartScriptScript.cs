@@ -15,10 +15,10 @@ namespace Assets.Scripts.PartScripts
 
         private void Start()
         {
-            if (!string.IsNullOrEmpty(ModuleName) && !string.IsNullOrEmpty(PartName))
+            if (!string.IsNullOrEmpty(this.ModuleName) && !string.IsNullOrEmpty(this.PartName))
             {
-                PartTemplate template = ModuleLoader.GetPartTemplate(new ResourceLocation(ModuleName, PartName, ResourceType.PartTemplate));
-                Part.AppendNewScriptOn(template, gameObject).LoadFrom(template, null);
+                PartTemplate template = ModuleLoader.GetPartTemplate(new ResourceLocation(this.ModuleName, this.PartName, ResourceType.PartTemplate));
+                Part.AppendNewScriptOn(template, this.gameObject).LoadFrom(template, null);
             }
         }
     }

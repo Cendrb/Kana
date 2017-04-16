@@ -13,7 +13,7 @@ namespace Assets.Scripts.ModuleResources
     {
         private static readonly string TAG = "ModelLoader";
 
-        protected override Model loadResource(ResourceLocation resourceLocation)
+        protected override Model LoadResource(ResourceLocation resourceLocation)
         {
             string jsonPath = resourceLocation.GetPath();
             try
@@ -41,14 +41,19 @@ namespace Assets.Scripts.ModuleResources
                 bool isStandaloneModel = relativeArray == null;
 
                 if (isStandaloneModel && name != modelResourceLocation.Name)
+                {
                     throw new InvalidResourceNameException(modelResourceLocation, name);
+                }
 
                 string externalModelResourceString = JSONUtil.ReadWithDefaultValue<string>(jObject, "external_model", null);
                 if (externalModelResourceString == null)
                 {
                     ResourceLocation texture = ResourceLocation.Parse(JSONUtil.ReadProperty<string>(jObject, "texture"), ResourceType.Texture);
                     if(!texture.FileExists())
+                    {
                         throw new ResourceNotFoundException(texture);
+                    }
+
                     int renderLayer = JSONUtil.ReadProperty<int>(jObject, "render_layer");
 
                     List<ModelPart> parts = new List<ModelPart>();
@@ -113,13 +118,19 @@ namespace Assets.Scripts.ModuleResources
 
                     ResourceLocation modelLocation = ResourceLocation.Parse(externalModelResourceString, ResourceType.Model);
 
-                    Model model = LoadResource(modelLocation);
+                    Model model = LoadResourceAndCache(modelLocation);
                     RenderedModel renderedModel = RenderedModel.CreateFromSubModel(model);
                     renderedModel.Relative = JSONUtil.ArrayToVector2(relativeArray);
                     if (texture != null)
+                    {
                         renderedModel.Texture = texture;
+                    }
+
                     if (renderLayer.HasValue)
+                    {
                         renderedModel.RenderLayer = renderLayer.Value;
+                    }
+
                     return renderedModel;
                 }
             }

@@ -207,33 +207,33 @@ namespace UnityStandardAssets.CrossPlatformInput
 			public VirtualAxis(string name, bool matchToInputSettings)
 			{
 				this.name = name;
-				matchWithInputManager = matchToInputSettings;
+                this.matchWithInputManager = matchToInputSettings;
 			}
 
 
 			// removes an axes from the cross platform input system
 			public void Remove()
 			{
-				UnRegisterVirtualAxis(name);
+				UnRegisterVirtualAxis(this.name);
 			}
 
 
 			// a controller gameobject (eg. a virtual thumbstick) should update this class
 			public void Update(float value)
 			{
-				m_Value = value;
+                this.m_Value = value;
 			}
 
 
 			public float GetValue
 			{
-				get { return m_Value; }
+				get { return this.m_Value; }
 			}
 
 
 			public float GetValueRaw
 			{
-				get { return m_Value; }
+				get { return this.m_Value; }
 			}
 		}
 
@@ -259,41 +259,41 @@ namespace UnityStandardAssets.CrossPlatformInput
 			public VirtualButton(string name, bool matchToInputSettings)
 			{
 				this.name = name;
-				matchWithInputManager = matchToInputSettings;
+                this.matchWithInputManager = matchToInputSettings;
 			}
 
 
 			// A controller gameobject should call this function when the button is pressed down
 			public void Pressed()
 			{
-				if (m_Pressed)
+				if (this.m_Pressed)
 				{
 					return;
 				}
-				m_Pressed = true;
-				m_LastPressedFrame = Time.frameCount;
+                this.m_Pressed = true;
+                this.m_LastPressedFrame = Time.frameCount;
 			}
 
 
 			// A controller gameobject should call this function when the button is released
 			public void Released()
 			{
-				m_Pressed = false;
-				m_ReleasedFrame = Time.frameCount;
+                this.m_Pressed = false;
+                this.m_ReleasedFrame = Time.frameCount;
 			}
 
 
 			// the controller gameobject should call Remove when the button is destroyed or disabled
 			public void Remove()
 			{
-				UnRegisterVirtualButton(name);
+				UnRegisterVirtualButton(this.name);
 			}
 
 
 			// these are the states of the button which can be read via the cross platform input system
 			public bool GetButton
 			{
-				get { return m_Pressed; }
+				get { return this.m_Pressed; }
 			}
 
 
@@ -301,7 +301,7 @@ namespace UnityStandardAssets.CrossPlatformInput
 			{
 				get
 				{
-					return m_LastPressedFrame - Time.frameCount == -1;
+					return this.m_LastPressedFrame - Time.frameCount == -1;
 				}
 			}
 
@@ -310,7 +310,7 @@ namespace UnityStandardAssets.CrossPlatformInput
 			{
 				get
 				{
-					return (m_ReleasedFrame == Time.frameCount - 1);
+					return (this.m_ReleasedFrame == Time.frameCount - 1);
 				}
 			}
 		}

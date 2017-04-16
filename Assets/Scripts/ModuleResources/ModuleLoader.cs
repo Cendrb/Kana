@@ -27,18 +27,18 @@ namespace Assets.Scripts.ModuleResources
             modules.Add("vanilla");
             foreach (string module in modules)
             {
-                Localizer.AddLang(LocalizationsLoader.LoadResource(new ResourceLocation(module, language, ResourceType.Lang)));
+                Localizer.AddLang(LocalizationsLoader.LoadResourceAndCache(new ResourceLocation(module, language, ResourceType.Lang)));
 
                 foreach (ResourceLocation resourceLocation in ResourceLocation.GetResourceLocations(module, ResourceType.PartTemplate))
                 {
-                    PartTemplateLoader.LoadResource(resourceLocation);
+                    PartTemplateLoader.LoadResourceAndCache(resourceLocation);
                 }
             }
         }
 
         public static Material GetMaterial(ResourceLocation textureLocation)
         {
-            return MaterialLoader.LoadResource(textureLocation);
+            return MaterialLoader.LoadResourceAndCache(textureLocation);
         }
 
         public static Model LoadModel(ResourceLocation parentModelLocation, JObject jModel)
@@ -48,7 +48,7 @@ namespace Assets.Scripts.ModuleResources
 
         public static PartTemplate GetPartTemplate(ResourceLocation partTemplateLocation)
         {
-            return PartTemplateLoader.LoadResource(partTemplateLocation);
+            return PartTemplateLoader.LoadResourceAndCache(partTemplateLocation);
         }
 
         public static List<PartTemplate> GetLoadedPartTemplates()

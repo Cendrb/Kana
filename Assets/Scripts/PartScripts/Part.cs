@@ -30,12 +30,12 @@ namespace Assets.Scripts.PartScripts
 
         public void LoadFrom(PartTemplate template, Vehicle parentVehicle)
         {
-            ParentVehicle = parentVehicle;
-            ResourceLocation = template.ResourceLocation;
-            LocalizedName = template.LocalizedName;
-            ShopProperties = template.ShopProp; // TODO create new instance instead of linking?
-            ScriptProperties = template.ScriptProp; // TODO create new instance instead of linking?
-            Models = template.Models;
+            this.ParentVehicle = parentVehicle;
+            this.ResourceLocation = template.ResourceLocation;
+            this.LocalizedName = template.LocalizedName;
+            this.ShopProperties = template.ShopProp; // TODO create new instance instead of linking?
+            this.ScriptProperties = template.ScriptProp; // TODO create new instance instead of linking?
+            this.Models = template.Models;
             Type thisType = GetType();
             foreach (KeyValuePair<string, object> customScriptProperty in template.CustomScriptProp)
             {
@@ -48,17 +48,17 @@ namespace Assets.Scripts.PartScripts
                     Log.Error("Part#LoadFrom", string.Format("Property {0} was not found on type {1}", customScriptProperty.Key, thisType.Name));
             }
 
-            List<RenderedModel> renderedModels = Models.OrderBy(model => model.RenderLayer).Where(model => model.RenderLayer != -1).ToList();
+            List<RenderedModel> renderedModels = this.Models.OrderBy(model => model.RenderLayer).Where(model => model.RenderLayer != -1).ToList();
 
             foreach (RenderedModel model in renderedModels)
             {
-                initGOForModel(model, gameObject);
+                initGOForModel(model, this.gameObject);
             }
         }
 
         public bool IsPartOfVehicle()
         {
-            return ParentVehicle != null;
+            return this.ParentVehicle != null;
         }
 
         private void initGOForModel(RenderedModel model, GameObject parentGameObject)
@@ -117,7 +117,7 @@ namespace Assets.Scripts.PartScripts
                     for (int i = 0; i < jointsPerEdge; i++)
                     {
                         Vector2 jointPosition = (coor1 + (i + 1) * partEdgeVector) + part.Relative + model.Relative;
-                        JointPoints.Add(new Joint(jointPosition, jointRotation));
+                        this.JointPoints.Add(new Joint(jointPosition, jointRotation));
                     }
                 }
             }

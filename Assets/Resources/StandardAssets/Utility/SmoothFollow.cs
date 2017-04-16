@@ -27,35 +27,35 @@ namespace UnityStandardAssets.Utility
 		void LateUpdate()
 		{
 			// Early out if we don't have a target
-			if (!target)
+			if (!this.target)
 				return;
 
 			// Calculate the current rotation angles
-			var wantedRotationAngle = target.eulerAngles.y;
-			var wantedHeight = target.position.y + height;
+			var wantedRotationAngle = this.target.eulerAngles.y;
+			var wantedHeight = this.target.position.y + this.height;
 
-			var currentRotationAngle = transform.eulerAngles.y;
-			var currentHeight = transform.position.y;
+			var currentRotationAngle = this.transform.eulerAngles.y;
+			var currentHeight = this.transform.position.y;
 
 			// Damp the rotation around the y-axis
-			currentRotationAngle = Mathf.LerpAngle(currentRotationAngle, wantedRotationAngle, rotationDamping * Time.deltaTime);
+			currentRotationAngle = Mathf.LerpAngle(currentRotationAngle, wantedRotationAngle, this.rotationDamping * Time.deltaTime);
 
 			// Damp the height
-			currentHeight = Mathf.Lerp(currentHeight, wantedHeight, heightDamping * Time.deltaTime);
+			currentHeight = Mathf.Lerp(currentHeight, wantedHeight, this.heightDamping * Time.deltaTime);
 
 			// Convert the angle into a rotation
 			var currentRotation = Quaternion.Euler(0, currentRotationAngle, 0);
 
-			// Set the position of the camera on the x-z plane to:
-			// distance meters behind the target
-			transform.position = target.position;
-			transform.position -= currentRotation * Vector3.forward * distance;
+            // Set the position of the camera on the x-z plane to:
+            // distance meters behind the target
+            this.transform.position = this.target.position;
+            this.transform.position -= currentRotation * Vector3.forward * this.distance;
 
-			// Set the height of the camera
-			transform.position = new Vector3(transform.position.x ,currentHeight , transform.position.z);
+            // Set the height of the camera
+            this.transform.position = new Vector3(this.transform.position.x ,currentHeight , this.transform.position.z);
 
-			// Always look at the target
-			transform.LookAt(target);
+            // Always look at the target
+            this.transform.LookAt(this.target);
 		}
 	}
 }

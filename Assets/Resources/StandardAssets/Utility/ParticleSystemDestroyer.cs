@@ -25,18 +25,18 @@ namespace UnityStandardAssets.Utility
             // find out the maximum lifetime of any particles in this effect
             foreach (var system in systems)
             {
-                m_MaxLifetime = Mathf.Max(system.startLifetime, m_MaxLifetime);
+                this.m_MaxLifetime = Mathf.Max(system.startLifetime, this.m_MaxLifetime);
             }
 
             // wait for random duration
 
-            float stopTime = Time.time + Random.Range(minDuration, maxDuration);
+            float stopTime = Time.time + Random.Range(this.minDuration, this.maxDuration);
 
-            while (Time.time < stopTime || m_EarlyStop)
+            while (Time.time < stopTime || this.m_EarlyStop)
             {
                 yield return null;
             }
-            Debug.Log("stopping " + name);
+            Debug.Log("stopping " + this.name);
 
             // turn off emission
             foreach (var system in systems)
@@ -47,16 +47,16 @@ namespace UnityStandardAssets.Utility
             BroadcastMessage("Extinguish", SendMessageOptions.DontRequireReceiver);
 
             // wait for any remaining particles to expire
-            yield return new WaitForSeconds(m_MaxLifetime);
+            yield return new WaitForSeconds(this.m_MaxLifetime);
 
-            Destroy(gameObject);
+            Destroy(this.gameObject);
         }
 
 
         public void Stop()
         {
             // stops the particle system early
-            m_EarlyStop = true;
+            this.m_EarlyStop = true;
         }
     }
 }

@@ -7,27 +7,27 @@ namespace Assets.Scripts.ModuleResources
     {
         private Dictionary<string, TLoadedResource> loadedResources = new Dictionary<string, TLoadedResource>();
 
-        public TLoadedResource LoadResource(ResourceLocation resourceLocation)
+        public TLoadedResource LoadResourceAndCache(ResourceLocation resourceLocation)
         {
             TLoadedResource resource;
-            if (loadedResources.TryGetValue(resourceLocation.ToResourceLocationString(), out resource))
+            if (this.loadedResources.TryGetValue(resourceLocation.ToResourceLocationString(), out resource))
             {
                 return resource;
             }
             else
             {
                 //resourceLocation.Verify(); - all ResourceLocations should already be verified
-                resource = loadResource(resourceLocation);
-                loadedResources.Add(resourceLocation.ToResourceLocationString(), resource);
+                resource = LoadResource(resourceLocation);
+                this.loadedResources.Add(resourceLocation.ToResourceLocationString(), resource);
                 return resource;
             }
         }
 
-        protected abstract TLoadedResource loadResource(ResourceLocation resourceLocation);
+        protected abstract TLoadedResource LoadResource(ResourceLocation resourceLocation);
 
         public List<TLoadedResource> GetAllResources()
         {
-            return loadedResources.Values.ToList();
+            return this.loadedResources.Values.ToList();
         }
     }
 }

@@ -21,7 +21,7 @@ namespace UnityStandardAssets.Utility
 
         private void Start()
         {
-            m_OriginalStrength = sunLight.shadowStrength;
+            this.m_OriginalStrength = this.sunLight.shadowStrength;
         }
 
 
@@ -30,22 +30,22 @@ namespace UnityStandardAssets.Utility
         {
             Ray ray = new Ray(Camera.main.transform.position, -Vector3.up);
             RaycastHit hit;
-            float height = transform.position.y;
+            float height = this.transform.position.y;
             if (Physics.Raycast(ray, out hit))
             {
                 height = hit.distance;
             }
 
-            if (Mathf.Abs(height - m_SmoothHeight) > 1)
+            if (Mathf.Abs(height - this.m_SmoothHeight) > 1)
             {
-                m_SmoothHeight = Mathf.SmoothDamp(m_SmoothHeight, height, ref m_ChangeSpeed, adaptTime);
+                this.m_SmoothHeight = Mathf.SmoothDamp(this.m_SmoothHeight, height, ref this.m_ChangeSpeed, this.adaptTime);
             }
 
-            float i = Mathf.InverseLerp(minHeight, maxHeight, m_SmoothHeight);
+            float i = Mathf.InverseLerp(this.minHeight, this.maxHeight, this.m_SmoothHeight);
 
-            QualitySettings.shadowDistance = Mathf.Lerp(minShadowDistance, maxShadowDistance, i);
-            sunLight.shadowBias = Mathf.Lerp(minShadowBias, maxShadowBias, 1 - ((1 - i)*(1 - i)));
-            sunLight.shadowStrength = Mathf.Lerp(m_OriginalStrength, 0, i);
+            QualitySettings.shadowDistance = Mathf.Lerp(this.minShadowDistance, this.maxShadowDistance, i);
+            this.sunLight.shadowBias = Mathf.Lerp(this.minShadowBias, this.maxShadowBias, 1 - ((1 - i)*(1 - i)));
+            this.sunLight.shadowStrength = Mathf.Lerp(this.m_OriginalStrength, 0, i);
         }
     }
 }

@@ -45,15 +45,15 @@ namespace UnityStandardAssets.CrossPlatformInput
 
         private void OnEnable()
         {
-            EditorUserBuildSettings.activeBuildTargetChanged += Update;
-            EditorApplication.update += Update;
+            EditorUserBuildSettings.activeBuildTargetChanged += this.Update;
+            EditorApplication.update += this.Update;
         }
 
 
         private void OnDisable()
         {
-            EditorUserBuildSettings.activeBuildTargetChanged -= Update;
-            EditorApplication.update -= Update;
+            EditorUserBuildSettings.activeBuildTargetChanged -= this.Update;
+            EditorApplication.update -= this.Update;
         }
 
 
@@ -76,7 +76,7 @@ namespace UnityStandardAssets.CrossPlatformInput
 
         private void EnableControlRig(bool enabled)
         {
-            foreach (Transform t in transform)
+            foreach (Transform t in this.transform)
             {
                 t.gameObject.SetActive(enabled);
             }

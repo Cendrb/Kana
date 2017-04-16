@@ -26,13 +26,13 @@ namespace Assets.Scripts.Util
         void edgeTrace(ModelPartEdge edge)
         {
             // Add this edge's vert1 coords to the point list
-            points.Add(vertices[edge.Vertex1]);
+            this.points.Add(this.vertices[edge.Vertex1]);
 
             // Remove this edge
-            edges.Remove(edge);
+            this.edges.Remove(edge);
 
             // Find next edge that contains vert2
-            foreach (ModelPartEdge nextEdge in edges)
+            foreach (ModelPartEdge nextEdge in this.edges)
             {
                 if (nextEdge.Vertex1 == edge.Vertex2)
                 {
@@ -42,24 +42,24 @@ namespace Assets.Scripts.Util
             }
 
             // No next edge found, create a path based on these points
-            paths.Add(currentPathIndex, points.ToArray());
+            this.paths.Add(this.currentPathIndex, this.points.ToArray());
 
             // Empty path
-            points.Clear();
+            this.points.Clear();
 
             // Increment path index
-            currentPathIndex++;
+            this.currentPathIndex++;
 
             // Start next edge trace if there are edges left
-            if (edges.Count > 0)
+            if (this.edges.Count > 0)
             {
-                edgeTrace(edges[0]);
+                edgeTrace(this.edges[0]);
             }
         }
 
         public Dictionary<int, Vector2[]> GetPaths()
         {
-            return paths;
+            return this.paths;
         }
     }
 }

@@ -9,7 +9,7 @@ namespace Assets.Scripts.ModuleResources.Exceptions
 
         public UnsupportedTokenException(JTokenType type)
         {
-            Type = type;
+            this.Type = type;
         }
 
         public override string ToString()

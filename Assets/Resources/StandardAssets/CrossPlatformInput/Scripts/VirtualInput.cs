@@ -21,31 +21,31 @@ namespace UnityStandardAssets.CrossPlatformInput
 
         public bool AxisExists(string name)
         {
-            return m_VirtualAxes.ContainsKey(name);
+            return this.m_VirtualAxes.ContainsKey(name);
         }
 
         public bool ButtonExists(string name)
         {
-            return m_VirtualButtons.ContainsKey(name);
+            return this.m_VirtualButtons.ContainsKey(name);
         }
 
 
         public void RegisterVirtualAxis(CrossPlatformInputManager.VirtualAxis axis)
         {
             // check if we already have an axis with that name and log and error if we do
-            if (m_VirtualAxes.ContainsKey(axis.name))
+            if (this.m_VirtualAxes.ContainsKey(axis.name))
             {
                 Debug.LogError("There is already a virtual axis named " + axis.name + " registered.");
             }
             else
             {
                 // add any new axes
-                m_VirtualAxes.Add(axis.name, axis);
+                this.m_VirtualAxes.Add(axis.name, axis);
 
                 // if we dont want to match with the input manager setting then revert to always using virtual
                 if (!axis.matchWithInputManager)
                 {
-                    m_AlwaysUseVirtual.Add(axis.name);
+                    this.m_AlwaysUseVirtual.Add(axis.name);
                 }
             }
         }
@@ -54,19 +54,19 @@ namespace UnityStandardAssets.CrossPlatformInput
         public void RegisterVirtualButton(CrossPlatformInputManager.VirtualButton button)
         {
             // check if already have a buttin with that name and log an error if we do
-            if (m_VirtualButtons.ContainsKey(button.name))
+            if (this.m_VirtualButtons.ContainsKey(button.name))
             {
                 Debug.LogError("There is already a virtual button named " + button.name + " registered.");
             }
             else
             {
                 // add any new buttons
-                m_VirtualButtons.Add(button.name, button);
+                this.m_VirtualButtons.Add(button.name, button);
 
                 // if we dont want to match to the input manager then always use a virtual axis
                 if (!button.matchWithInputManager)
                 {
-                    m_AlwaysUseVirtual.Add(button.name);
+                    this.m_AlwaysUseVirtual.Add(button.name);
                 }
             }
         }
@@ -75,9 +75,9 @@ namespace UnityStandardAssets.CrossPlatformInput
         public void UnRegisterVirtualAxis(string name)
         {
             // if we have an axis with that name then remove it from our dictionary of registered axes
-            if (m_VirtualAxes.ContainsKey(name))
+            if (this.m_VirtualAxes.ContainsKey(name))
             {
-                m_VirtualAxes.Remove(name);
+                this.m_VirtualAxes.Remove(name);
             }
         }
 
@@ -85,9 +85,9 @@ namespace UnityStandardAssets.CrossPlatformInput
         public void UnRegisterVirtualButton(string name)
         {
             // if we have a button with this name then remove it from our dictionary of registered buttons
-            if (m_VirtualButtons.ContainsKey(name))
+            if (this.m_VirtualButtons.ContainsKey(name))
             {
-                m_VirtualButtons.Remove(name);
+                this.m_VirtualButtons.Remove(name);
             }
         }
 
@@ -95,25 +95,25 @@ namespace UnityStandardAssets.CrossPlatformInput
         // returns a reference to a named virtual axis if it exists otherwise null
         public CrossPlatformInputManager.VirtualAxis VirtualAxisReference(string name)
         {
-            return m_VirtualAxes.ContainsKey(name) ? m_VirtualAxes[name] : null;
+            return this.m_VirtualAxes.ContainsKey(name) ? this.m_VirtualAxes[name] : null;
         }
 
 
         public void SetVirtualMousePositionX(float f)
         {
-            virtualMousePosition = new Vector3(f, virtualMousePosition.y, virtualMousePosition.z);
+            this.virtualMousePosition = new Vector3(f, this.virtualMousePosition.y, this.virtualMousePosition.z);
         }
 
 
         public void SetVirtualMousePositionY(float f)
         {
-            virtualMousePosition = new Vector3(virtualMousePosition.x, f, virtualMousePosition.z);
+            this.virtualMousePosition = new Vector3(this.virtualMousePosition.x, f, this.virtualMousePosition.z);
         }
 
 
         public void SetVirtualMousePositionZ(float f)
         {
-            virtualMousePosition = new Vector3(virtualMousePosition.x, virtualMousePosition.y, f);
+            this.virtualMousePosition = new Vector3(this.virtualMousePosition.x, this.virtualMousePosition.y, f);
         }
 
 

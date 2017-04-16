@@ -16,11 +16,11 @@ namespace UnityStandardAssets.Utility
         // Use this for initialization
         private void Start()
         {
-            originalStructure = new List<Transform>(GetComponentsInChildren<Transform>());
-            originalPosition = transform.position;
-            originalRotation = transform.rotation;
+            this.originalStructure = new List<Transform>(GetComponentsInChildren<Transform>());
+            this.originalPosition = this.transform.position;
+            this.originalRotation = this.transform.rotation;
 
-            Rigidbody = GetComponent<Rigidbody>();
+            this.Rigidbody = GetComponent<Rigidbody>();
         }
 
 
@@ -37,18 +37,18 @@ namespace UnityStandardAssets.Utility
             // remove any gameobjects added (fire, skid trails, etc)
             foreach (var t in GetComponentsInChildren<Transform>())
             {
-                if (!originalStructure.Contains(t))
+                if (!this.originalStructure.Contains(t))
                 {
                     t.parent = null;
                 }
             }
 
-            transform.position = originalPosition;
-            transform.rotation = originalRotation;
-            if (Rigidbody)
+            this.transform.position = this.originalPosition;
+            this.transform.rotation = this.originalRotation;
+            if (this.Rigidbody)
             {
-                Rigidbody.velocity = Vector3.zero;
-                Rigidbody.angularVelocity = Vector3.zero;
+                this.Rigidbody.velocity = Vector3.zero;
+                this.Rigidbody.angularVelocity = Vector3.zero;
             }
 
             SendMessage("Reset");

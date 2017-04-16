@@ -41,21 +41,21 @@ namespace UnityStandardAssets.Utility
                 return;
             }
 
-            if (!m_SpringJoint)
+            if (!this.m_SpringJoint)
             {
                 var go = new GameObject("Rigidbody dragger");
                 Rigidbody body = go.AddComponent<Rigidbody>();
-                m_SpringJoint = go.AddComponent<SpringJoint>();
+                this.m_SpringJoint = go.AddComponent<SpringJoint>();
                 body.isKinematic = true;
             }
 
-            m_SpringJoint.transform.position = hit.point;
-            m_SpringJoint.anchor = Vector3.zero;
+            this.m_SpringJoint.transform.position = hit.point;
+            this.m_SpringJoint.anchor = Vector3.zero;
 
-            m_SpringJoint.spring = k_Spring;
-            m_SpringJoint.damper = k_Damper;
-            m_SpringJoint.maxDistance = k_Distance;
-            m_SpringJoint.connectedBody = hit.rigidbody;
+            this.m_SpringJoint.spring = k_Spring;
+            this.m_SpringJoint.damper = k_Damper;
+            this.m_SpringJoint.maxDistance = k_Distance;
+            this.m_SpringJoint.connectedBody = hit.rigidbody;
 
             StartCoroutine("DragObject", hit.distance);
         }
@@ -63,22 +63,22 @@ namespace UnityStandardAssets.Utility
 
         private IEnumerator DragObject(float distance)
         {
-            var oldDrag = m_SpringJoint.connectedBody.drag;
-            var oldAngularDrag = m_SpringJoint.connectedBody.angularDrag;
-            m_SpringJoint.connectedBody.drag = k_Drag;
-            m_SpringJoint.connectedBody.angularDrag = k_AngularDrag;
+            var oldDrag = this.m_SpringJoint.connectedBody.drag;
+            var oldAngularDrag = this.m_SpringJoint.connectedBody.angularDrag;
+            this.m_SpringJoint.connectedBody.drag = k_Drag;
+            this.m_SpringJoint.connectedBody.angularDrag = k_AngularDrag;
             var mainCamera = FindCamera();
             while (Input.GetMouseButton(0))
             {
                 var ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-                m_SpringJoint.transform.position = ray.GetPoint(distance);
+                this.m_SpringJoint.transform.position = ray.GetPoint(distance);
                 yield return null;
             }
-            if (m_SpringJoint.connectedBody)
+            if (this.m_SpringJoint.connectedBody)
             {
-                m_SpringJoint.connectedBody.drag = oldDrag;
-                m_SpringJoint.connectedBody.angularDrag = oldAngularDrag;
-                m_SpringJoint.connectedBody = null;
+                this.m_SpringJoint.connectedBody.drag = oldDrag;
+                this.m_SpringJoint.connectedBody.angularDrag = oldAngularDrag;
+                this.m_SpringJoint.connectedBody = null;
             }
         }
 

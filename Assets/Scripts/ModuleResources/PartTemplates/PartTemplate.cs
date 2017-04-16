@@ -19,14 +19,14 @@ namespace Assets.Scripts.ModuleResources.PartTemplates
 
         public PartTemplate(ResourceLocation resourceLocation, Type scriptType, string localizedName, string[] tags, ShopProperties shopProperties, ScriptProperties scriptProperties, CustomScriptProperties customScriptProperties, List<RenderedModel> models)
         {
-            ResourceLocation = resourceLocation;
-            ScriptType = scriptType;
-            LocalizedName = localizedName;
-            Tags = tags;
-            ShopProp = shopProperties;
-            ScriptProp = scriptProperties;
-            CustomScriptProp = customScriptProperties;
-            Models = models;
+            this.ResourceLocation = resourceLocation;
+            this.ScriptType = scriptType;
+            this.LocalizedName = localizedName;
+            this.Tags = tags;
+            this.ShopProp = shopProperties;
+            this.ScriptProp = scriptProperties;
+            this.CustomScriptProp = customScriptProperties;
+            this.Models = models;
         }
     }
 }

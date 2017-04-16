@@ -19,8 +19,8 @@ namespace UnityStandardAssets.Utility
         {
             CheckStatus(camera);
 
-            Camera = camera;
-            originalFov = camera.fieldOfView;
+            this.Camera = camera;
+            this.originalFov = camera.fieldOfView;
         }
 
 
@@ -31,7 +31,7 @@ namespace UnityStandardAssets.Utility
                 throw new Exception("FOVKick camera is null, please supply the camera to the constructor");
             }
 
-            if (IncreaseCurve == null)
+            if (this.IncreaseCurve == null)
             {
                 throw new Exception(
                     "FOVKick Increase curve is null, please define the curve for the field of view kicks");
@@ -41,16 +41,16 @@ namespace UnityStandardAssets.Utility
 
         public void ChangeCamera(Camera camera)
         {
-            Camera = camera;
+            this.Camera = camera;
         }
 
 
         public IEnumerator FOVKickUp()
         {
-            float t = Mathf.Abs((Camera.fieldOfView - originalFov)/FOVIncrease);
-            while (t < TimeToIncrease)
+            float t = Mathf.Abs((this.Camera.fieldOfView - this.originalFov)/ this.FOVIncrease);
+            while (t < this.TimeToIncrease)
             {
-                Camera.fieldOfView = originalFov + (IncreaseCurve.Evaluate(t/TimeToIncrease)*FOVIncrease);
+                this.Camera.fieldOfView = this.originalFov + (this.IncreaseCurve.Evaluate(t/ this.TimeToIncrease)* this.FOVIncrease);
                 t += Time.deltaTime;
                 yield return new WaitForEndOfFrame();
             }
@@ -59,15 +59,15 @@ namespace UnityStandardAssets.Utility
 
         public IEnumerator FOVKickDown()
         {
-            float t = Mathf.Abs((Camera.fieldOfView - originalFov)/FOVIncrease);
+            float t = Mathf.Abs((this.Camera.fieldOfView - this.originalFov)/ this.FOVIncrease);
             while (t > 0)
             {
-                Camera.fieldOfView = originalFov + (IncreaseCurve.Evaluate(t/TimeToDecrease)*FOVIncrease);
+                this.Camera.fieldOfView = this.originalFov + (this.IncreaseCurve.Evaluate(t/ this.TimeToDecrease)* this.FOVIncrease);
                 t -= Time.deltaTime;
                 yield return new WaitForEndOfFrame();
             }
             //make sure that fov returns to the original size
-            Camera.fieldOfView = originalFov;
+            this.Camera.fieldOfView = this.originalFov;
         }
     }
 }

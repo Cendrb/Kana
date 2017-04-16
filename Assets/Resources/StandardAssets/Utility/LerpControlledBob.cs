@@ -16,7 +16,7 @@ namespace UnityStandardAssets.Utility
         // provides the offset that can be used
         public float Offset()
         {
-            return m_Offset;
+            return this.m_Offset;
         }
 
 
@@ -24,22 +24,22 @@ namespace UnityStandardAssets.Utility
         {
             // make the camera move down slightly
             float t = 0f;
-            while (t < BobDuration)
+            while (t < this.BobDuration)
             {
-                m_Offset = Mathf.Lerp(0f, BobAmount, t/BobDuration);
+                this.m_Offset = Mathf.Lerp(0f, this.BobAmount, t/ this.BobDuration);
                 t += Time.deltaTime;
                 yield return new WaitForFixedUpdate();
             }
 
             // make it move back to neutral
             t = 0f;
-            while (t < BobDuration)
+            while (t < this.BobDuration)
             {
-                m_Offset = Mathf.Lerp(BobAmount, 0f, t/BobDuration);
+                this.m_Offset = Mathf.Lerp(this.BobAmount, 0f, t/ this.BobDuration);
                 t += Time.deltaTime;
                 yield return new WaitForFixedUpdate();
             }
-            m_Offset = 0f;
+            this.m_Offset = 0f;
         }
     }
 }

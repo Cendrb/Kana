@@ -16,85 +16,85 @@ public class Movement : MonoBehaviour
 
     void Start()
     {
-        angle.z = transform.rotation.eulerAngles.z;
+        this.angle.z = this.transform.rotation.eulerAngles.z;
     }
 
     void Update()
     {
-        carNormal = new Vector2(Mathf.Sin((-angle.z) * Mathf.Deg2Rad), Mathf.Cos((-angle.z) * Mathf.Deg2Rad));
-        rotate.eulerAngles = angle;
-        transform.rotation = rotate;
+        this.carNormal = new Vector2(Mathf.Sin((-this.angle.z) * Mathf.Deg2Rad), Mathf.Cos((-this.angle.z) * Mathf.Deg2Rad));
+        this.rotate.eulerAngles = this.angle;
+        this.transform.rotation = this.rotate;
         //Debug.Log ("["+ (-angle.z)+"] "+"("+carNormal.x + ", " + carNormal.y + ")");
 
         //Forward and Backward Motion
         if (Input.GetAxis("Vertical") > 0)
         {
-            if (curSteerSpeed < maxSteerSpeed)
-                curSteerSpeed += 0.035f;
+            if (this.curSteerSpeed < this.maxSteerSpeed)
+                this.curSteerSpeed += 0.035f;
 
-            if (speed < 0) //This will make changing direction better and easier
-                speed += acceleration / 15;
+            if (this.speed < 0) //This will make changing direction better and easier
+                this.speed += this.acceleration / 15;
             else
-                speed += acceleration / 30;
+                this.speed += this.acceleration / 30;
 
-            GetComponent<Rigidbody2D>().velocity = carNormal * speed; ;
+            GetComponent<Rigidbody2D>().velocity = this.carNormal * this.speed; ;
         }
         else if (Input.GetAxis("Vertical") < 0)
         {
-            if (speed > 0)
+            if (this.speed > 0)
             {
-                speed -= brakeSpeed / 30;
-                if (curSteerSpeed > 0)
-                    curSteerSpeed -= 0.03f;
+                this.speed -= this.brakeSpeed / 30;
+                if (this.curSteerSpeed > 0)
+                    this.curSteerSpeed -= 0.03f;
             }
             else
             {
-                speed -= deceleration / 30;
-                if (curSteerSpeed < maxSteerSpeed)
-                    curSteerSpeed += 0.01f;
+                this.speed -= this.deceleration / 30;
+                if (this.curSteerSpeed < this.maxSteerSpeed)
+                    this.curSteerSpeed += 0.01f;
             }
-            GetComponent<Rigidbody2D>().velocity = carNormal * speed;
+            GetComponent<Rigidbody2D>().velocity = this.carNormal * this.speed;
         }
         else if (Input.GetAxis("Vertical") == 0)
         {
-            if (curSteerSpeed > 0)
-                curSteerSpeed -= 0.02f;
-            if (speed > 0)
+            if (this.curSteerSpeed > 0)
+                this.curSteerSpeed -= 0.02f;
+            if (this.speed > 0)
             {
-                speed -= deceleration / 10;
-                if (speed < 0.01)
-                    speed = 0;
+                this.speed -= this.deceleration / 10;
+                if (this.speed < 0.01)
+                    this.speed = 0;
             }
-            else if (speed < 0)
+            else if (this.speed < 0)
             {
-                speed += deceleration / 10;
-                if (speed > -0.01)
-                    speed = 0;
+                this.speed += this.deceleration / 10;
+                if (this.speed > -0.01)
+                    this.speed = 0;
             }
-            GetComponent<Rigidbody2D>().velocity = carNormal * speed;
+            GetComponent<Rigidbody2D>().velocity = this.carNormal * this.speed;
         }
-        if (speed < 0.1 && speed > -0.1)
-            curSteerSpeed = 0;
+        if (this.speed < 0.1 && this.speed > -0.1)
+            this.curSteerSpeed = 0;
         //Steering Motion
-        if (speed != 0)
+        if (this.speed != 0)
         {
             if (Input.GetAxis("Horizontal") > 0)
             {
-                if (speed > 0)
-                    angle += new Vector3(0, 0, -curSteerSpeed) * steerSpeedBonus / 100;
-                else if (speed < 0)
-                    angle += new Vector3(0, 0, curSteerSpeed) * steerSpeedBonus / 100;
-                rotate.eulerAngles = angle;
-                transform.rotation = rotate;
+                if (this.speed > 0)
+                    this.angle += new Vector3(0, 0, -this.curSteerSpeed) * this.steerSpeedBonus / 100;
+                else if (this.speed < 0)
+                    this.angle += new Vector3(0, 0, this.curSteerSpeed) * this.steerSpeedBonus / 100;
+                this.rotate.eulerAngles = this.angle;
+                this.transform.rotation = this.rotate;
             }
             else if (Input.GetAxis("Horizontal") < 0)
             {
-                if (speed > 0)
-                    angle += new Vector3(0, 0, +curSteerSpeed) * steerSpeedBonus / 100;
-                if (speed < 0)
-                    angle += new Vector3(0, 0, -curSteerSpeed) * steerSpeedBonus / 100;
-                rotate.eulerAngles = angle;
-                transform.rotation = rotate;
+                if (this.speed > 0)
+                    this.angle += new Vector3(0, 0, +this.curSteerSpeed) * this.steerSpeedBonus / 100;
+                if (this.speed < 0)
+                    this.angle += new Vector3(0, 0, -this.curSteerSpeed) * this.steerSpeedBonus / 100;
+                this.rotate.eulerAngles = this.angle;
+                this.transform.rotation = this.rotate;
             }
         }
     }
@@ -103,7 +103,7 @@ public class Movement : MonoBehaviour
     {
         if (collider.gameObject.tag != null)
         {
-            speed = -speed * 0.3f;
+            this.speed = -this.speed * 0.3f;
             GetComponent<Rigidbody2D>().angularVelocity = 0;
         }
     }

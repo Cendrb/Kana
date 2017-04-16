@@ -8,9 +8,9 @@
 
         public ScriptProperties(float mass, int health, int damageOnTouch)
         {
-            Mass = mass;
-            Health = health;
-            DamageOnTouch = damageOnTouch;
+            this.Mass = mass;
+            this.Health = health;
+            this.DamageOnTouch = damageOnTouch;
         }
     }
 }

@@ -17,8 +17,8 @@ namespace Assets.Scripts.GameResources
 
         public Joint(Vector2 position, float rotation)
         {
-            Position = position;
-            Rotation = rotation;
+            this.Position = position;
+            this.Rotation = rotation;
         }
     }
 }

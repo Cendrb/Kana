@@ -31,43 +31,43 @@ namespace UnityStandardAssets.Utility
 
         private void Start()
         {
-            m_OriginalRotation = transform.localRotation;
+            this.m_OriginalRotation = this.transform.localRotation;
         }
 
 
         private void Update()
         {
             // we make initial calculations from the original local rotation
-            transform.localRotation = m_OriginalRotation;
+            this.transform.localRotation = this.m_OriginalRotation;
 
             // read input from mouse or mobile controls
             float inputH;
             float inputV;
-            if (relative)
+            if (this.relative)
             {
                 inputH = CrossPlatformInputManager.GetAxis("Mouse X");
                 inputV = CrossPlatformInputManager.GetAxis("Mouse Y");
 
                 // wrap values to avoid springing quickly the wrong way from positive to negative
-                if (m_TargetAngles.y > 180)
+                if (this.m_TargetAngles.y > 180)
                 {
-                    m_TargetAngles.y -= 360;
-                    m_FollowAngles.y -= 360;
+                    this.m_TargetAngles.y -= 360;
+                    this.m_FollowAngles.y -= 360;
                 }
-                if (m_TargetAngles.x > 180)
+                if (this.m_TargetAngles.x > 180)
                 {
-                    m_TargetAngles.x -= 360;
-                    m_FollowAngles.x -= 360;
+                    this.m_TargetAngles.x -= 360;
+                    this.m_FollowAngles.x -= 360;
                 }
-                if (m_TargetAngles.y < -180)
+                if (this.m_TargetAngles.y < -180)
                 {
-                    m_TargetAngles.y += 360;
-                    m_FollowAngles.y += 360;
+                    this.m_TargetAngles.y += 360;
+                    this.m_FollowAngles.y += 360;
                 }
-                if (m_TargetAngles.x < -180)
+                if (this.m_TargetAngles.x < -180)
                 {
-                    m_TargetAngles.x += 360;
-                    m_FollowAngles.x += 360;
+                    this.m_TargetAngles.x += 360;
+                    this.m_FollowAngles.x += 360;
                 }
 
 #if MOBILE_INPUT
@@ -85,13 +85,13 @@ namespace UnityStandardAssets.Utility
 			}
 #else
                 // with mouse input, we have direct control with no springback required.
-                m_TargetAngles.y += inputH*rotationSpeed;
-                m_TargetAngles.x += inputV*rotationSpeed;
+                this.m_TargetAngles.y += inputH* this.rotationSpeed;
+                this.m_TargetAngles.x += inputV* this.rotationSpeed;
 #endif
 
                 // clamp values to allowed range
-                m_TargetAngles.y = Mathf.Clamp(m_TargetAngles.y, -rotationRange.y*0.5f, rotationRange.y*0.5f);
-                m_TargetAngles.x = Mathf.Clamp(m_TargetAngles.x, -rotationRange.x*0.5f, rotationRange.x*0.5f);
+                this.m_TargetAngles.y = Mathf.Clamp(this.m_TargetAngles.y, -this.rotationRange.y*0.5f, this.rotationRange.y*0.5f);
+                this.m_TargetAngles.x = Mathf.Clamp(this.m_TargetAngles.x, -this.rotationRange.x*0.5f, this.rotationRange.x*0.5f);
             }
             else
             {
@@ -99,15 +99,15 @@ namespace UnityStandardAssets.Utility
                 inputV = Input.mousePosition.y;
 
                 // set values to allowed range
-                m_TargetAngles.y = Mathf.Lerp(-rotationRange.y*0.5f, rotationRange.y*0.5f, inputH/Screen.width);
-                m_TargetAngles.x = Mathf.Lerp(-rotationRange.x*0.5f, rotationRange.x*0.5f, inputV/Screen.height);
+                this.m_TargetAngles.y = Mathf.Lerp(-this.rotationRange.y*0.5f, this.rotationRange.y*0.5f, inputH/Screen.width);
+                this.m_TargetAngles.x = Mathf.Lerp(-this.rotationRange.x*0.5f, this.rotationRange.x*0.5f, inputV/Screen.height);
             }
 
             // smoothly interpolate current values to target angles
-            m_FollowAngles = Vector3.SmoothDamp(m_FollowAngles, m_TargetAngles, ref m_FollowVelocity, dampingTime);
+            this.m_FollowAngles = Vector3.SmoothDamp(this.m_FollowAngles, this.m_TargetAngles, ref this.m_FollowVelocity, this.dampingTime);
 
             // update the actual gameobject's rotation
-            transform.localRotation = m_OriginalRotation*Quaternion.Euler(-m_FollowAngles.x, m_FollowAngles.y, 0);
+            this.transform.localRotation = this.m_OriginalRotation *Quaternion.Euler(-this.m_FollowAngles.x, this.m_FollowAngles.y, 0);
         }
     }
 }

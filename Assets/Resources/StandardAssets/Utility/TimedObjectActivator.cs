@@ -41,7 +41,7 @@ namespace UnityStandardAssets.Utility
         
         private void Awake()
         {
-            foreach (Entry entry in entries.entries)
+            foreach (Entry entry in this.entries.entries)
             {
                 switch (entry.action)
                 {

@@ -27,11 +27,11 @@ namespace UnityStandardAssets.Utility
 
         private void DoActivateTrigger()
         {
-            triggerCount--;
+            this.triggerCount--;
 
-            if (triggerCount == 0 || repeatTrigger)
+            if (this.triggerCount == 0 || this.repeatTrigger)
             {
-                Object currentTarget = target ?? gameObject;
+                Object currentTarget = this.target ?? this.gameObject;
                 Behaviour targetBehaviour = currentTarget as Behaviour;
                 GameObject targetGameObject = currentTarget as GameObject;
                 if (targetBehaviour != null)
@@ -39,7 +39,7 @@ namespace UnityStandardAssets.Utility
                     targetGameObject = targetBehaviour.gameObject;
                 }
 
-                switch (action)
+                switch (this.action)
                 {
                     case Mode.Trigger:
                         if (targetGameObject != null)
@@ -48,11 +48,11 @@ namespace UnityStandardAssets.Utility
                         }
                         break;
                     case Mode.Replace:
-                        if (source != null)
+                        if (this.source != null)
                         {
                             if (targetGameObject != null)
                             {
-                                Instantiate(source, targetGameObject.transform.position,
+                                Instantiate(this.source, targetGameObject.transform.position,
                                             targetGameObject.transform.rotation);
                                 DestroyObject(targetGameObject);
                             }

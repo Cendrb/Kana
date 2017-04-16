@@ -15,43 +15,43 @@ namespace UnityStandardAssets.Utility
 
         public CameraRefocus(Camera camera, Transform parent, Vector3 origCameraPos)
         {
-            m_OrigCameraPos = origCameraPos;
-            Camera = camera;
-            Parent = parent;
+            this.m_OrigCameraPos = origCameraPos;
+            this.Camera = camera;
+            this.Parent = parent;
         }
 
 
         public void ChangeCamera(Camera camera)
         {
-            Camera = camera;
+            this.Camera = camera;
         }
 
 
         public void ChangeParent(Transform parent)
         {
-            Parent = parent;
+            this.Parent = parent;
         }
 
 
         public void GetFocusPoint()
         {
             RaycastHit hitInfo;
-            if (Physics.Raycast(Parent.transform.position + m_OrigCameraPos, Parent.transform.forward, out hitInfo,
+            if (Physics.Raycast(this.Parent.transform.position + this.m_OrigCameraPos, this.Parent.transform.forward, out hitInfo,
                                 100f))
             {
-                Lookatpoint = hitInfo.point;
-                m_Refocus = true;
+                this.Lookatpoint = hitInfo.point;
+                this.m_Refocus = true;
                 return;
             }
-            m_Refocus = false;
+            this.m_Refocus = false;
         }
 
 
         public void SetFocusPoint()
         {
-            if (m_Refocus)
+            if (this.m_Refocus)
             {
-                Camera.transform.LookAt(Lookatpoint);
+                this.Camera.transform.LookAt(this.Lookatpoint);
             }
         }
     }

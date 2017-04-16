@@ -13,7 +13,7 @@ namespace UnityStandardAssets.Utility
 
         private void Start()
         {
-            m_LastRealTime = Time.realtimeSinceStartup;
+            this.m_LastRealTime = Time.realtimeSinceStartup;
         }
 
 
@@ -21,13 +21,13 @@ namespace UnityStandardAssets.Utility
         private void Update()
         {
             float deltaTime = Time.deltaTime;
-            if (ignoreTimescale)
+            if (this.ignoreTimescale)
             {
-                deltaTime = (Time.realtimeSinceStartup - m_LastRealTime);
-                m_LastRealTime = Time.realtimeSinceStartup;
+                deltaTime = (Time.realtimeSinceStartup - this.m_LastRealTime);
+                this.m_LastRealTime = Time.realtimeSinceStartup;
             }
-            transform.Translate(moveUnitsPerSecond.value*deltaTime, moveUnitsPerSecond.space);
-            transform.Rotate(rotateDegreesPerSecond.value*deltaTime, moveUnitsPerSecond.space);
+            this.transform.Translate(this.moveUnitsPerSecond.value*deltaTime, this.moveUnitsPerSecond.space);
+            this.transform.Rotate(this.rotateDegreesPerSecond.value*deltaTime, this.moveUnitsPerSecond.space);
         }
 
 

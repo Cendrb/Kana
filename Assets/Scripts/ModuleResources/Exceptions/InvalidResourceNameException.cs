@@ -9,15 +9,15 @@ namespace Assets.Scripts.ModuleResources.Exceptions
 
         public InvalidResourceNameException(ResourceLocation resourceLocation, string readName)
         {
-            ResourceLocation = resourceLocation;
-            ReadName = readName;
+            this.ResourceLocation = resourceLocation;
+            this.ReadName = readName;
         }
 
         public override string ToString()
         {
             return string.Format(
                 "The 'name' property needs to be the same as the filename. ({0} file != {1} read name)",
-                ResourceLocation.Name, ReadName);
+                this.ResourceLocation.Name, this.ReadName);
         }
     }
 }

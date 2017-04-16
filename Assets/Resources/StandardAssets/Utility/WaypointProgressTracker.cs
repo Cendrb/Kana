@@ -58,9 +58,9 @@ namespace UnityStandardAssets.Utility
 
             // You can manually create a transform and assign it to this component *and* the AI,
             // then this component will update it, and the AI can read it.
-            if (target == null)
+            if (this.target == null)
             {
-                target = new GameObject(name + " Waypoint Target").transform;
+                this.target = new GameObject(this.name + " Waypoint Target").transform;
             }
 
             Reset();
@@ -70,69 +70,69 @@ namespace UnityStandardAssets.Utility
         // reset the object to sensible values
         public void Reset()
         {
-            progressDistance = 0;
-            progressNum = 0;
-            if (progressStyle == ProgressStyle.PointToPoint)
+            this.progressDistance = 0;
+            this.progressNum = 0;
+            if (this.progressStyle == ProgressStyle.PointToPoint)
             {
-                target.position = circuit.Waypoints[progressNum].position;
-                target.rotation = circuit.Waypoints[progressNum].rotation;
+                this.target.position = this.circuit.Waypoints[this.progressNum].position;
+                this.target.rotation = this.circuit.Waypoints[this.progressNum].rotation;
             }
         }
 
 
         private void Update()
         {
-            if (progressStyle == ProgressStyle.SmoothAlongRoute)
+            if (this.progressStyle == ProgressStyle.SmoothAlongRoute)
             {
                 // determine the position we should currently be aiming for
                 // (this is different to the current progress position, it is a a certain amount ahead along the route)
                 // we use lerp as a simple way of smoothing out the speed over time.
                 if (Time.deltaTime > 0)
                 {
-                    speed = Mathf.Lerp(speed, (lastPosition - transform.position).magnitude/Time.deltaTime,
+                    this.speed = Mathf.Lerp(this.speed, (this.lastPosition - this.transform.position).magnitude/Time.deltaTime,
                                        Time.deltaTime);
                 }
-                target.position =
-                    circuit.GetRoutePoint(progressDistance + lookAheadForTargetOffset + lookAheadForTargetFactor*speed)
+                this.target.position =
+                    this.circuit.GetRoutePoint(this.progressDistance + this.lookAheadForTargetOffset + this.lookAheadForTargetFactor * this.speed)
                            .position;
-                target.rotation =
+                this.target.rotation =
                     Quaternion.LookRotation(
-                        circuit.GetRoutePoint(progressDistance + lookAheadForSpeedOffset + lookAheadForSpeedFactor*speed)
+                        this.circuit.GetRoutePoint(this.progressDistance + this.lookAheadForSpeedOffset + this.lookAheadForSpeedFactor * this.speed)
                                .direction);
 
 
                 // get our current progress along the route
-                progressPoint = circuit.GetRoutePoint(progressDistance);
-                Vector3 progressDelta = progressPoint.position - transform.position;
-                if (Vector3.Dot(progressDelta, progressPoint.direction) < 0)
+                this.progressPoint = this.circuit.GetRoutePoint(this.progressDistance);
+                Vector3 progressDelta = this.progressPoint.position - this.transform.position;
+                if (Vector3.Dot(progressDelta, this.progressPoint.direction) < 0)
                 {
-                    progressDistance += progressDelta.magnitude*0.5f;
+                    this.progressDistance += progressDelta.magnitude*0.5f;
                 }
 
-                lastPosition = transform.position;
+                this.lastPosition = this.transform.position;
             }
             else
             {
                 // point to point mode. Just increase the waypoint if we're close enough:
 
-                Vector3 targetDelta = target.position - transform.position;
-                if (targetDelta.magnitude < pointToPointThreshold)
+                Vector3 targetDelta = this.target.position - this.transform.position;
+                if (targetDelta.magnitude < this.pointToPointThreshold)
                 {
-                    progressNum = (progressNum + 1)%circuit.Waypoints.Length;
+                    this.progressNum = (this.progressNum + 1)% this.circuit.Waypoints.Length;
                 }
 
 
-                target.position = circuit.Waypoints[progressNum].position;
-                target.rotation = circuit.Waypoints[progressNum].rotation;
+                this.target.position = this.circuit.Waypoints[this.progressNum].position;
+                this.target.rotation = this.circuit.Waypoints[this.progressNum].rotation;
 
                 // get our current progress along the route
-                progressPoint = circuit.GetRoutePoint(progressDistance);
-                Vector3 progressDelta = progressPoint.position - transform.position;
-                if (Vector3.Dot(progressDelta, progressPoint.direction) < 0)
+                this.progressPoint = this.circuit.GetRoutePoint(this.progressDistance);
+                Vector3 progressDelta = this.progressPoint.position - this.transform.position;
+                if (Vector3.Dot(progressDelta, this.progressPoint.direction) < 0)
                 {
-                    progressDistance += progressDelta.magnitude;
+                    this.progressDistance += progressDelta.magnitude;
                 }
-                lastPosition = transform.position;
+                this.lastPosition = this.transform.position;
             }
         }
 
@@ -142,10 +142,10 @@ namespace UnityStandardAssets.Utility
             if (Application.isPlaying)
             {
                 Gizmos.color = Color.green;
-                Gizmos.DrawLine(transform.position, target.position);
-                Gizmos.DrawWireSphere(circuit.GetRoutePosition(progressDistance), 1);
+                Gizmos.DrawLine(this.transform.position, this.target.position);
+                Gizmos.DrawWireSphere(this.circuit.GetRoutePosition(this.progressDistance), 1);
                 Gizmos.color = Color.yellow;
-                Gizmos.DrawLine(target.position, target.position + target.forward);
+                Gizmos.DrawLine(this.target.position, this.target.position + this.target.forward);
             }
         }
     }

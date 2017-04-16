@@ -11,10 +11,10 @@ namespace Assets.Scripts.ModuleResources.Models
 
         public Model(ResourceLocation resourceLocation, ResourceLocation texture, int renderLayer, List<ModelPart> parts)
         {
-            ResourceLocation = resourceLocation;
-            Texture = texture;
-            RenderLayer = renderLayer;
-            Parts = parts;
+            this.ResourceLocation = resourceLocation;
+            this.Texture = texture;
+            this.RenderLayer = renderLayer;
+            this.Parts = parts;
         }
     }
 }

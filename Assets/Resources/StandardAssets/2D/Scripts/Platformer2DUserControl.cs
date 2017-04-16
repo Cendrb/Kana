@@ -13,16 +13,16 @@ namespace UnityStandardAssets._2D
 
         private void Awake()
         {
-            m_Character = GetComponent<PlatformerCharacter2D>();
+            this.m_Character = GetComponent<PlatformerCharacter2D>();
         }
 
 
         private void Update()
         {
-            if (!m_Jump)
+            if (!this.m_Jump)
             {
                 // Read the jump input in Update so button presses aren't missed.
-                m_Jump = CrossPlatformInputManager.GetButtonDown("Jump");
+                this.m_Jump = CrossPlatformInputManager.GetButtonDown("Jump");
             }
         }
 
@@ -33,8 +33,8 @@ namespace UnityStandardAssets._2D
             bool crouch = Input.GetKey(KeyCode.LeftControl);
             float h = CrossPlatformInputManager.GetAxis("Horizontal");
             // Pass all parameters to the character control script.
-            m_Character.Move(h, crouch, m_Jump);
-            m_Jump = false;
+            this.m_Character.Move(h, crouch, this.m_Jump);
+            this.m_Jump = false;
         }
     }
 }

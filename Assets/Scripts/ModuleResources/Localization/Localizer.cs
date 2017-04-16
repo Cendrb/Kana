@@ -16,13 +16,13 @@ namespace Assets.Scripts.ModuleResources.Localization
 
         public void AddLang(IEnumerable<Localization> addLocalizations)
         {
-            localizations.AddRange(addLocalizations);
+            this.localizations.AddRange(addLocalizations);
         }
 
         public string GetLocalizedName(string module, string name)
         {
             Localization localization =
-                localizations.Find(l => l.Module == module && l.Name == name);
+                this.localizations.Find(l => l.Module == module && l.Name == name);
             if (localization != null)
                 return localization.LocalizedName;
             else

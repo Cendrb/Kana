@@ -32,41 +32,41 @@ namespace UnityStandardAssets.CrossPlatformInput
 
         void Start()
         {
-            m_StartPos = transform.position;
+            this.m_StartPos = this.transform.position;
         }
 
 		void UpdateVirtualAxes(Vector3 value)
 		{
-			var delta = m_StartPos - value;
+			var delta = this.m_StartPos - value;
 			delta.y = -delta.y;
-			delta /= MovementRange;
-			if (m_UseX)
+			delta /= this.MovementRange;
+			if (this.m_UseX)
 			{
-				m_HorizontalVirtualAxis.Update(-delta.x);
+                this.m_HorizontalVirtualAxis.Update(-delta.x);
 			}
 
-			if (m_UseY)
+			if (this.m_UseY)
 			{
-				m_VerticalVirtualAxis.Update(delta.y);
+                this.m_VerticalVirtualAxis.Update(delta.y);
 			}
 		}
 
 		void CreateVirtualAxes()
 		{
-			// set axes to use
-			m_UseX = (axesToUse == AxisOption.Both || axesToUse == AxisOption.OnlyHorizontal);
-			m_UseY = (axesToUse == AxisOption.Both || axesToUse == AxisOption.OnlyVertical);
+            // set axes to use
+            this.m_UseX = (this.axesToUse == AxisOption.Both || this.axesToUse == AxisOption.OnlyHorizontal);
+            this.m_UseY = (this.axesToUse == AxisOption.Both || this.axesToUse == AxisOption.OnlyVertical);
 
 			// create new axes based on axes to use
-			if (m_UseX)
+			if (this.m_UseX)
 			{
-				m_HorizontalVirtualAxis = new CrossPlatformInputManager.VirtualAxis(horizontalAxisName);
-				CrossPlatformInputManager.RegisterVirtualAxis(m_HorizontalVirtualAxis);
+                this.m_HorizontalVirtualAxis = new CrossPlatformInputManager.VirtualAxis(this.horizontalAxisName);
+				CrossPlatformInputManager.RegisterVirtualAxis(this.m_HorizontalVirtualAxis);
 			}
-			if (m_UseY)
+			if (this.m_UseY)
 			{
-				m_VerticalVirtualAxis = new CrossPlatformInputManager.VirtualAxis(verticalAxisName);
-				CrossPlatformInputManager.RegisterVirtualAxis(m_VerticalVirtualAxis);
+                this.m_VerticalVirtualAxis = new CrossPlatformInputManager.VirtualAxis(this.verticalAxisName);
+				CrossPlatformInputManager.RegisterVirtualAxis(this.m_VerticalVirtualAxis);
 			}
 		}
 
@@ -75,28 +75,28 @@ namespace UnityStandardAssets.CrossPlatformInput
 		{
 			Vector3 newPos = Vector3.zero;
 
-			if (m_UseX)
+			if (this.m_UseX)
 			{
-				int delta = (int)(data.position.x - m_StartPos.x);
-				delta = Mathf.Clamp(delta, - MovementRange, MovementRange);
+				int delta = (int)(data.position.x - this.m_StartPos.x);
+				delta = Mathf.Clamp(delta, -this.MovementRange, this.MovementRange);
 				newPos.x = delta;
 			}
 
-			if (m_UseY)
+			if (this.m_UseY)
 			{
-				int delta = (int)(data.position.y - m_StartPos.y);
-				delta = Mathf.Clamp(delta, -MovementRange, MovementRange);
+				int delta = (int)(data.position.y - this.m_StartPos.y);
+				delta = Mathf.Clamp(delta, -this.MovementRange, this.MovementRange);
 				newPos.y = delta;
 			}
-			transform.position = new Vector3(m_StartPos.x + newPos.x, m_StartPos.y + newPos.y, m_StartPos.z + newPos.z);
-			UpdateVirtualAxes(transform.position);
+            this.transform.position = new Vector3(this.m_StartPos.x + newPos.x, this.m_StartPos.y + newPos.y, this.m_StartPos.z + newPos.z);
+			UpdateVirtualAxes(this.transform.position);
 		}
 
 
 		public void OnPointerUp(PointerEventData data)
 		{
-			transform.position = m_StartPos;
-			UpdateVirtualAxes(m_StartPos);
+            this.transform.position = this.m_StartPos;
+			UpdateVirtualAxes(this.m_StartPos);
 		}
 
 
@@ -105,13 +105,13 @@ namespace UnityStandardAssets.CrossPlatformInput
 		void OnDisable()
 		{
 			// remove the joysticks from the cross platform input
-			if (m_UseX)
+			if (this.m_UseX)
 			{
-				m_HorizontalVirtualAxis.Remove();
+                this.m_HorizontalVirtualAxis.Remove();
 			}
-			if (m_UseY)
+			if (this.m_UseY)
 			{
-				m_VerticalVirtualAxis.Remove();
+                this.m_VerticalVirtualAxis.Remove();
 			}
 		}
 	}
