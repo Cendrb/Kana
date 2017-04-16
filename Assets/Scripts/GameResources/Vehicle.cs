@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using Assets.Scripts.ModuleResources;
@@ -13,10 +14,13 @@ namespace Assets.Scripts.GameResources
 {
     public class Vehicle : IJsonSerializable
     {
+        protected event Action<Vehicle> PartsChanged = delegate { };
+
         private float scale;
         private List<PartTemplate> partTemplates = new List<PartTemplate>();
         private List<Connection> connections = new List<Connection>();
         private List<GameObject> partGameObjects = new List<GameObject>();
+        private Dictionary<string, List<Part>> taggedPartScriptReferences = new Dictionary<string, List<Part>>();
         private Dictionary<VehicleJointIdentifier, Vector2> worldJointPositions = new Dictionary<VehicleJointIdentifier, Vector2>();
         private GameObject parentGameObject = null;
 
@@ -30,6 +34,8 @@ namespace Assets.Scripts.GameResources
                 PartTemplate partTemplate = this.partTemplates[partTemplateIndex];
                 AddNewPartGO(partTemplate);
             }
+
+            PartsChanged(this);
         }
 
         private int AddNewPartGO(PartTemplate partTemplate)
@@ -41,6 +47,11 @@ namespace Assets.Scripts.GameResources
             partScript.LoadFrom(partTemplate, this);
 
             this.partGameObjects.Add(partGO);
+
+            RecalculateTaggedParts();
+
+            PartsChanged(this);
+
             if (this.partTemplates.Count != this.partGameObjects.Count)
             {
                 throw new Exception("Part templates not equal to GOs!");
@@ -97,6 +108,31 @@ namespace Assets.Scripts.GameResources
                     this.worldJointPositions.Add(new VehicleJointIdentifier(partGOIndex, jointIndex), worldRelativeJointPosition);
                 }
             }
+        }
+
+        private void RecalculateTaggedParts()
+        {
+            this.taggedPartScriptReferences.Clear();
+
+            for (int index = 0; index < this.partTemplates.Count; index++)
+            {
+                PartTemplate template = this.partTemplates[index];
+                foreach (string tag in template.Tags)
+                {
+                    if (!this.taggedPartScriptReferences.ContainsKey(tag))
+                    {
+                        this.taggedPartScriptReferences.Add(tag, new List<Part>());
+                    }
+
+                    this.taggedPartScriptReferences[tag].Add(this.partGameObjects[index].GetComponent<Part>());
+                }
+
+            }
+        }
+
+        public List<Part> GetAllScriptsWithTag(string tag)
+        {
+            return new List<Part>(this.taggedPartScriptReferences[tag]);
         }
 
         public int GetIndex(GameObject partGO)
@@ -171,6 +207,11 @@ namespace Assets.Scripts.GameResources
                         connection.Joint2Identifier.PartId--;
                     }
                 }
+
+                RecalculateTaggedParts();
+
+                PartsChanged(this);
+
                 RecalculateWorldRelativeJointPositions();
 
                 return true;

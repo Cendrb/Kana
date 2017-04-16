@@ -21,7 +21,7 @@ namespace Assets.Scripts.PartScripts
         public ShopProperties ShopProperties { get; private set; }
         public ScriptProperties ScriptProperties { get; private set; }
         protected List<RenderedModel> Models { get; private set; }
-        protected Vehicle ParentVehicle;
+        protected Vehicle ParentVehicle { get; private set; }
         public List<Joint> JointPoints = new List<Joint>();
 
         public Part()
