@@ -129,7 +129,6 @@ namespace Assets.Scripts.PartScripts
                 mesh.SetTriangles(submeshTri.Value, submeshTri.Key);
             }
 
-            mesh.Optimize();
             mesh.RecalculateNormals();
             mesh.RecalculateBounds();
             modelGameObject.AddComponent<MeshFilter>().mesh = mesh;
