@@ -54,7 +54,7 @@ namespace Assets.Scripts.PartScripts
 
             foreach (RenderedModel model in renderedModels)
             {
-                initGOForModel(model, this.gameObject);
+                InitGOForModel(model, this.gameObject);
             }
         }
 
@@ -63,7 +63,7 @@ namespace Assets.Scripts.PartScripts
             return this.ParentVehicle != null;
         }
 
-        private void initGOForModel(RenderedModel model, GameObject parentGameObject)
+        private void InitGOForModel(RenderedModel model, GameObject parentGameObject)
         {
             GameObject modelGameObject = new GameObject(model.ResourceLocation.ToResourceLocationString());
             modelGameObject.transform.SetParent(parentGameObject.transform, false);
