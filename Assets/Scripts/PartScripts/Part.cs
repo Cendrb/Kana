@@ -20,12 +20,14 @@ namespace Assets.Scripts.PartScripts
         public ResourceLocation ResourceLocation { get; private set; }
         public ShopProperties ShopProperties { get; private set; }
         public ScriptProperties ScriptProperties { get; private set; }
-        protected List<RenderedModel> Models { get; private set; }
+        public List<RenderedModel> Models { get; private set; }
         protected Vehicle ParentVehicle { get; private set; }
         public List<Joint> JointPoints = new List<Joint>();
+        public CenterOfMass CenterOfMass { get; set; }
 
         public Part()
         {
+
         }
 
         public void LoadFrom(PartTemplate template, Vehicle parentVehicle)
@@ -56,6 +58,8 @@ namespace Assets.Scripts.PartScripts
             {
                 InitGOForModel(model, this.gameObject);
             }
+
+            this.CenterOfMass = CalculateCenterOfMass();
         }
 
         public bool IsPartOfVehicle()
@@ -164,6 +168,33 @@ namespace Assets.Scripts.PartScripts
             {
                 polygonCollider.SetPath(pair.Key, pair.Value);
             }
+        }
+
+        private CenterOfMass CalculateCenterOfMass()
+        {
+            Vector2 position = this.transform.position;
+
+            List<Vector3> vertices = new List<Vector3>();
+            foreach (RenderedModel model in this.Models)
+            {
+                foreach (ModelPart mPart in model.Parts)
+                {
+                    vertices.AddRange(mPart.GetVerticesForMesh());
+                }
+            }
+
+            Vector2 ratio = new Vector2();
+
+            foreach (Vector3 vector3 in vertices)
+            {
+                ratio.x += vector3.x;
+                ratio.y += vector3.y;
+            }
+
+            position.x += ratio.x / vertices.Count;
+            position.y += ratio.y / vertices.Count;
+
+            return new CenterOfMass(position, this.ScriptProperties.Mass);
         }
 
         public static Part AppendNewScriptOn(PartTemplate partTemplate, GameObject gameObject)

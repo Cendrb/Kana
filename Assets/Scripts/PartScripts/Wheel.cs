@@ -20,7 +20,7 @@ namespace Assets.Scripts.PartScripts
             {
                 
                 float angle = this.gameObject.transform.rotation.eulerAngles.z;
-                Vector2 forceV = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad));
+                Vector2 forceV = new Vector2(Mathf.Cos((angle + 90) * Mathf.Deg2Rad), Mathf.Sin((angle + 90) * Mathf.Deg2Rad));
                 forceV = forceV * Acceleration;
                 Vector2 pos = this.gameObject.transform.position + new Vector3(0.5f, 1);
                 this.ParentVehicle.Rigidbody.AddForceAtPosition(forceV, pos);
@@ -28,15 +28,15 @@ namespace Assets.Scripts.PartScripts
             else if (Input.GetAxis("Vertical") < 0)
             {
                 float angle = this.gameObject.transform.rotation.eulerAngles.z;
-                Vector2 forceV = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad));
+                Vector2 forceV = new Vector2(Mathf.Cos((angle + 90) * Mathf.Deg2Rad), Mathf.Sin((angle + 90) * Mathf.Deg2Rad));
                 forceV = forceV * Acceleration * -1;
                 Vector2 pos = this.gameObject.transform.position + new Vector3(0.5f, 1);
                 this.ParentVehicle.Rigidbody.AddForceAtPosition(forceV, pos);
             }
-            else
-            {
 
-            }
+            if (Input.GetAxis("Horizontal") > 0) { }
+
+            else if (Input.GetAxis("Horizontal") < 0) { }
         }
     }
 }

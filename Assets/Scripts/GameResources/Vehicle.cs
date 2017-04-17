@@ -9,13 +9,14 @@ using Assets.Scripts.PartScripts;
 using Assets.Scripts.Util;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
+using Assets.Scripts.ModuleResources.Models;
 
 namespace Assets.Scripts.GameResources
 {
     public class Vehicle : IJsonSerializable
     {
         protected event Action<Vehicle> PartsChanged = delegate { };
-        
+
         public Rigidbody2D Rigidbody { get; private set; }
 
         private float scale;
@@ -25,7 +26,12 @@ namespace Assets.Scripts.GameResources
         private Dictionary<string, List<Part>> taggedPartScriptReferences = new Dictionary<string, List<Part>>();
         private Dictionary<VehicleJointIdentifier, Vector2> worldJointPositions = new Dictionary<VehicleJointIdentifier, Vector2>();
         private GameObject parentGameObject = null;
-         
+
+
+        public Vehicle()
+        {
+            
+        }
 
         public void Instantiate(GameObject parentGameObject, float scale)
         {
@@ -33,18 +39,11 @@ namespace Assets.Scripts.GameResources
             this.parentGameObject = parentGameObject;
             this.Rigidbody = this.parentGameObject.AddComponent<Rigidbody2D>();
             this.Rigidbody.gravityScale = 0;
-            this.Rigidbody.centerOfMass = new Vector2(1, 3);
+            this.Rigidbody.centerOfMass = new Vector2(0, 0);
             this.Rigidbody.drag = 0.25f;
             this.Rigidbody.angularDrag = 0.25f;
-            
-            parentGameObject.transform.localScale = new Vector3(scale, scale, scale);
-            for (int partTemplateIndex = 0; partTemplateIndex < this.partTemplates.Count; partTemplateIndex++)
-            {
-                PartTemplate partTemplate = this.partTemplates[partTemplateIndex];
-                AddNewPartGO(partTemplate);
-            }
 
-            PartsChanged(this);
+            parentGameObject.transform.localScale = new Vector3(scale, scale, scale);
         }
 
         private int AddNewPartGO(PartTemplate partTemplate)
@@ -67,6 +66,26 @@ namespace Assets.Scripts.GameResources
             }
 
             return this.partTemplates.Count - 1;
+        }
+
+        private void RecalculateCenterOfMass()
+        {
+            Vector2 numerator = new Vector2();
+
+            float mass = 0;
+            
+
+            foreach (GameObject go in partGameObjects)
+            {
+                Part part = go.GetComponent<Part>();
+                numerator.x += (part.CenterOfMass.CenterOf.x + go.transform.localPosition.x) * part.CenterOfMass.Mass;
+                numerator.y += (part.CenterOfMass.CenterOf.y + go.transform.localPosition.y) * part.CenterOfMass.Mass;
+
+                mass += part.CenterOfMass.Mass;
+            }
+
+            this.Rigidbody.mass = mass;
+            this.Rigidbody.centerOfMass = new Vector2(numerator.x / mass, numerator.y / mass);
         }
 
         private void RecalculatePositionsAndRotations()
@@ -98,6 +117,8 @@ namespace Assets.Scripts.GameResources
                     }
                 }
             }
+
+            RecalculateCenterOfMass();
         }
 
         private void RecalculateWorldRelativeJointPositions()
